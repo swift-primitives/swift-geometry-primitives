@@ -8,7 +8,7 @@ import Testing
 @testable import Algebra_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
-@testable import RealModule
+import Real_Primitives
 
 // MARK: - Test Helpers
 
@@ -353,8 +353,8 @@ struct `Geometry.Arc - Containment` {
     @Test
     func `Contains point on arc`() {
         let arc: Geometry<Double, Void>.Arc = .quarterCircle(center: .zero, radius: 5)
-        let x = 5 * Double.cos(Double.pi / 4)
-        let y = 5 * Double.sin(Double.pi / 4)
+        let x = 5 * Double.math.cos(Double.pi / 4)
+        let y = 5 * Double.math.sin(Double.pi / 4)
         let point: Geometry<Double, Void>.Point<2> = .init(
             x: Geometry<Double, Void>.X(x),
             y: Geometry<Double, Void>.Y(y)
