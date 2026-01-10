@@ -5,7 +5,7 @@ public import Affine_Primitives
 import Algebra_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import RealModule
+public import Real_Primitives
 
 extension Geometry {
     /// A circular arc in 2D space.
@@ -81,7 +81,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
     }
 }
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Create a full circle arc
     @inlinable
     public static func fullCircle(center: Geometry.Point<2>, radius: Geometry.Radius) -> Self {
@@ -125,7 +125,7 @@ extension Geometry.Arc where Scalar: AdditiveArithmetic & Comparable {
     }
 }
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Whether this arc represents a full circle or more
     @inlinable
     public var isFullCircle: Bool {
@@ -135,7 +135,7 @@ extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Endpoints (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// The starting point of the arc
     @inlinable
     public var startPoint: Geometry.Point<2> {
@@ -168,7 +168,7 @@ extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Point on Arc (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Get a point on the arc at parameter t.
     ///
     /// - Parameter t: Parameter in [0, 1] (0 = start, 1 = end)
@@ -200,7 +200,7 @@ extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Length (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// The arc length
     ///
     /// Formula: s = r × θ where θ is the angle in radians (dimensionless).
@@ -213,7 +213,7 @@ extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Bounding Box (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// The axis-aligned bounding box of the arc
     @inlinable
     public var boundingBox: Geometry.Rectangle { Geometry.boundingBox(of: self) }
@@ -221,7 +221,7 @@ extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Static Implementations
 
-extension Geometry where Scalar: Real & BinaryFloatingPoint {
+extension Geometry where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Calculate the axis-aligned bounding box of an arc.
     ///
     /// Note: Bounding box calculations inherently mix coordinate components,
@@ -299,7 +299,7 @@ extension Geometry where Scalar: Real & BinaryFloatingPoint {
 
 // MARK: - Containment (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Check if a point lies on the arc.
     ///
     /// - Parameter point: The point to test
@@ -350,7 +350,7 @@ extension Array {
     ///
     /// - Parameter arc: The arc to approximate
     @inlinable
-    public init<Scalar: Real & BinaryFloatingPoint, Space>(
+    public init<Scalar: Numeric.Real & BinaryFloatingPoint, Space>(
         arc: Geometry<Scalar, Space>.Arc
     ) where Element == Geometry<Scalar, Space>.Bezier {
         let sweepRaw = arc.sweep.rawValue
@@ -394,7 +394,7 @@ extension Array {
     /// requiring raw scalar arithmetic.
     @inlinable
     internal static func arcSegmentToBezier<
-        Scalar: Real & BinaryFloatingPoint,
+        Scalar: Numeric.Real & BinaryFloatingPoint,
         Space
     >(
         arc: Geometry<Scalar, Space>.Arc,
@@ -405,7 +405,7 @@ extension Array {
         let halfSweepRaw = sweepRaw / 2
 
         // Control point distance factor: k = (4/3) * tan(θ/2)
-        let k = Scalar(4.0 / 3.0) * Scalar.tan(halfSweepRaw / 2)
+        let k = Scalar(4.0 / 3.0) * Scalar.math.tan(halfSweepRaw / 2)
 
         // Extract raw values for arithmetic
         let cx = arc.center.x.rawValue
@@ -463,7 +463,7 @@ extension Array {
 
 // MARK: - Transformation (Real & BinaryFloatingPoint)
 
-extension Geometry.Arc where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Return an arc translated by the given vector.
     @inlinable
     public func translated(by vector: Geometry.Vector<2>) -> Self {

@@ -5,7 +5,7 @@ public import Affine_Primitives
 import Algebra_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import RealModule
+public import Real_Primitives
 
 extension Geometry {
     /// An N-sided polygon in 2D space with exactly N vertices.
@@ -485,7 +485,7 @@ extension Geometry.Ngon where Scalar: FloatingPoint {
 
 // MARK: - Regular Polygon Factory
 
-extension Geometry.Ngon where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Ngon where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Create a regular N-gon with the given side length.
     ///
     /// A regular polygon has all sides equal length and all interior angles equal.
@@ -834,7 +834,7 @@ extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
 
 // MARK: - Triangle Angles
 
-extension Geometry.Ngon where N == 3, Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Ngon where N == 3, Scalar: Numeric.Real & BinaryFloatingPoint {
     /// The interior angles at each vertex.
     ///
     /// Angles are in radians and always sum to π.

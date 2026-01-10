@@ -5,7 +5,7 @@ public import Affine_Primitives
 import Algebra_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import RealModule
+public import Real_Primitives
 
 extension Geometry {
     /// A Bezier curve defined by control points.
@@ -321,7 +321,7 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
 
 // MARK: - Ellipse Approximation (Real & BinaryFloatingPoint)
 
-extension Geometry.Bezier where Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Bezier where Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Create cubic Bezier curves that approximate an ellipse.
     ///
     /// Uses the standard technique of splitting the ellipse into 4 quadrants,

@@ -4,7 +4,7 @@
 public import Affine_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import RealModule
+public import Real_Primitives
 
 extension Geometry {
     /// N-dimensional ball (hypersphere) — all points within radius of center.
@@ -169,7 +169,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
 
 // MARK: - 2D Point on Circle
 
-extension Geometry.Ball where N == 2, Scalar: Real & BinaryFloatingPoint {
+extension Geometry.Ball where N == 2, Scalar: Numeric.Real & BinaryFloatingPoint {
     /// Returns point on circle at given angle from positive x-axis.
     @inlinable
     public func point(at angle: Radian<Scalar>) -> Geometry.Point<2> {
