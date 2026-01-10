@@ -7,6 +7,7 @@
 
 import Algebra_Linear_Primitives
 public import Dimension_Primitives
+import Real_Primitives
 
 // MARK: - Size × Scale
 
@@ -284,7 +285,7 @@ public func - <Scalar: AdditiveArithmetic, Space>(
 
 /// Adds two heights with quantization.
 @inlinable
-public func + <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
     rhs: Geometry<Scalar, Space>.Height
 ) -> Geometry<Scalar, Space>.Height where Space.Scalar == Scalar {
@@ -293,7 +294,7 @@ public func + <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Subtracts two heights with quantization.
 @inlinable
-public func - <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
     rhs: Geometry<Scalar, Space>.Height
 ) -> Geometry<Scalar, Space>.Height where Space.Scalar == Scalar {
@@ -302,7 +303,7 @@ public func - <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Adds two widths with quantization.
 @inlinable
-public func + <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
     rhs: Geometry<Scalar, Space>.Width
 ) -> Geometry<Scalar, Space>.Width where Space.Scalar == Scalar {
@@ -311,7 +312,7 @@ public func + <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Subtracts two widths with quantization.
 @inlinable
-public func - <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
     rhs: Geometry<Scalar, Space>.Width
 ) -> Geometry<Scalar, Space>.Width where Space.Scalar == Scalar {
@@ -364,7 +365,7 @@ public func * <Scalar: FloatingPoint, Space>(
 
 /// Scales a height by a dimensionless factor with quantization.
 @inlinable
-public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
     rhs: Scale<1, Scalar>
 ) -> Geometry<Scalar, Space>.Height where Space.Scalar == Scalar {
@@ -373,7 +374,7 @@ public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Scales a height by a dimensionless factor (commutative) with quantization.
 @inlinable
-public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Scale<1, Scalar>,
     rhs: Geometry<Scalar, Space>.Height
 ) -> Geometry<Scalar, Space>.Height where Space.Scalar == Scalar {
@@ -382,7 +383,7 @@ public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Scales a width by a dimensionless factor with quantization.
 @inlinable
-public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
     rhs: Scale<1, Scalar>
 ) -> Geometry<Scalar, Space>.Width where Space.Scalar == Scalar {
@@ -391,7 +392,7 @@ public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
 
 /// Scales a width by a dimensionless factor (commutative) with quantization.
 @inlinable
-public func * <Scalar: BinaryFloatingPoint, Space: Quantized>(
+public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Scale<1, Scalar>,
     rhs: Geometry<Scalar, Space>.Width
 ) -> Geometry<Scalar, Space>.Width where Space.Scalar == Scalar {
