@@ -5,4 +5,5 @@
 @_exported import Algebra_Primitives
 @_exported import Algebra_Linear_Primitives
 @_exported import Dimension_Primitives
+@_exported import Real_Primitives
 @_exported import Region_Primitives
