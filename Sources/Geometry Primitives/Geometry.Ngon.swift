@@ -483,35 +483,17 @@ extension Geometry.Ngon where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Regular Polygon Factory
+// MARK: - Regular Polygon Factory - Double
 
-extension Geometry.Ngon where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ngon where Scalar == Double {
     /// Create a regular N-gon with the given side length.
-    ///
-    /// A regular polygon has all sides equal length and all interior angles equal.
-    /// Vertices are placed counter-clockwise starting from the rightmost point.
-    ///
-    /// - Parameters:
-    ///   - sideLength: The length of each side
-    ///   - center: The center of the polygon (default: origin)
-    /// - Returns: A regular N-gon
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let hexagon = Geometry<Double, Void>.Hexagon.regular(sideLength: 10)
-    /// let pentagon = Geometry<Double, Void>.Pentagon.regular(sideLength: 5, at: .init(x: 10, y: 10))
-    /// ```
     @inlinable
     public static func regular(
         sideLength: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        // Circumradius R = s / (2 × sin(π/N))
         let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
         let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
-
-        // Generate vertices at angles 2πi/N
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
             let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
@@ -519,24 +501,15 @@ extension Geometry.Ngon where Scalar: Numeric.Real & BinaryFloatingPoint {
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
         }
-
         return Self(verts)
     }
 
     /// Create a regular N-gon with the given circumradius.
-    ///
-    /// The circumradius is the distance from the center to each vertex.
-    ///
-    /// - Parameters:
-    ///   - circumradius: The radius of the circumscribed circle
-    ///   - center: The center of the polygon (default: origin)
-    /// - Returns: A regular N-gon
     @inlinable
     public static func regular(
         circumradius: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        // Generate vertices at angles 2πi/N
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
             let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
@@ -548,19 +521,60 @@ extension Geometry.Ngon where Scalar: Numeric.Real & BinaryFloatingPoint {
     }
 
     /// Create a regular N-gon with the given inradius (apothem).
-    ///
-    /// The inradius is the distance from the center to the midpoint of each side.
-    ///
-    /// - Parameters:
-    ///   - inradius: The radius of the inscribed circle (apothem)
-    ///   - center: The center of the polygon (default: origin)
-    /// - Returns: A regular N-gon
     @inlinable
     public static func regular(
         inradius: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        // Circumradius R = r / cos(π/N) where r is inradius
+        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let circumradius = inradius / piOverN.cos.value
+        return regular(circumradius: circumradius, at: center)
+    }
+}
+
+// MARK: - Regular Polygon Factory - Float
+
+extension Geometry.Ngon where Scalar == Float {
+    /// Create a regular N-gon with the given side length.
+    @inlinable
+    public static func regular(
+        sideLength: Scalar,
+        at center: Geometry.Point<2> = .zero
+    ) -> Self {
+        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
+        var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
+        for i in 0..<N {
+            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
+            let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
+            verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
+        }
+        return Self(verts)
+    }
+
+    /// Create a regular N-gon with the given circumradius.
+    @inlinable
+    public static func regular(
+        circumradius: Scalar,
+        at center: Geometry.Point<2> = .zero
+    ) -> Self {
+        var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
+        for i in 0..<N {
+            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
+            let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
+            verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
+        }
+        return Self(verts)
+    }
+
+    /// Create a regular N-gon with the given inradius (apothem).
+    @inlinable
+    public static func regular(
+        inradius: Scalar,
+        at center: Geometry.Point<2> = .zero
+    ) -> Self {
         let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
         let circumradius = inradius / piOverN.cos.value
         return regular(circumradius: circumradius, at: center)
@@ -573,8 +587,7 @@ extension Geometry where Scalar: FloatingPoint {
     /// Calculate the area of an N-gon (always positive).
     @inlinable
     public static func area<let N: Int>(of ngon: Ngon<N>) -> Area {
-        // Use the instance method's typed result, take magnitude for absolute value
-        ngon.signedArea.magnitude
+        Area(abs(ngon.signedArea.rawValue))
     }
 
     /// Calculate the signed double area of an N-gon using the shoelace formula.
@@ -834,7 +847,7 @@ extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
 
 // MARK: - Triangle Angles
 
-extension Geometry.Ngon where N == 3, Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ngon where N == 3, Scalar == Double {
     /// The interior angles at each vertex.
     ///
     /// Angles are in radians and always sum to π.
@@ -852,15 +865,52 @@ extension Geometry.Ngon where N == 3, Scalar: Numeric.Real & BinaryFloatingPoint
         let caSq = ca * ca
 
         let cosANum = caSq + abSq - bcSq
-        let cosADen = Scalar(2) * ca * ab
+        let cosADen = 2 * ca * ab
         let cosA = cosANum / cosADen
 
         let cosBNum = abSq + bcSq - caSq
-        let cosBDen = Scalar(2) * ab * bc
+        let cosBDen = 2 * ab * bc
         let cosB = cosBNum / cosBDen
 
         let cosCNum = bcSq + caSq - abSq
-        let cosCDen = Scalar(2) * bc * ca
+        let cosCDen = 2 * bc * ca
+        let cosC = cosCNum / cosCDen
+
+        return (
+            Radian.acos(Scale<1, Scalar>(cosA)),
+            Radian.acos(Scale<1, Scalar>(cosB)),
+            Radian.acos(Scale<1, Scalar>(cosC))
+        )
+    }
+}
+
+extension Geometry.Ngon where N == 3, Scalar == Float {
+    /// The interior angles at each vertex.
+    ///
+    /// Angles are in radians and always sum to π.
+    @inlinable
+    public var angles: (atA: Radian<Scalar>, atB: Radian<Scalar>, atC: Radian<Scalar>) {
+        // Law of cosines uses raw values for side lengths
+        let sides = sideLengths
+        let ab = sides.ab.rawValue
+        let bc = sides.bc.rawValue
+        let ca = sides.ca.rawValue
+
+        // cos(A) = (b² + c² - a²) / (2bc) - break up for type checker
+        let abSq = ab * ab
+        let bcSq = bc * bc
+        let caSq = ca * ca
+
+        let cosANum = caSq + abSq - bcSq
+        let cosADen: Float = 2 * ca * ab
+        let cosA = cosANum / cosADen
+
+        let cosBNum = abSq + bcSq - caSq
+        let cosBDen: Float = 2 * ab * bc
+        let cosB = cosBNum / cosBDen
+
+        let cosCNum = bcSq + caSq - abSq
+        let cosCDen: Float = 2 * bc * ca
         let cosC = cosCNum / cosCDen
 
         return (

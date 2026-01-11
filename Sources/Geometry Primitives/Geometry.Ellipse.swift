@@ -134,7 +134,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
 
 // MARK: - Foci (Real & BinaryFloatingPoint)
 
-extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse where Scalar: TranscendentalFloatingPoint {
     /// The two foci of the ellipse
     @inlinable
     public var foci: (f1: Geometry.Point<2>, f2: Geometry.Point<2>) {
@@ -160,7 +160,7 @@ extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
 
 // MARK: - Area and Perimeter (FloatingPoint)
 
-extension Geometry.Ellipse where Scalar: BinaryFloatingPoint {
+extension Geometry.Ellipse where Scalar: TranscendentalFloatingPoint {
     /// The area of the ellipse (π * a * b)
     @inlinable
     public var area: Geometry.Area { Geometry.area(of: self) }
@@ -195,7 +195,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
 
 // MARK: - Point on Ellipse (Real & BinaryFloatingPoint)
 
-extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse where Scalar: TranscendentalFloatingPoint {
     /// Get a point on the ellipse at parameter t.
     ///
     /// - Parameter t: The parameter angle in radians (not the actual angle from center)
@@ -233,7 +233,7 @@ extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
 
 // MARK: - Containment (Real & BinaryFloatingPoint)
 
-extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse where Scalar: TranscendentalFloatingPoint {
     /// Check if a point is inside or on the ellipse.
     ///
     /// - Parameter point: The point to test
@@ -246,7 +246,7 @@ extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
 
 // MARK: - Bounding Box (Real & BinaryFloatingPoint)
 
-extension Geometry.Ellipse where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse where Scalar: TranscendentalFloatingPoint {
     /// The axis-aligned bounding box of the ellipse
     @inlinable
     public var boundingBox: Geometry.Rectangle {
@@ -330,7 +330,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
 
 // MARK: - Ellipse Static Implementations
 
-extension Geometry where Scalar: BinaryFloatingPoint {
+extension Geometry where Scalar: TranscendentalFloatingPoint {
     /// Calculate the area of an ellipse (π × a × b).
     @inlinable
     public static func area(of ellipse: Ellipse) -> Area {
@@ -338,7 +338,7 @@ extension Geometry where Scalar: BinaryFloatingPoint {
     }
 }
 
-extension Geometry where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry where Scalar: TranscendentalFloatingPoint {
     /// Check if an ellipse contains a point.
     @inlinable
     public static func contains(_ ellipse: Ellipse, point: Point<2>) -> Bool {
@@ -503,7 +503,7 @@ extension Geometry.Ellipse.Arc where Scalar: AdditiveArithmetic & Comparable {
     }
 }
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// Whether this arc represents a full ellipse or more
     @inlinable
     public var isFullEllipse: Bool {
@@ -513,7 +513,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
 
 // MARK: - Ellipse.Arc Endpoints
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// The starting point of the arc
     @inlinable
     public var startPoint: Geometry.Point<2> {
@@ -535,7 +535,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
 
 // MARK: - Ellipse.Arc Point Evaluation
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// Get a point on the arc at parameter t.
     ///
     /// - Parameter t: Parameter in [0, 1] (0 = start, 1 = end)
@@ -610,7 +610,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
 
 // MARK: - Ellipse.Arc Length
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// Approximate arc length via numerical integration.
     ///
     /// Elliptical arc length requires elliptic integrals; we approximate
@@ -638,7 +638,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
 
 // MARK: - Ellipse.Arc Bounding Box
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// The axis-aligned bounding box of the arc.
     ///
     /// Note: Bounding box calculations inherently mix coordinate components,
@@ -671,11 +671,11 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
         let phi = rotation.rawValue
 
         // X extrema: tan(t) = -(b/a)·tan(φ)
-        let tanPhi = Scalar.math.tan(phi)
-        let xExtremaAngle = Scalar.math.atan2( -b * tanPhi, a)
+        let tanPhi = Scalar._tan(phi)
+        let xExtremaAngle = Scalar._atan2(-b * tanPhi, a)
 
         // Y extrema: tan(t) = (b/a)·cot(φ) = (b/a)/tan(φ)
-        let yExtremaAngle = Scalar.math.atan2( b, a * tanPhi)
+        let yExtremaAngle = Scalar._atan2(b, a * tanPhi)
 
         // Check each potential extremum angle
         for baseAngle in [xExtremaAngle, xExtremaAngle + .pi, yExtremaAngle, yExtremaAngle + .pi] {
@@ -728,7 +728,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
 
 // MARK: - Ellipse.Arc Containment
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// Check if a point lies on the arc.
     ///
     /// - Parameter point: The point to test
@@ -758,14 +758,14 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
         guard abs(ellipseVal - 1) < tolerance else { return false }
 
         // Check if the angle is within the arc's range
-        let pointAngle = Radian(Scalar.math.atan2( localY / b, localX / a))
+        let pointAngle = Radian(Scalar._atan2(localY / b, localX / a))
         return containsAngle(pointAngle)
     }
 }
 
 // MARK: - Ellipse.Arc SVG Endpoint-to-Center Conversion
 
-extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ellipse.Arc where Scalar: TranscendentalFloatingPoint {
     /// Create an elliptical arc from SVG endpoint parameterization.
     ///
     /// This implements the conversion algorithm from W3C SVG spec Appendix F.6.5.
@@ -828,8 +828,8 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
         }
 
         let phi = xAxisRotation.rawValue
-        let cosPhi = Scalar.math.cos(phi)
-        let sinPhi = Scalar.math.sin(phi)
+        let cosPhi = Scalar._cos(phi)
+        let sinPhi = Scalar._sin(phi)
 
         // Step 1: Compute (x1', y1') - rotated midpoint vector
         let dx = (x1 - x2) / 2
@@ -845,7 +845,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
         let lambdaY: Scalar = (y1Prime * y1Prime) / rySqInit
         let lambda: Scalar = lambdaX + lambdaY
         if lambda > 1 {
-            let sqrtLambda = Scalar.math.sqrt(lambda)
+            let sqrtLambda = Scalar._sqrt(lambda)
             rxVal *= sqrtLambda
             ryVal *= sqrtLambda
         }
@@ -860,7 +860,7 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
         let sqDenominator: Scalar = rxSq * y1PrimeSq + rySq * x1PrimeSq
         var sq: Scalar = sqNumerator / sqDenominator
         sq = max(0, sq)  // Clamp to avoid negative sqrt due to precision
-        var sqrtVal: Scalar = Scalar.math.sqrt(sq)
+        var sqrtVal: Scalar = Scalar._sqrt(sq)
 
         // Choose sign based on flags
         if largeArcFlag == sweepFlag {
@@ -914,12 +914,12 @@ extension Geometry.Ellipse.Arc where Scalar: Numeric.Real & BinaryFloatingPoint 
     @inlinable
     internal static func angleBetween(ux: Scalar, uy: Scalar, vx: Scalar, vy: Scalar) -> Scalar {
         let dot = ux * vx + uy * vy
-        let lenU = Scalar.math.sqrt(ux * ux + uy * uy)
-        let lenV = Scalar.math.sqrt(vx * vx + vy * vy)
+        let lenU = Scalar._sqrt(ux * ux + uy * uy)
+        let lenV = Scalar._sqrt(vx * vx + vy * vy)
         var cosAngle = dot / (lenU * lenV)
         // Clamp to [-1, 1] to handle numerical precision issues
         cosAngle = max(-1, min(1, cosAngle))
-        let angle = Scalar.math.acos(cosAngle)
+        let angle = Scalar._acos(cosAngle)
         // Determine sign from cross product
         let cross = ux * vy - uy * vx
         return cross >= 0 ? angle : -angle
@@ -938,7 +938,7 @@ extension Array {
     ///
     /// - Parameter arc: The elliptical arc to approximate
     @inlinable
-    public init<Scalar: Numeric.Real & BinaryFloatingPoint, Space>(
+    public init<Scalar: TranscendentalFloatingPoint, Space>(
         ellipticalArc arc: Geometry<Scalar, Space>.Ellipse.Arc
     ) where Element == Geometry<Scalar, Space>.Bezier {
         let sweepRaw = arc.sweep.rawValue
@@ -982,7 +982,7 @@ extension Array {
     /// requiring raw scalar arithmetic similar to matrix transforms.
     @inlinable
     internal static func ellipticalArcSegmentToBezier<
-        Scalar: Numeric.Real & BinaryFloatingPoint,
+        Scalar: TranscendentalFloatingPoint,
         Space
     >(
         arc: Geometry<Scalar, Space>.Ellipse.Arc,
@@ -993,7 +993,7 @@ extension Array {
         let halfSweepRaw = sweepRaw / 2
 
         // Control point distance factor: k = (4/3) * tan(θ/2)
-        let k = Scalar(4.0 / 3.0) * Scalar.math.tan(halfSweepRaw / 2)
+        let k = Scalar(4.0 / 3.0) * Scalar._tan(halfSweepRaw / 2)
 
         // Extract raw values for the affine transformation
         let cx = arc.center.x.rawValue
@@ -1001,14 +1001,14 @@ extension Array {
         let a = arc.semiMajor.rawValue
         let b = arc.semiMinor.rawValue
         let phi = arc.rotation.rawValue
-        let cosPhi = Scalar.math.cos(phi)
-        let sinPhi = Scalar.math.sin(phi)
+        let cosPhi = Scalar._cos(phi)
+        let sinPhi = Scalar._sin(phi)
 
         // Start and end points on unit circle (parameter space)
-        let cosStart = Scalar.math.cos(startAngle.rawValue)
-        let sinStart = Scalar.math.sin(startAngle.rawValue)
-        let cosEnd = Scalar.math.cos(endAngle.rawValue)
-        let sinEnd = Scalar.math.sin(endAngle.rawValue)
+        let cosStart = Scalar._cos(startAngle.rawValue)
+        let sinStart = Scalar._sin(startAngle.rawValue)
+        let cosEnd = Scalar._cos(endAngle.rawValue)
+        let sinEnd = Scalar._sin(endAngle.rawValue)
 
         // Transform from ellipse parameter space to world coordinates
         // Point on unrotated ellipse: (a·cos(t), b·sin(t))

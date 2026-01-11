@@ -169,7 +169,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
 
 // MARK: - 2D Point on Circle
 
-extension Geometry.Ball where N == 2, Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Ball where N == 2, Scalar: TranscendentalFloatingPoint {
     /// Returns point on circle at given angle from positive x-axis.
     @inlinable
     public func point(at angle: Radian<Scalar>) -> Geometry.Point<2> {

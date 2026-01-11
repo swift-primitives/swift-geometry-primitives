@@ -276,7 +276,7 @@ extension Geometry.Line.Segment where Scalar: FloatingPoint {
     /// The length of the segment
     @inlinable
     public var length: Geometry.Length {
-        Geometry.Length(vector.length)
+        Geometry.Length(vector.length.rawValue)
     }
 
     /// The midpoint of the segment
@@ -389,12 +389,12 @@ extension Geometry where Scalar: FloatingPoint {
     /// Calculate the perpendicular distance from a point to a line.
     @inlinable
     public static func distance(from line: Line, to point: Point<2>) -> Distance? {
-        let mag = line.direction.magnitude
-        guard mag != .zero else { return nil }
+        let mag = line.direction.length
+        guard mag.rawValue != 0 else { return nil }
         let v = Vector(dx: point.x - line.point.x, dy: point.y - line.point.y)
         let cross = line.direction.dx * v.dy - line.direction.dy * v.dx
-        // Area / Magnitude = Magnitude (L² / L = L)
-        return abs(cross) / mag
+        // Area / Length = Length (L² / L = L)
+        return Distance(abs(cross.rawValue) / mag.rawValue)
     }
 
     /// Find the intersection point between two lines.

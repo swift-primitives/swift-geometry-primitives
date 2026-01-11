@@ -601,7 +601,7 @@ struct `Geometry.Line - Functorial Map` {
             point: .init(x: 1, y: 2),
             direction: .init(dx: 3, dy: 4)
         )
-        let mapped: Geometry<Float, Void>.Line = try line.map { Float($0) }
+        let mapped: Geometry<Float, Void>.Line = line.map { Float($0) }
         let expectedX: Geometry<Float, Void>.X = 1
         let expectedY: Geometry<Float, Void>.Y = 2
         let expectedDx: Linear<Float, Void>.Dx = 3
@@ -618,7 +618,7 @@ struct `Geometry.Line - Functorial Map` {
             start: .init(x: 0, y: 0),
             end: .init(x: 5, y: 10)
         )
-        let mapped: Geometry<Float, Void>.Line.Segment = try segment.map { Float($0) }
+        let mapped: Geometry<Float, Void>.Line.Segment = segment.map { Float($0) }
         let expectedStartX: Geometry<Float, Void>.X = 0
         let expectedEndY: Geometry<Float, Void>.Y = 10
         #expect(mapped.start.x == expectedStartX)

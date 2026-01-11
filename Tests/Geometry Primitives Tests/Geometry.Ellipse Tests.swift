@@ -191,7 +191,7 @@ struct `Geometry.Ellipse - Static Functions` {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
         let area = Geometry.area(of: ellipse)
         // Area = π * a * b = π * 5 * 3 = 15π
-        #expect(isApproxScalar(area._rawValue, 15 * .pi))
+        #expect(isApproxScalar(area.rawValue, 15 * .pi))
     }
 
     @Test
@@ -250,7 +250,7 @@ struct `Geometry.Ellipse - Area and Perimeter` {
     @Test
     func `Area property matches static function`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
-        #expect(isApproxScalar(ellipse.area._rawValue, 15 * .pi))
+        #expect(isApproxScalar(ellipse.area.rawValue, 15 * .pi))
     }
 
     @Test

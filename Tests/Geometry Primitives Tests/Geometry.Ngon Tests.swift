@@ -753,7 +753,7 @@ struct `Geometry.Ngon - Functorial Map` {
             b: .init(x: 1, y: 0),
             c: .init(x: 0, y: 1)
         )
-        let mapped: Geometry<Float, Void>.Triangle = try triangle.map { Float($0) }
+        let mapped: Geometry<Float, Void>.Triangle = triangle.map { Float($0) }
         let expectedAX: Geometry<Float, Void>.X = 0
         let expectedBX: Geometry<Float, Void>.X = 1
         let expectedCY: Geometry<Float, Void>.Y = 1

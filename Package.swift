@@ -26,7 +26,7 @@ let package = Package(
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-symmetry-primitives"),
         .package(path: "../swift-numeric-primitives"),
-        .package(path: "../swift-test-support-primitives"),
+        .package(path: "../swift-test-primitives"),
     ],
     targets: [
         .target(
@@ -46,7 +46,7 @@ let package = Package(
             dependencies: [
                 "Geometry Primitives",
                 .product(name: "Symmetry Primitives", package: "swift-symmetry-primitives"),
-                .product(name: "Test Support Primitives", package: "swift-test-support-primitives"),
+                .product(name: "Test Primitives", package: "swift-test-primitives"),
             ]
         ),
     ],

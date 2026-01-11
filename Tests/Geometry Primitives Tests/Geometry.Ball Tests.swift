@@ -58,7 +58,7 @@ private func isApprox(_ a: Width, _ b: Width, tol: Double = 1e-10) -> Bool {
 }
 
 private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
-    return abs(a - b)._rawValue < tol
+    return abs(a - b).rawValue < tol
 }
 
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {

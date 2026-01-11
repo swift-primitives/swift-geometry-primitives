@@ -2,7 +2,7 @@
 // A 2D path composed of line segments, Bezier curves, and arcs.
 
 public import Affine_Primitives
-public import Real_Primitives
+import Real_Primitives
 
 // MARK: - Path
 
@@ -119,7 +119,7 @@ extension Geometry.Path.Segment: Hashable where Scalar: Hashable {}
 
 // MARK: - Segment Properties
 
-extension Geometry.Path.Segment where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Path.Segment where Scalar: TranscendentalFloatingPoint {
     /// The starting point of the segment
     @inlinable
     public var startPoint: Geometry.Point<2>? {
@@ -148,7 +148,7 @@ extension Geometry.Path.Segment where Scalar: Numeric.Real & BinaryFloatingPoint
 extension Array {
     /// Create an array of Bezier curves from a path segment
     @inlinable
-    public init<Scalar: Numeric.Real & BinaryFloatingPoint, Space>(
+    public init<Scalar: TranscendentalFloatingPoint, Space>(
         segment: Geometry<Scalar, Space>.Path.Segment
     ) where Element == Geometry<Scalar, Space>.Bezier {
         switch segment {
@@ -164,7 +164,7 @@ extension Array {
     }
 }
 
-extension Geometry.Path.Segment where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Path.Segment where Scalar: TranscendentalFloatingPoint {
     /// Convert segment to Bezier curves
     @inlinable
     public func toBeziers() -> [Geometry.Bezier] { .init(segment: self) }
@@ -189,7 +189,7 @@ extension Geometry.Path {
 extension Array where Element: RangeReplaceableCollection {
     /// Create a nested array of Bezier curves from a path
     @inlinable
-    public init<Scalar: Numeric.Real & BinaryFloatingPoint, Space>(
+    public init<Scalar: TranscendentalFloatingPoint, Space>(
         path: Geometry<Scalar, Space>.Path
     ) where Element == [Geometry<Scalar, Space>.Bezier] {
         self = path.subpaths.map { subpath in
@@ -204,7 +204,7 @@ extension Array where Element: RangeReplaceableCollection {
     }
 }
 
-extension Geometry.Path where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Path where Scalar: TranscendentalFloatingPoint {
     /// Convert entire path to Bezier curves.
     ///
     /// Useful for rendering or geometric operations that work on Beziers.
@@ -232,7 +232,7 @@ extension Geometry.Path.Subpath {
     public var isEmpty: Bool { segments.isEmpty }
 }
 
-extension Geometry.Path.Subpath where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Path.Subpath where Scalar: TranscendentalFloatingPoint {
     /// The endpoint of the subpath (last segment's end, or startPoint if empty)
     @inlinable
     public var endPoint: Geometry.Point<2>? {
@@ -240,7 +240,7 @@ extension Geometry.Path.Subpath where Scalar: Numeric.Real & BinaryFloatingPoint
     }
 }
 
-extension Geometry.Path.Subpath where Scalar: Numeric.Real & BinaryFloatingPoint {
+extension Geometry.Path.Subpath where Scalar: TranscendentalFloatingPoint {
     /// Approximate length of the subpath
     @inlinable
     public func length(bezierSegments: Int = 100) -> Geometry.ArcLength {

@@ -224,7 +224,7 @@ struct `Geometry.Bezier - Derivative` {
         )
         let tangent = bezier.tangent(at: 0.5)!
         let expectedLength: Double = 1.0
-        #expect(abs(tangent.length - expectedLength) < 1e-10)
+        #expect(abs(tangent.length.rawValue - expectedLength) < 1e-10)
     }
 
     @Test
