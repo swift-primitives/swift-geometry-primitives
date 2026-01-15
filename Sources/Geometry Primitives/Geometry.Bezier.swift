@@ -319,9 +319,9 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Ellipse Approximation (TranscendentalFloatingPoint)
+// MARK: - Ellipse Approximation (BinaryFloatingPoint & Numeric.Transcendental)
 
-extension Geometry.Bezier where Scalar: TranscendentalFloatingPoint {
+extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// Create cubic Bezier curves that approximate an ellipse.
     ///
     /// Uses the standard technique of splitting the ellipse into 4 quadrants,

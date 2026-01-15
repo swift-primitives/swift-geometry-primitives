@@ -133,9 +133,9 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
     }
 }
 
-// MARK: - Endpoints (TranscendentalFloatingPoint)
+// MARK: - Endpoints (BinaryFloatingPoint & Numeric.Transcendental)
 
-extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
+extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// The starting point of the arc
     @inlinable
     public var startPoint: Geometry.Point<2> {
@@ -166,9 +166,9 @@ extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
     }
 }
 
-// MARK: - Point on Arc (TranscendentalFloatingPoint)
+// MARK: - Point on Arc (BinaryFloatingPoint & Numeric.Transcendental)
 
-extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
+extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// Get a point on the arc at parameter t.
     ///
     /// - Parameter t: Parameter in [0, 1] (0 = start, 1 = end)
@@ -211,9 +211,9 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
     }
 }
 
-// MARK: - Bounding Box (TranscendentalFloatingPoint)
+// MARK: - Bounding Box (BinaryFloatingPoint & Numeric.Transcendental)
 
-extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
+extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// The axis-aligned bounding box of the arc
     @inlinable
     public var boundingBox: Geometry.Rectangle { Geometry.boundingBox(of: self) }
@@ -221,7 +221,7 @@ extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
 
 // MARK: - Static Implementations
 
-extension Geometry where Scalar: TranscendentalFloatingPoint {
+extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// Calculate the axis-aligned bounding box of an arc.
     ///
     /// Note: Bounding box calculations inherently mix coordinate components,
@@ -297,9 +297,9 @@ extension Geometry where Scalar: TranscendentalFloatingPoint {
     }
 }
 
-// MARK: - Containment (TranscendentalFloatingPoint)
+// MARK: - Containment (BinaryFloatingPoint & Numeric.Transcendental)
 
-extension Geometry.Arc where Scalar: TranscendentalFloatingPoint {
+extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// Check if a point lies on the arc.
     ///
     /// - Parameter point: The point to test
@@ -350,7 +350,7 @@ extension Array {
     ///
     /// - Parameter arc: The arc to approximate
     @inlinable
-    public init<Scalar: TranscendentalFloatingPoint, Space>(
+    public init<Scalar: BinaryFloatingPoint & Numeric.Transcendental, Space>(
         arc: Geometry<Scalar, Space>.Arc
     ) where Element == Geometry<Scalar, Space>.Bezier {
         let sweepRaw = arc.sweep.rawValue
@@ -394,7 +394,7 @@ extension Array {
     /// requiring raw scalar arithmetic.
     @inlinable
     internal static func arcSegmentToBezier<
-        Scalar: TranscendentalFloatingPoint,
+        Scalar: BinaryFloatingPoint & Numeric.Transcendental,
         Space
     >(
         arc: Geometry<Scalar, Space>.Arc,
