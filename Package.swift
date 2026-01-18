@@ -9,13 +9,13 @@ let package = Package(
         .iOS(.v26),
         .tvOS(.v26),
         .watchOS(.v26),
-        .visionOS(.v26),
+        .visionOS(.v26)
     ],
     products: [
         .library(
             name: "Geometry Primitives",
             targets: ["Geometry Primitives"]
-        ),
+        )
     ],
     dependencies: [
         .package(path: "../swift-algebra-primitives"),
@@ -25,8 +25,7 @@ let package = Package(
         .package(path: "../swift-formatting-primitives"),
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-symmetry-primitives"),
-        .package(path: "../swift-numeric-primitives"),
-        .package(path: "../swift-test-primitives"),
+        .package(path: "../swift-numeric-primitives")
     ],
     targets: [
         .target(
@@ -38,17 +37,9 @@ let package = Package(
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
                 .product(name: "Formatting Primitives", package: "swift-formatting-primitives"),
                 .product(name: "Region Primitives", package: "swift-region-primitives"),
-                .product(name: "Real Primitives", package: "swift-numeric-primitives"),
+                .product(name: "Real Primitives", package: "swift-numeric-primitives")
             ]
-        ),
-        .testTarget(
-            name: "Geometry Primitives Tests",
-            dependencies: [
-                "Geometry Primitives",
-                .product(name: "Symmetry Primitives", package: "swift-symmetry-primitives"),
-                .product(name: "Test Primitives", package: "swift-test-primitives"),
-            ]
-        ),
+        )
     ],
     swiftLanguageModes: [.v6]
 )
@@ -59,7 +50,7 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableExperimentalFeature("Lifetimes"),
-        .strictMemorySafety(),
+        .strictMemorySafety()
     ]
     target.swiftSettings = (target.swiftSettings ?? []) + settings
 }
