@@ -2,7 +2,7 @@
 // A circular arc defined by center, radius, and angle range.
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives

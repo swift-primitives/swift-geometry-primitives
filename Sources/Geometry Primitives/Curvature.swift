@@ -1,7 +1,7 @@
 // Curvature.swift
 // Curve bending direction.
 
-public import Algebra_Primitives
+public import Algebra_Aggregate_Primitives
 
 /// Direction a curve bends: convex or concave.
 ///

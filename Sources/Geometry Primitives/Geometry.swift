@@ -39,7 +39,7 @@
 // ```
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 import Dimension_Primitives
 

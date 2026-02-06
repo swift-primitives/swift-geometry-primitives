@@ -2,7 +2,7 @@
 // An ellipse defined by center, semi-axes, and rotation.
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives

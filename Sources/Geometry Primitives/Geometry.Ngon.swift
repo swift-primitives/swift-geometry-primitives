@@ -2,7 +2,7 @@
 // An N-sided polygon with exactly N vertices (compile-time enforced).
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives

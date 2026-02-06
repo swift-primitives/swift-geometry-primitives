@@ -18,7 +18,6 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "../swift-algebra-aggregate-primitives"),
         .package(path: "../swift-algebra-linear-primitives"),
         .package(path: "../swift-affine-primitives"),
         .package(path: "../swift-dimension-primitives"),
@@ -31,7 +30,6 @@ let package = Package(
         .target(
             name: "Geometry Primitives",
             dependencies: [
-                .product(name: "Algebra Aggregate Primitives", package: "swift-algebra-aggregate-primitives"),
                 .product(name: "Algebra Linear Primitives", package: "swift-algebra-linear-primitives"),
                 .product(name: "Affine Primitives", package: "swift-affine-primitives"),
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),

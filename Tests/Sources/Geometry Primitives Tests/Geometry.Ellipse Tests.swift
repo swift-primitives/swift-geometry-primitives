@@ -5,7 +5,7 @@ import Dimension_Primitives
 import Testing
 
 @testable import Affine_Primitives
-@testable import Algebra_Primitives
+@testable import Algebra_Aggregate_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
 

@@ -2,7 +2,7 @@
 // An infinite line and its bounded segment in 2D space.
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 
 extension Geometry {

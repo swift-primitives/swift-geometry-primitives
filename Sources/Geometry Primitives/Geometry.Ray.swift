@@ -2,7 +2,7 @@
 // A half-line (ray) extending from an origin in a direction.
 
 public import Affine_Primitives
-import Algebra_Primitives
+import Algebra_Aggregate_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 

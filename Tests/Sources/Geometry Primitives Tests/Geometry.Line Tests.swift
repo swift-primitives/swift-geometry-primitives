@@ -5,7 +5,7 @@ import Affine_Primitives
 import Algebra_Linear_Primitives
 import Testing
 
-@testable import Algebra_Primitives
+@testable import Algebra_Aggregate_Primitives
 @testable import Geometry_Primitives
 
 // MARK: - Test Helpers
