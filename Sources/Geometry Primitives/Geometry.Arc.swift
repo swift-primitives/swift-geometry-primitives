@@ -1,8 +1,8 @@
 // Arc.swift
 // A circular arc defined by center, radius, and angle range.
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+import Affine_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
@@ -280,11 +280,11 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
             maxY = max(maxY, cy + r)
         }
         // Left (180°)
-        if containsAngle(Radian(Scalar.pi)) {
+        if containsAngle(Radian(__unchecked: (), Scalar.pi)) {
             minX = min(minX, cx - r)
         }
         // Bottom (270°)
-        if containsAngle(Radian(Scalar.pi * 1.5)) {
+        if containsAngle(Radian(__unchecked: (), Scalar.pi * 1.5)) {
             minY = min(minY, cy - r)
         }
 
@@ -325,7 +325,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
         let normStart = startAngle.normalized
         let normEnd = endAngle.normalized
 
-        if sweep >= 0 {
+        if sweep.rawValue >= 0 {
             if normStart <= normEnd {
                 return normAngle >= normStart && normAngle <= normEnd
             } else {
@@ -372,7 +372,7 @@ extension Array {
         var currentAngle = arc.startAngle
 
         for _ in 0..<segmentCount {
-            let nextAngle: Radian<Scalar> = currentAngle + Radian(segmentAngle)
+            let nextAngle: Radian<Scalar> = currentAngle + Radian(__unchecked: (), segmentAngle)
 
             // Create Bezier for this segment
             let bezier = Self.arcSegmentToBezier(
@@ -405,7 +405,7 @@ extension Array {
         let halfSweepRaw = sweepRaw / 2
 
         // Control point distance factor: k = (4/3) * tan(θ/2)
-        let halfAngle = Radian<Scalar>(halfSweepRaw / 2)
+        let halfAngle = Radian<Scalar>(__unchecked: (), halfSweepRaw / 2)
         let k = Scalar(4.0 / 3.0) * halfAngle.tan.value
 
         // Extract raw values for arithmetic
@@ -494,28 +494,28 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 extension Geometry.Arc {
     /// Create an arc by transforming the coordinates of another arc
     @inlinable
-    public init<U>(
+    public init<U, E: Error>(
         _ other: borrowing Geometry<U, Space>.Arc,
-        _ transform: (U) throws -> Scalar
-    ) rethrows {
+        _ transform: (U) throws(E) -> Scalar
+    ) throws(E) {
         self.init(
-            center: try Affine<Scalar, Space>.Point<2>(other.center, transform),
+            center: try Affine.Continuous<Scalar, Space>.Point<2>(other.center, transform),
             radius: try other.radius.map(transform),
-            startAngle: try Radian(transform(other.startAngle.rawValue)),
-            endAngle: try Radian(transform(other.endAngle.rawValue))
+            startAngle: Radian(__unchecked: (), try transform(other.startAngle.rawValue)),
+            endAngle: Radian(__unchecked: (), try transform(other.endAngle.rawValue))
         )
     }
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Arc {
+    public func map<Result, E: Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Arc {
         .init(
             center: try center.map(transform),
             radius: try radius.map(transform),
-            startAngle: try Radian(transform(startAngle.rawValue)),
-            endAngle: try Radian(transform(endAngle.rawValue))
+            startAngle: Radian(__unchecked: (), try transform(startAngle.rawValue)),
+            endAngle: Radian(__unchecked: (), try transform(endAngle.rawValue))
         )
     }
 }

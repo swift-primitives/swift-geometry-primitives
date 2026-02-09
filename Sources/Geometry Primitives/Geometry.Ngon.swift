@@ -1,8 +1,7 @@
 // Ngon.swift
 // An N-sided polygon with exactly N vertices (compile-time enforced).
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
@@ -492,11 +491,15 @@ extension Geometry.Ngon where Scalar == Double {
         sideLength: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let piOverNValue: Scalar = Scalar.pi / Scalar(N)
+        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
         let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
-            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let twoPi: Scalar = Scalar(2) * Scalar.pi
+            let fraction: Scalar = Scalar(i) / Scalar(N)
+            let angleValue: Scalar = twoPi * fraction
+            let angle = Radian<Scalar>(__unchecked: (), angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -512,7 +515,10 @@ extension Geometry.Ngon where Scalar == Double {
     ) -> Self {
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
-            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let twoPi: Scalar = Scalar(2) * Scalar.pi
+            let fraction: Scalar = Scalar(i) / Scalar(N)
+            let angleValue: Scalar = twoPi * fraction
+            let angle = Radian<Scalar>(__unchecked: (), angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -526,7 +532,8 @@ extension Geometry.Ngon where Scalar == Double {
         inradius: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let piOverNValue: Scalar = Scalar.pi / Scalar(N)
+        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
         let circumradius = inradius / piOverN.cos.value
         return regular(circumradius: circumradius, at: center)
     }
@@ -541,11 +548,15 @@ extension Geometry.Ngon where Scalar == Float {
         sideLength: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let piOverNValue: Scalar = Scalar.pi / Scalar(N)
+        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
         let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
-            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let twoPi: Scalar = Scalar(2) * Scalar.pi
+            let fraction: Scalar = Scalar(i) / Scalar(N)
+            let angleValue: Scalar = twoPi * fraction
+            let angle = Radian<Scalar>(__unchecked: (), angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -561,7 +572,10 @@ extension Geometry.Ngon where Scalar == Float {
     ) -> Self {
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
-            let angle = Radian<Scalar>(Scalar(2) * Scalar.pi * Scalar(i) / Scalar(N))
+            let twoPi: Scalar = Scalar(2) * Scalar.pi
+            let fraction: Scalar = Scalar(i) / Scalar(N)
+            let angleValue: Scalar = twoPi * fraction
+            let angle = Radian<Scalar>(__unchecked: (), angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -575,7 +589,8 @@ extension Geometry.Ngon where Scalar == Float {
         inradius: Scalar,
         at center: Geometry.Point<2> = .zero
     ) -> Self {
-        let piOverN = Radian<Scalar>(Scalar.pi / Scalar(N))
+        let piOverNValue: Scalar = Scalar.pi / Scalar(N)
+        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
         let circumradius = inradius / piOverN.cos.value
         return regular(circumradius: circumradius, at: center)
     }

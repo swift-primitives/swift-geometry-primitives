@@ -1,8 +1,8 @@
 // Line.swift
 // An infinite line and its bounded segment in 2D space.
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+import Affine_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 
 extension Geometry {
@@ -251,7 +251,7 @@ extension Geometry.Line.Segment where Scalar: AdditiveArithmetic {
 
 // MARK: - Point Midpoint Initializer
 
-extension Affine.Point where N == 2, Scalar: FloatingPoint {
+extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
     /// Create a point at the midpoint of a line segment
     @inlinable
     public init(midpointOf segment: Geometry<Scalar, Space>.Line.Segment) {

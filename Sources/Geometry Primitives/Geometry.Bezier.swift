@@ -1,8 +1,7 @@
 // Bezier.swift
 // Bezier curves of arbitrary degree.
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
@@ -130,7 +129,7 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     public func tangent(at t: Scale<1, Scalar>) -> Geometry.Vector<2>? {
         guard let d = derivative(at: t) else { return nil }
         let normalized = Linear<Scalar, Space>.Vector.normalized(d)
-        guard normalized.length > 0 else { return nil }
+        guard normalized.length.rawValue > 0 else { return nil }
         return normalized
     }
 

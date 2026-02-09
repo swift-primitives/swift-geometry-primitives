@@ -1,7 +1,7 @@
 // Geometry.Orthotope.swift
 // N-dimensional orthotope (axis-aligned box with independent side lengths).
 
-public import Affine_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 
@@ -314,7 +314,7 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
     /// Check if the rectangle has zero or negative area.
     @inlinable
     public var isEmpty: Bool {
-        halfExtents.width <= 0 || halfExtents.height <= 0
+        halfExtents.width.rawValue <= 0 || halfExtents.height.rawValue <= 0
     }
 
     /// Check if the rectangle contains a point.

@@ -1,8 +1,7 @@
 // Ray.swift
 // A half-line (ray) extending from an origin in a direction.
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 
@@ -72,7 +71,7 @@ extension Geometry.Ray where Scalar: FloatingPoint {
     @inlinable
     public var unitDirection: Geometry.Vector<2>? {
         let normalized = Linear<Scalar, Space>.Vector.normalized(direction)
-        guard normalized.length > 0 else { return nil }
+        guard normalized.length.rawValue > 0 else { return nil }
         return normalized
     }
 
@@ -248,7 +247,7 @@ extension Geometry.Ray where Scalar: FloatingPoint {
             let vx = point.x - origin.x
             let vy = point.y - origin.y
             let dot = direction.dx * vx + direction.dy * vy
-            return dot >= 0
+            return dot.rawValue >= 0
         }
     }
 
@@ -365,10 +364,10 @@ extension Geometry where Scalar: FloatingPoint {
         @inlinable
         public var unitVector: Geometry.Vector<2> {
             switch self {
-            case .right: return Geometry.Vector(dx: 1, dy: 0)
-            case .up: return Geometry.Vector(dx: 0, dy: 1)
-            case .left: return Geometry.Vector(dx: -1, dy: 0)
-            case .down: return Geometry.Vector(dx: 0, dy: -1)
+            case .right: return Geometry.Vector(dx: .init(__unchecked: (), 1), dy: .init(__unchecked: (), 0))
+            case .up: return Geometry.Vector(dx: .init(__unchecked: (), 0), dy: .init(__unchecked: (), 1))
+            case .left: return Geometry.Vector(dx: .init(__unchecked: (), -1), dy: .init(__unchecked: (), 0))
+            case .down: return Geometry.Vector(dx: .init(__unchecked: (), 0), dy: .init(__unchecked: (), -1))
             }
         }
     }

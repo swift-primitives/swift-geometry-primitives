@@ -1,7 +1,8 @@
 // Geometry.Ball.swift
 // N-dimensional ball (hypersphere) defined by center and radius.
 
-public import Affine_Primitives
+import Affine_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
@@ -200,14 +201,14 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint & Numeric.Tran
         let r = radius.rawValue
         guard len > 0 else {
             return Geometry.Point(
-                x: Affine<Scalar, Space>.X(center.x.rawValue + r),
+                x: Affine.Continuous<Scalar, Space>.X(center.x.rawValue + r),
                 y: center.y
             )
         }
         let scale = r / len
         return Geometry.Point(
-            x: Affine<Scalar, Space>.X(center.x.rawValue + vx * scale),
-            y: Affine<Scalar, Space>.Y(center.y.rawValue + vy * scale)
+            x: Affine.Continuous<Scalar, Space>.X(center.x.rawValue + vx * scale),
+            y: Affine.Continuous<Scalar, Space>.Y(center.y.rawValue + vy * scale)
         )
     }
 }
@@ -343,17 +344,17 @@ extension Geometry where Scalar: FloatingPoint {
         let py = cy + a * dirY
 
         if h == 0 {
-            return [Point(x: Affine<Scalar, Space>.X(px), y: Affine<Scalar, Space>.Y(py))]
+            return [Point(x: Affine.Continuous<Scalar, Space>.X(px), y: Affine.Continuous<Scalar, Space>.Y(py))]
         }
 
         return [
             Point(
-                x: Affine<Scalar, Space>.X(px + h * dirY),
-                y: Affine<Scalar, Space>.Y(py - h * dirX)
+                x: Affine.Continuous<Scalar, Space>.X(px + h * dirY),
+                y: Affine.Continuous<Scalar, Space>.Y(py - h * dirX)
             ),
             Point(
-                x: Affine<Scalar, Space>.X(px - h * dirY),
-                y: Affine<Scalar, Space>.Y(py + h * dirX)
+                x: Affine.Continuous<Scalar, Space>.X(px - h * dirY),
+                y: Affine.Continuous<Scalar, Space>.Y(py + h * dirX)
             ),
         ]
     }
@@ -383,8 +384,8 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         let cx = center.x.rawValue
         let cy = center.y.rawValue
         let newCenter = Geometry.Point(
-            x: Affine<Scalar, Space>.X(px + f * (cx - px)),
-            y: Affine<Scalar, Space>.Y(py + f * (cy - py))
+            x: Affine.Continuous<Scalar, Space>.X(px + f * (cx - px)),
+            y: Affine.Continuous<Scalar, Space>.Y(py + f * (cy - py))
         )
         return Self(center: newCenter, radius: factor * radius)
     }
@@ -395,9 +396,9 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
 extension Geometry.Ball {
     /// Transforms coordinates using the given closure.
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Ball<N> {
+    public func map<Result, E: Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Ball<N> {
         Geometry<Result, Space>.Ball(
             center: try center.map(transform),
             radius: try radius.map(transform)

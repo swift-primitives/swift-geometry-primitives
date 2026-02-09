@@ -1,8 +1,8 @@
 // Ellipse.swift
 // An ellipse defined by center, semi-axes, and rotation.
 
-public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+import Affine_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 public import Real_Primitives
@@ -81,7 +81,7 @@ extension Geometry.Ellipse where Scalar: AdditiveArithmetic {
             center: center,
             semiMajor: semiMajor,
             semiMinor: semiMinor,
-            rotation: Radian(Scalar.zero)
+            rotation: Radian(__unchecked: (), Scalar.zero)
         )
     }
 }
@@ -90,7 +90,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
     /// Create a circle as a special case of ellipse
     @inlinable
     public static func circle(center: Geometry.Point<2>, radius: Geometry.Radius) -> Self {
-        Self(center: center, semiMajor: radius, semiMinor: radius, rotation: Radian(0))
+        Self(center: center, semiMajor: radius, semiMinor: radius, rotation: Radian(__unchecked: (), 0))
     }
 }
 
@@ -381,8 +381,8 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
         let cy: Scalar = ellipse.center.y.rawValue
 
         return Point(
-            x: Affine<Scalar, Space>.X(cx + x * cosR - y * sinR),
-            y: Affine<Scalar, Space>.Y(cy + x * sinR + y * cosR)
+            x: Affine.Continuous<Scalar, Space>.X(cx + x * cosR - y * sinR),
+            y: Affine.Continuous<Scalar, Space>.Y(cy + x * sinR + y * cosR)
         )
     }
 }
@@ -392,28 +392,28 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
 extension Geometry.Ellipse {
     /// Create an ellipse by transforming the coordinates of another ellipse
     @inlinable
-    public init<U>(
+    public init<U, E: Error>(
         _ other: borrowing Geometry<U, Space>.Ellipse,
-        _ transform: (U) throws -> Scalar
-    ) rethrows {
+        _ transform: (U) throws(E) -> Scalar
+    ) throws(E) {
         self.init(
-            center: try Affine<Scalar, Space>.Point<2>(other.center, transform),
+            center: try Affine.Continuous<Scalar, Space>.Point<2>(other.center, transform),
             semiMajor: try other.semiMajor.map(transform),
             semiMinor: try other.semiMinor.map(transform),
-            rotation: Radian(try transform(other.rotation.rawValue))
+            rotation: Radian(__unchecked: (), try transform(other.rotation.rawValue))
         )
     }
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Ellipse {
+    public func map<Result, E: Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Ellipse {
         .init(
             center: try center.map(transform),
             semiMajor: try semiMajor.map(transform),
             semiMinor: try semiMinor.map(transform),
-            rotation: Radian(try transform(rotation.rawValue))
+            rotation: Radian(__unchecked: (), try transform(rotation.rawValue))
         )
     }
 }
@@ -679,8 +679,8 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
 
         // Check each potential extremum angle
         for baseAngle in [xExtremaAngle, xExtremaAngle + .pi, yExtremaAngle, yExtremaAngle + .pi] {
-            if containsAngle(Radian(baseAngle)) {
-                let pt = pointAtAngle(Radian(baseAngle))
+            if containsAngle(Radian(__unchecked: (), baseAngle)) {
+                let pt = pointAtAngle(Radian(__unchecked: (), baseAngle))
                 minX = min(minX, pt.x.rawValue)
                 maxX = max(maxX, pt.x.rawValue)
                 minY = min(minY, pt.y.rawValue)
@@ -758,7 +758,7 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
         guard abs(ellipseVal - 1) < tolerance else { return false }
 
         // Check if the angle is within the arc's range
-        let pointAngle = Radian(Scalar._atan2(localY / b, localX / a))
+        let pointAngle = Radian(__unchecked: (), Scalar._atan2(localY / b, localX / a))
         return containsAngle(pointAngle)
     }
 }
@@ -905,8 +905,8 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
             semiMajor: Geometry.Length(rxVal),
             semiMinor: Geometry.Length(ryVal),
             rotation: xAxisRotation,
-            startAngle: Radian(startAngleVal),
-            endAngle: Radian(endAngleVal)
+            startAngle: Radian(__unchecked: (), startAngleVal),
+            endAngle: Radian(__unchecked: (), endAngleVal)
         )
     }
 
@@ -960,7 +960,7 @@ extension Array {
         var currentAngle = arc.startAngle
 
         for _ in 0..<segmentCount {
-            let nextAngle: Radian<Scalar> = currentAngle + Radian(segmentAngle)
+            let nextAngle: Radian<Scalar> = currentAngle + Radian(__unchecked: (), segmentAngle)
 
             // Create Bezier for this segment
             let bezier = Self.ellipticalArcSegmentToBezier(
@@ -1119,32 +1119,32 @@ extension Geometry.Ellipse.Arc where Scalar: FloatingPoint {
 extension Geometry.Ellipse.Arc {
     /// Create an arc by transforming the coordinates of another arc.
     @inlinable
-    public init<U>(
+    public init<U, E: Error>(
         _ other: borrowing Geometry<U, Space>.Ellipse.Arc,
-        _ transform: (U) throws -> Scalar
-    ) rethrows {
+        _ transform: (U) throws(E) -> Scalar
+    ) throws(E) {
         self.init(
-            center: try Affine<Scalar, Space>.Point<2>(other.center, transform),
+            center: try Affine.Continuous<Scalar, Space>.Point<2>(other.center, transform),
             semiMajor: try other.semiMajor.map(transform),
             semiMinor: try other.semiMinor.map(transform),
-            rotation: Radian(try transform(other.rotation.rawValue)),
-            startAngle: Radian(try transform(other.startAngle.rawValue)),
-            endAngle: Radian(try transform(other.endAngle.rawValue))
+            rotation: Radian(__unchecked: (), try transform(other.rotation.rawValue)),
+            startAngle: Radian(__unchecked: (), try transform(other.startAngle.rawValue)),
+            endAngle: Radian(__unchecked: (), try transform(other.endAngle.rawValue))
         )
     }
 
     /// Transform coordinates using the given closure.
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Ellipse.Arc {
+    public func map<Result, E: Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Ellipse.Arc {
         .init(
             center: try center.map(transform),
             semiMajor: try semiMajor.map(transform),
             semiMinor: try semiMinor.map(transform),
-            rotation: Radian(try transform(rotation.rawValue)),
-            startAngle: Radian(try transform(startAngle.rawValue)),
-            endAngle: Radian(try transform(endAngle.rawValue))
+            rotation: Radian(__unchecked: (), try transform(rotation.rawValue)),
+            startAngle: Radian(__unchecked: (), try transform(startAngle.rawValue)),
+            endAngle: Radian(__unchecked: (), try transform(endAngle.rawValue))
         )
     }
 }

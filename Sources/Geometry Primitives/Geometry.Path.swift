@@ -1,7 +1,7 @@
 // Path.swift
 // A 2D path composed of line segments, Bezier curves, and arcs.
 
-public import Affine_Primitives
+public import Affine_Geometry_Primitives
 import Real_Primitives
 
 // MARK: - Path

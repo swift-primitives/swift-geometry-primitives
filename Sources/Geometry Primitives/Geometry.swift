@@ -39,7 +39,7 @@
 // ```
 
 public import Affine_Primitives
-import Algebra_Aggregate_Primitives
+public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 import Dimension_Primitives
 
@@ -57,10 +57,10 @@ extension Geometry {
 
 extension Geometry {
     /// See ``Affine/X``
-    public typealias X = Affine<Scalar, Space>.X
+    public typealias X = Affine.Continuous<Scalar, Space>.X
 
     /// See ``Affine/Y``
-    public typealias Y = Affine<Scalar, Space>.Y
+    public typealias Y = Affine.Continuous<Scalar, Space>.Y
 
     /// See ``Linear/Width``
     public typealias Width = Linear<Scalar, Space>.Width
@@ -108,13 +108,13 @@ extension Geometry {
     public typealias ArcLength = Linear<Scalar, Space>.Magnitude
 
     /// See ``Affine/Translation``
-    public typealias Translation = Affine<Scalar, Space>.Translation
+    public typealias Translation = Affine.Continuous<Scalar, Space>.Translation
 
     /// See ``Affine/Transform``
-    public typealias AffineTransform = Affine<Scalar, Space>.Transform
+    public typealias AffineTransform = Affine.Continuous<Scalar, Space>.Transform
 
     /// See ``Affine/Point``
-    public typealias Point<let N: Int> = Affine<Scalar, Space>.Point<N>
+    public typealias Point<let N: Int> = Affine.Continuous<Scalar, Space>.Point<N>
 
     /// See ``Linear/Vector``
     public typealias Vector<let N: Int> = Linear<Scalar, Space>.Vector<N>
@@ -164,14 +164,14 @@ extension Geometry.Magnitude: ExpressibleByIntegerLiteral
 where Scalar: ExpressibleByIntegerLiteral {
     @inlinable
     public init(integerLiteral value: Scalar.IntegerLiteralType) {
-        self.rawValue = Linear<Scalar, Space>.Magnitude(integerLiteral: value)
+        self.rawValue = .init(Scalar(integerLiteral: value))
     }
 }
 
 extension Geometry.Magnitude: ExpressibleByFloatLiteral where Scalar: ExpressibleByFloatLiteral {
     @inlinable
     public init(floatLiteral value: Scalar.FloatLiteralType) {
-        self.rawValue = Linear<Scalar, Space>.Magnitude(floatLiteral: value)
+        self.rawValue = .init(Scalar(floatLiteral: value))
     }
 }
 
