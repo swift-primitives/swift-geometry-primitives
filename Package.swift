@@ -15,7 +15,11 @@ let package = Package(
         .library(
             name: "Geometry Primitives",
             targets: ["Geometry Primitives"]
-        )
+        ),
+        .library(
+            name: "Geometry Primitives Test Support",
+            targets: ["Geometry Primitives Test Support"]
+        ),
     ],
     dependencies: [
         .package(path: "../swift-algebra-linear-primitives"),
@@ -39,7 +43,15 @@ let package = Package(
                 .product(name: "Region Primitives", package: "swift-region-primitives"),
                 .product(name: "Real Primitives", package: "swift-numeric-primitives")
             ]
-        )
+        ),
+        .target(
+            name: "Geometry Primitives Test Support",
+            dependencies: [
+                "Geometry Primitives",
+                .product(name: "Affine Primitives Test Support", package: "swift-affine-primitives"),
+            ],
+            path: "Tests/Support"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
