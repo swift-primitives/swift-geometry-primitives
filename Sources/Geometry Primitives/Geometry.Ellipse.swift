@@ -5,7 +5,7 @@ import Affine_Primitives
 public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import Real_Primitives
+import Real_Primitives
 
 extension Geometry {
     /// An ellipse in 2D space defined by center, semi-axes, and rotation.

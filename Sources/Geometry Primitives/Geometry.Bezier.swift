@@ -4,7 +4,7 @@
 public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import Real_Primitives
+import Real_Primitives
 
 extension Geometry {
     /// A Bezier curve defined by control points.

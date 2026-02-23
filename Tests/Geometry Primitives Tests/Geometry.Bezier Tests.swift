@@ -2,10 +2,10 @@
 // Tests for Geometry.Bezier type.
 
 import Dimension_Primitives
+import Geometry_Primitives_Test_Support
 import Testing
 
 @testable import Affine_Primitives
-@testable import Algebra_Aggregate_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
 

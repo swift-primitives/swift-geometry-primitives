@@ -2,10 +2,10 @@
 // Tests for Geometry.Ball type (N-dimensional ball/hypersphere).
 
 import Dimension_Primitives
+import Geometry_Primitives_Test_Support
 import Testing
 
 @testable import Affine_Primitives
-@testable import Algebra_Aggregate_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
 
@@ -361,7 +361,7 @@ struct `Geometry.Ball - Tangent Vectors` {
     @Test
     func `Tangent is perpendicular to radius`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let angle: Radian = .init(Double.pi / 3)
+        let angle: Radian = .init(__unchecked: (), Double.pi / 3)
         let point = circle.point(at: angle)
         let tangent = circle.tangent(at: angle)
         // Create a vector from center to point (which is the radius vector)

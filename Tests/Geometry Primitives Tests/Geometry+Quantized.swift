@@ -8,6 +8,7 @@
 
 import Dimension_Primitives
 import Geometry_Primitives
+import Geometry_Primitives_Test_Support
 import Testing
 
 // MARK: - Test Space

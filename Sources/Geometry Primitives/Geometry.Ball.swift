@@ -5,7 +5,7 @@ import Affine_Primitives
 public import Affine_Geometry_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
-public import Real_Primitives
+import Real_Primitives
 
 extension Geometry {
     /// N-dimensional ball (hypersphere) — all points within radius of center.
@@ -517,8 +517,15 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         let cx = v[2].x.rawValue
         let cy = v[2].y.rawValue
 
-        let centerX = (bc * ax + ca * bx + ab * cx) / perimeter
-        let centerY = (bc * ay + ca * by + ab * cy) / perimeter
+        let weightedX1 = bc * ax
+        let weightedX2 = ca * bx
+        let weightedX3 = ab * cx
+        let centerX = (weightedX1 + weightedX2 + weightedX3) / perimeter
+
+        let weightedY1 = bc * ay
+        let weightedY2 = ca * by
+        let weightedY3 = ab * cy
+        let centerY = (weightedY1 + weightedY2 + weightedY3) / perimeter
 
         // Inradius = Area / semi-perimeter
         let semiPerimeter = perimeter / 2

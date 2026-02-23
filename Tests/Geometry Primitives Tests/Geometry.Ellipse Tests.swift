@@ -2,10 +2,10 @@
 // Tests for Geometry.Ellipse type.
 
 import Dimension_Primitives
+import Geometry_Primitives_Test_Support
 import Testing
 
 @testable import Affine_Primitives
-@testable import Algebra_Aggregate_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
 
@@ -56,7 +56,7 @@ private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bo
 
 private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e-10) -> Bool {
     let diff = a - b
-    return diff > Radian(-tol) && diff < Radian(tol)
+    return diff > Radian(__unchecked: (), -tol) && diff < Radian(__unchecked: (), tol)
 }
 
 // MARK: - Initialization Tests

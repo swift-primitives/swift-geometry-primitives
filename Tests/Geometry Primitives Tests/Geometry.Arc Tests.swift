@@ -2,13 +2,13 @@
 // Tests for Geometry.Arc type.
 
 import Dimension_Primitives
+import Geometry_Primitives_Test_Support
+import Real_Primitives
 import Testing
 
 @testable import Affine_Primitives
-@testable import Algebra_Aggregate_Primitives
 @testable import Algebra_Linear_Primitives
 @testable import Geometry_Primitives
-import Real_Primitives
 
 // MARK: - Test Helpers
 
@@ -53,7 +53,7 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
 
 private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e-10) -> Bool {
     let diff = a - b
-    return diff > Radian(-tol) && diff < Radian(tol)
+    return diff > Radian(__unchecked: (), -tol) && diff < Radian(__unchecked: (), tol)
 }
 
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {
@@ -83,7 +83,7 @@ struct `Geometry.Arc - Initialization` {
     func `Full circle arc`() {
         let arc: Geometry<Double, Void>.Arc = .fullCircle(center: .zero, radius: 5)
         #expect(arc.startAngle == .zero)
-        #expect(isApprox(arc.endAngle, Radian<Double>(2 * Double.pi)))
+        #expect(isApprox(arc.endAngle, .twoPi))
         #expect(arc.isFullCircle)
     }
 

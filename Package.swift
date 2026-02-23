@@ -52,6 +52,13 @@ let package = Package(
             ],
             path: "Tests/Support"
         ),
+        .testTarget(
+            name: "Geometry Primitives Tests",
+            dependencies: [
+                "Geometry Primitives",
+                "Geometry Primitives Test Support",
+            ]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
