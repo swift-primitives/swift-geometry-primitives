@@ -550,9 +550,9 @@ extension Geometry.Orthotope where N == 3, Scalar: FloatingPoint {
 extension Geometry.Orthotope {
     /// Transforms coordinates using the given closure.
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Orthotope<N> {
+    public func map<Result, E: Swift.Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Orthotope<N> {
         Geometry<Result, Space>.Orthotope(
             center: try center.map(transform),
             halfExtents: try halfExtents.map(transform)

@@ -242,9 +242,9 @@ extension Geometry.Hypercube where N == 2, Scalar: FloatingPoint {
 extension Geometry.Hypercube {
     /// Transforms coordinates using the given closure.
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.Hypercube<N> {
+    public func map<Result, E: Swift.Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.Hypercube<N> {
         Geometry<Result, Space>.Hypercube(
             center: try center.map(transform),
             halfSide: try halfSide.map(transform)

@@ -123,10 +123,10 @@ extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
 extension Geometry.EdgeInsets {
     /// Creates edge insets by transforming each value of another edge insets.
     @inlinable
-    public init<U>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.EdgeInsets,
-        _ transform: (U) throws -> Scalar
-    ) rethrows {
+        _ transform: (U) throws(E) -> Scalar
+    ) throws(E) {
         self.init(
             top: try other.top.map(transform),
             leading: try other.leading.map(transform),
@@ -137,9 +137,9 @@ extension Geometry.EdgeInsets {
 
     /// Transforms each inset value using the given closure.
     @inlinable
-    public func map<Result>(
-        _ transform: (Scalar) throws -> Result
-    ) rethrows -> Geometry<Result, Space>.EdgeInsets {
+    public func map<Result, E: Swift.Error>(
+        _ transform: (Scalar) throws(E) -> Result
+    ) throws(E) -> Geometry<Result, Space>.EdgeInsets {
         Geometry<Result, Space>.EdgeInsets(
             top: try top.map(transform),
             leading: try leading.map(transform),

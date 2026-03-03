@@ -29,7 +29,7 @@ let package = Package(
         .package(path: "../swift-formatting-primitives"),
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-symmetry-primitives"),
-        .package(path: "../swift-numeric-primitives")
+        .package(path: "../swift-numeric-primitives"),
     ],
     targets: [
         .target(
@@ -41,7 +41,7 @@ let package = Package(
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
                 .product(name: "Formatting Primitives", package: "swift-formatting-primitives"),
                 .product(name: "Region Primitives", package: "swift-region-primitives"),
-                .product(name: "Real Primitives", package: "swift-numeric-primitives")
+                .product(name: "Real Primitives", package: "swift-numeric-primitives"),
             ]
         ),
         .target(
