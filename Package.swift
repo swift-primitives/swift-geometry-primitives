@@ -28,7 +28,6 @@ let package = Package(
         .package(path: "../swift-dimension-primitives"),
         .package(path: "../swift-formatting-primitives"),
         .package(path: "../swift-region-primitives"),
-        .package(path: "../swift-symmetry-primitives"),
         .package(path: "../swift-numeric-primitives"),
     ],
     targets: [

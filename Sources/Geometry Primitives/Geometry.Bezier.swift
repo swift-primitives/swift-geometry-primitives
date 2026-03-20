@@ -39,6 +39,38 @@ extension Geometry {
 }
 
 extension Geometry.Bezier: Sendable where Scalar: Sendable {}
+
+// MARK: - Segment
+
+extension Geometry.Bezier {
+    /// Cubic Bézier curve segment.
+    public struct Segment {
+        /// Start point.
+        public let start: Geometry.Point<2>
+        /// First control point.
+        public let control1: Geometry.Point<2>
+        /// Second control point.
+        public let control2: Geometry.Point<2>
+        /// End point.
+        public let end: Geometry.Point<2>
+
+        /// Creates a Bézier segment with given control points.
+        @inlinable
+        public init(
+            start: Geometry.Point<2>,
+            control1: Geometry.Point<2>,
+            control2: Geometry.Point<2>,
+            end: Geometry.Point<2>
+        ) {
+            self.start = start
+            self.control1 = control1
+            self.control2 = control2
+            self.end = end
+        }
+    }
+}
+
+extension Geometry.Bezier.Segment: Sendable where Scalar: Sendable {}
 extension Geometry.Bezier: Equatable where Scalar: Equatable {}
 extension Geometry.Bezier: Hashable where Scalar: Hashable {}
 

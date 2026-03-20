@@ -58,7 +58,7 @@ extension Geometry.Ray where Scalar: AdditiveArithmetic {
 extension Geometry.Ray where Scalar: FloatingPoint {
     /// Create a ray from an origin point in a cardinal direction
     @inlinable
-    public init(origin: Geometry.Point<2>, in cardinalDirection: Geometry.CardinalDirection) {
+    public init(origin: Geometry.Point<2>, in cardinalDirection: Geometry.Direction) {
         self.origin = origin
         self.direction = cardinalDirection.unitVector
     }
@@ -357,7 +357,7 @@ extension Geometry.Ray {
 
 extension Geometry where Scalar: FloatingPoint {
     /// Cardinal directions for creating rays
-    public enum CardinalDirection {
+    public enum Direction {
         case right, up, left, down
 
         /// The unit vector for this direction

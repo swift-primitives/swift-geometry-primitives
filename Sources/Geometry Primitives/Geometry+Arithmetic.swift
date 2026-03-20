@@ -117,7 +117,7 @@ extension Geometry.Depth: Comparable where Scalar: Comparable {
     }
 }
 
-extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
+extension Geometry.Insets where Scalar: AdditiveArithmetic {
     /// Adds two edge insets component-wise.
     @inlinable
     @_disfavoredOverload
@@ -145,7 +145,7 @@ extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
 
 // MARK: - Negation
 
-extension Geometry.EdgeInsets where Scalar: SignedNumeric {
+extension Geometry.Insets where Scalar: SignedNumeric {
     /// Negates all insets.
     @inlinable
     @_disfavoredOverload

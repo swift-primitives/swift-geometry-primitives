@@ -111,7 +111,7 @@ extension Geometry {
     public typealias Translation = Affine.Continuous<Scalar, Space>.Translation
 
     /// See ``Affine/Transform``
-    public typealias AffineTransform = Affine.Continuous<Scalar, Space>.Transform
+    public typealias Transform = Affine.Continuous<Scalar, Space>.Transform
 
     /// See ``Affine/Point``
     public typealias Point<let N: Int> = Affine.Continuous<Scalar, Space>.Point<N>

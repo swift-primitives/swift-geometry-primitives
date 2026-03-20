@@ -447,7 +447,7 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
 
     /// Return a rectangle inset by edge insets.
     @inlinable
-    public func inset(by insets: Geometry.EdgeInsets) -> Self {
+    public func inset(by insets: Geometry.Insets) -> Self {
         Self(
             llx: llx + insets.leading,
             lly: lly + insets.bottom,

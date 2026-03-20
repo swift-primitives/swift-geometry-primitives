@@ -409,42 +409,12 @@ extension Geometry.Ball {
 // MARK: - 2D Bézier Approximation
 
 extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint {
-    /// Cubic Bézier curve segment.
-    public struct BezierSegment {
-        /// Start point.
-        public let start: Geometry.Point<2>
-        /// First control point.
-        public let control1: Geometry.Point<2>
-        /// Second control point.
-        public let control2: Geometry.Point<2>
-        /// End point.
-        public let end: Geometry.Point<2>
-
-        /// Creates a Bézier segment with given control points.
-        @inlinable
-        public init(
-            start: Geometry.Point<2>,
-            control1: Geometry.Point<2>,
-            control2: Geometry.Point<2>,
-            end: Geometry.Point<2>
-        ) {
-            self.start = start
-            self.control1 = control1
-            self.control2 = control2
-            self.end = end
-        }
-    }
-}
-
-extension Geometry.Ball.BezierSegment: Sendable where Scalar: Sendable {}
-
-extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint {
     /// Four cubic Bézier curves approximating this circle.
     ///
     /// Uses standard constant k = 0.5522847498 for excellent circle approximation.
     /// Curves start at 3 o'clock and proceed counter-clockwise through quadrants.
     @inlinable
-    public var bezierCurves: [BezierSegment] {
+    public var bezierCurves: [Geometry.Bezier.Segment] {
         // k is scaled radius for Bézier control point distance
         let k: Geometry.Radius = radius * Scale(0.5522847498)
 
@@ -455,25 +425,25 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint {
         let top = Geometry.Point<2>(x: center.x, y: center.y + radius)
 
         return [
-            BezierSegment(
+            Geometry.Bezier.Segment(
                 start: right,
                 control1: Geometry.Point<2>(x: center.x + radius, y: center.y - k),
                 control2: Geometry.Point<2>(x: center.x + k, y: center.y - radius),
                 end: bottom
             ),
-            BezierSegment(
+            Geometry.Bezier.Segment(
                 start: bottom,
                 control1: Geometry.Point<2>(x: center.x - k, y: center.y - radius),
                 control2: Geometry.Point<2>(x: center.x - radius, y: center.y - k),
                 end: left
             ),
-            BezierSegment(
+            Geometry.Bezier.Segment(
                 start: left,
                 control1: Geometry.Point<2>(x: center.x - radius, y: center.y + k),
                 control2: Geometry.Point<2>(x: center.x - k, y: center.y + radius),
                 end: top
             ),
-            BezierSegment(
+            Geometry.Bezier.Segment(
                 start: top,
                 control1: Geometry.Point<2>(x: center.x + k, y: center.y + radius),
                 control2: Geometry.Point<2>(x: center.x + radius, y: center.y + k),

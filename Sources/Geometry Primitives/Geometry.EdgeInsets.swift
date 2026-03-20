@@ -1,4 +1,4 @@
-// Geometry.EdgeInsets.swift
+// Geometry.Insets.swift
 // Insets from the edges of a rectangle.
 
 extension Geometry {
@@ -10,12 +10,12 @@ extension Geometry {
     /// ## Example
     ///
     /// ```swift
-    /// let margins = Geometry<Double, Void>.EdgeInsets(
+    /// let margins = Geometry<Double, Void>.Insets(
     ///     top: 72, leading: 72, bottom: 72, trailing: 72
     /// )
     /// let padded = rect.inset(by: margins)
     /// ```
-    public struct EdgeInsets {
+    public struct Insets {
         /// Top inset (vertical displacement from top edge).
         public var top: Height
 
@@ -50,14 +50,14 @@ extension Geometry {
     }
 }
 
-extension Geometry.EdgeInsets: Sendable where Scalar: Sendable {}
-extension Geometry.EdgeInsets: Equatable where Scalar: Equatable {}
-extension Geometry.EdgeInsets: Hashable where Scalar: Hashable {}
+extension Geometry.Insets: Sendable where Scalar: Sendable {}
+extension Geometry.Insets: Equatable where Scalar: Equatable {}
+extension Geometry.Insets: Hashable where Scalar: Hashable {}
 
 // MARK: - Codable
 
 #if !hasFeature(Embedded)
-    extension Geometry.EdgeInsets: Codable where Scalar: Codable {
+    extension Geometry.Insets: Codable where Scalar: Codable {
         private enum CodingKeys: String, CodingKey {
             case top, leading, bottom, trailing
         }
@@ -82,7 +82,7 @@ extension Geometry.EdgeInsets: Hashable where Scalar: Hashable {}
 
 // MARK: - Convenience Initializers
 
-extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
+extension Geometry.Insets where Scalar: AdditiveArithmetic {
     /// Creates edge insets with the same value on all edges.
     ///
     /// - Parameter all: The inset value for all edges
@@ -110,7 +110,7 @@ extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
 
 // MARK: - AdditiveArithmetic
 
-extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
+extension Geometry.Insets where Scalar: AdditiveArithmetic {
     /// Zero insets.
     @inlinable
     public static var zero: Self {
@@ -120,11 +120,11 @@ extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
 
 // MARK: - Functorial Map
 
-extension Geometry.EdgeInsets {
+extension Geometry.Insets {
     /// Creates edge insets by transforming each value of another edge insets.
     @inlinable
     public init<U, E: Swift.Error>(
-        _ other: borrowing Geometry<U, Space>.EdgeInsets,
+        _ other: borrowing Geometry<U, Space>.Insets,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
         self.init(
@@ -139,8 +139,8 @@ extension Geometry.EdgeInsets {
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
-    ) throws(E) -> Geometry<Result, Space>.EdgeInsets {
-        Geometry<Result, Space>.EdgeInsets(
+    ) throws(E) -> Geometry<Result, Space>.Insets {
+        Geometry<Result, Space>.Insets(
             top: try top.map(transform),
             leading: try leading.map(transform),
             bottom: try bottom.map(transform),
@@ -151,7 +151,7 @@ extension Geometry.EdgeInsets {
 
 // MARK: - Monoid
 
-extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
+extension Geometry.Insets where Scalar: AdditiveArithmetic {
     /// Combines two edge insets by adding their values.
     @inlinable
     public static func combined(_ lhs: borrowing Self, _ rhs: borrowing Self) -> Self {
@@ -166,7 +166,7 @@ extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
 
 // MARK: - Computed Properties
 
-extension Geometry.EdgeInsets where Scalar: AdditiveArithmetic {
+extension Geometry.Insets where Scalar: AdditiveArithmetic {
     /// Total horizontal inset (leading + trailing).
     @inlinable
     public var horizontal: Geometry.Width { leading + trailing }

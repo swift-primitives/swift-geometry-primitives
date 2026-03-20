@@ -374,13 +374,13 @@ struct DegreeTests {
     }
 }
 
-// MARK: - AffineTransform Tests
+// MARK: - Transform Tests
 
 @Suite
-struct AffineTransformTests {
+struct TransformTests {
     @Test
     func `Identity transform`() {
-        let transform: Geometry<Double, Void>.AffineTransform = .identity
+        let transform: Geometry<Double, Void>.Transform = .identity
         let point: Geometry<Double, Void>.Point<2> = .init(x: 10, y: 20)
         let result = transform.apply(to: point)
 
@@ -390,7 +390,7 @@ struct AffineTransformTests {
 
     @Test
     func `Translation transform`() {
-        let transform: Geometry<Double, Void>.AffineTransform = .translation(dx: 100, dy: 50)
+        let transform: Geometry<Double, Void>.Transform = .translation(dx: 100, dy: 50)
         let point: Geometry<Double, Void>.Point<2> = .init(x: 10, y: 20)
         let result = transform.apply(to: point)
 
@@ -400,7 +400,7 @@ struct AffineTransformTests {
 
     @Test
     func `Scale transform`() {
-        let transform: Geometry<Double, Void>.AffineTransform = .scale(2)
+        let transform: Geometry<Double, Void>.Transform = .scale(2)
         let point: Geometry<Double, Void>.Point<2> = .init(x: 10, y: 20)
         let result = transform.apply(to: point)
 
@@ -411,7 +411,7 @@ struct AffineTransformTests {
     @Test
     func `Rotation transform`() {
         // 90 degree rotation
-        let transform: Geometry<Double, Void>.AffineTransform = .rotation(.pi.half)
+        let transform: Geometry<Double, Void>.Transform = .rotation(.pi.half)
         let point: Geometry<Double, Void>.Point<2> = .init(x: 1, y: 0)
         let result = transform.apply(to: point)
 
@@ -421,8 +421,8 @@ struct AffineTransformTests {
 
     @Test
     func `Transform concatenation`() {
-        let translate: Geometry<Double, Void>.AffineTransform = .translation(dx: 10, dy: 0)
-        let scale: Geometry<Double, Void>.AffineTransform = .scale(2)
+        let translate: Geometry<Double, Void>.Transform = .translation(dx: 10, dy: 0)
+        let scale: Geometry<Double, Void>.Transform = .scale(2)
 
         // Scale first, then translate
         let combined = translate.concatenating(scale)
@@ -437,7 +437,7 @@ struct AffineTransformTests {
 
     @Test
     func `Transform inversion`() {
-        let transform: Geometry<Double, Void>.AffineTransform = .translation(dx: 100, dy: 50)
+        let transform: Geometry<Double, Void>.Transform = .translation(dx: 100, dy: 50)
         let inverse = transform.inverted!
 
         let point: Geometry<Double, Void>.Point<2> = .init(x: 110, y: 70)
@@ -576,13 +576,13 @@ struct LineTests {
     }
 }
 
-// MARK: - EdgeInsets Tests
+// MARK: - Insets Tests
 
 @Suite
-struct EdgeInsetsTests {
+struct InsetsTests {
     @Test
     func `Creates edge insets`() {
-        let insets: Geometry<TestUnit, Void>.EdgeInsets = .init(
+        let insets: Geometry<TestUnit, Void>.Insets = .init(
             top: 10,
             leading: 20,
             bottom: 30,
@@ -596,7 +596,7 @@ struct EdgeInsetsTests {
 
     @Test
     func `Creates uniform edge insets`() {
-        let insets: Geometry<TestUnit, Void>.EdgeInsets = .init(all: 10)
+        let insets: Geometry<TestUnit, Void>.Insets = .init(all: 10)
         #expect(insets.top == 10)
         #expect(insets.leading == 10)
         #expect(insets.bottom == 10)
@@ -605,7 +605,7 @@ struct EdgeInsetsTests {
 
     @Test
     func `Zero edge insets`() {
-        let zero: Geometry<TestUnit, Void>.EdgeInsets = .zero
+        let zero: Geometry<TestUnit, Void>.Insets = .zero
         #expect(zero.top == 0)
         #expect(zero.leading == 0)
         #expect(zero.bottom == 0)
@@ -684,13 +684,13 @@ struct DimensionTests {
     }
 }
 
-// MARK: - AffineTransform Generic Tests
+// MARK: - Transform Generic Tests
 
 @Suite
-struct AffineTransformGenericTests {
+struct TransformGenericTests {
     @Test
-    func `Float AffineTransform`() {
-        let transform: Geometry<Float, Void>.AffineTransform = .identity
+    func `Float Transform`() {
+        let transform: Geometry<Float, Void>.Transform = .identity
         let point: Geometry<Float, Void>.Point<2> = .init(x: 10, y: 20)
         let result = transform.apply(to: point)
         let expectedX: GeoFloat.X = 10
@@ -701,7 +701,7 @@ struct AffineTransformGenericTests {
 
     @Test
     func `Float rotation`() {
-        let transform: Geometry<Float, Void>.AffineTransform = .rotation(.pi.half)
+        let transform: Geometry<Float, Void>.Transform = .rotation(.pi.half)
         let point: Geometry<Float, Void>.Point<2> = .init(x: 1, y: 0)
         let result = transform.apply(to: point)
         #expect(isApprox(result.x, GeoFloat.X(0)))
