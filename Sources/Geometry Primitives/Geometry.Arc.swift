@@ -89,7 +89,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
             center: center,
             radius: radius,
             startAngle: .zero,
-            endAngle: .twoPi
+            endAngle: .pi.two
         )
     }
 
@@ -104,7 +104,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
             center: center,
             radius: radius,
             startAngle: startAngle,
-            endAngle: startAngle + .halfPi
+            endAngle: startAngle + .pi.half
         )
     }
 }
@@ -129,7 +129,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
     /// Whether this arc represents a full circle or more
     @inlinable
     public var isFullCircle: Bool {
-        abs(sweep) >= Radian.twoPi
+        abs(sweep) >= Radian.pi.two
     }
 }
 
@@ -276,7 +276,7 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
             maxX = max(maxX, cx + r)
         }
         // Top (90°)
-        if containsAngle(Radian<Scalar>.halfPi) {
+        if containsAngle(Radian<Scalar>.pi.half) {
             maxY = max(maxY, cy + r)
         }
         // Left (180°)

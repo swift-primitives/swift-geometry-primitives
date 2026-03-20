@@ -295,7 +295,7 @@ struct `Geometry.Ball - Parametric Points` {
     @Test
     func `Point at angle π/2 (top)`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let point = circle.point(at: .halfPi)
+        let point = circle.point(at: .pi.half)
         #expect(isApprox(point.x, X(0)))
         #expect(isApprox(point.y, Y(5)))
     }
@@ -353,7 +353,7 @@ struct `Geometry.Ball - Tangent Vectors` {
     @Test
     func `Tangent at angle π/2 points left`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let tangent = circle.tangent(at: .halfPi)
+        let tangent = circle.tangent(at: .pi.half)
         #expect(isApprox(tangent.dx, Dx(-1)))
         #expect(isApprox(tangent.dy, Dy(0)))
     }

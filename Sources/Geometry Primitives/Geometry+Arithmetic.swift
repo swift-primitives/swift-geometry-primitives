@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  swift-standards
+//  Geometry+Arithmetic.swift
+//  swift-geometry-primitives
 //
 //  Created by Coen ten Thije Boonkkamp on 14/12/2025.
 //

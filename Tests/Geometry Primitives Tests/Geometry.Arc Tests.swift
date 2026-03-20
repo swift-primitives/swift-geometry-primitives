@@ -83,7 +83,7 @@ struct `Geometry.Arc - Initialization` {
     func `Full circle arc`() {
         let arc: Geometry<Double, Void>.Arc = .fullCircle(center: .zero, radius: 5)
         #expect(arc.startAngle == .zero)
-        #expect(isApprox(arc.endAngle, .twoPi))
+        #expect(isApprox(arc.endAngle, .pi.two))
         #expect(arc.isFullCircle)
     }
 
@@ -98,7 +98,7 @@ struct `Geometry.Arc - Initialization` {
     func `Quarter circle arc`() {
         let arc: Geometry<Double, Void>.Arc = .quarterCircle(center: .zero, radius: 5)
         #expect(arc.startAngle == .zero)
-        #expect(isApprox(arc.endAngle, .halfPi))
+        #expect(isApprox(arc.endAngle, .pi.half))
     }
 
     @Test
@@ -106,9 +106,9 @@ struct `Geometry.Arc - Initialization` {
         let arc: Geometry<Double, Void>.Arc = .quarterCircle(
             center: .zero,
             radius: 5,
-            startAngle: .halfPi
+            startAngle: .pi.half
         )
-        #expect(isApprox(arc.startAngle, .halfPi))
+        #expect(isApprox(arc.startAngle, .pi.half))
         #expect(isApprox(arc.endAngle, .pi))
     }
 }

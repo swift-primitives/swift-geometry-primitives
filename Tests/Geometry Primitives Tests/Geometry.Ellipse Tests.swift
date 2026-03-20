@@ -229,7 +229,7 @@ struct `Geometry.Ellipse - Static Functions` {
     @Test
     func `Geometry.point(of:at:) at angle π/2`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 10, semiMinor: 5)
-        let point = Geometry.point(of: ellipse, at: .halfPi)
+        let point = Geometry.point(of: ellipse, at: .pi.half)
         #expect(isApprox(point.x, X(0)))
         #expect(isApprox(point.y, Y(5)))
     }
@@ -275,7 +275,7 @@ struct `Geometry.Ellipse - Parametric Points` {
     @Test
     func `Point at parameter π/2`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 10, semiMinor: 5)
-        let point = ellipse.point(at: .halfPi)
+        let point = ellipse.point(at: .pi.half)
         #expect(isApprox(point.x, X(0)))
         #expect(isApprox(point.y, Y(5)))
     }
@@ -407,8 +407,8 @@ struct `Geometry.Ellipse - Transformations` {
     @Test
     func `Rotation`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 10, semiMinor: 5)
-        let rotated = ellipse.rotated(by: .halfPi)
-        #expect(isApprox(rotated.rotation, .halfPi))
+        let rotated = ellipse.rotated(by: .pi.half)
+        #expect(isApprox(rotated.rotation, .pi.half))
     }
 }
 

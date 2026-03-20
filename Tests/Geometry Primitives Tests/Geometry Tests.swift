@@ -411,7 +411,7 @@ struct AffineTransformTests {
     @Test
     func `Rotation transform`() {
         // 90 degree rotation
-        let transform: Geometry<Double, Void>.AffineTransform = .rotation(.halfPi)
+        let transform: Geometry<Double, Void>.AffineTransform = .rotation(.pi.half)
         let point: Geometry<Double, Void>.Point<2> = .init(x: 1, y: 0)
         let result = transform.apply(to: point)
 
@@ -701,7 +701,7 @@ struct AffineTransformGenericTests {
 
     @Test
     func `Float rotation`() {
-        let transform: Geometry<Float, Void>.AffineTransform = .rotation(.halfPi)
+        let transform: Geometry<Float, Void>.AffineTransform = .rotation(.pi.half)
         let point: Geometry<Float, Void>.Point<2> = .init(x: 1, y: 0)
         let result = transform.apply(to: point)
         #expect(isApprox(result.x, GeoFloat.X(0)))
@@ -737,7 +737,7 @@ struct LinearTransformTests {
 
     // @Test
     // func `Linear from Rotation`() {
-    //     let rotation = Rotation<2, Double>(angle: .halfPi)
+    //     let rotation = Rotation<2, Double>(angle: .pi.half)
     //     let linear: Matrix2x2 = rotation.linear()
     //     #expect(abs(linear.a) < 1e-10)
     //     #expect(abs(linear.b + 1) < 1e-10)
@@ -748,7 +748,7 @@ struct LinearTransformTests {
     @Test
     func `Linear concatenation`() {
         let scale = Matrix2x2.scale(2)
-        let rotation = Matrix2x2.rotation(.halfPi)
+        let rotation = Matrix2x2.rotation(.pi.half)
         let combined = rotation * scale
         // Scale first, then rotate
         #expect(abs(combined.a) < 1e-10)

@@ -507,7 +507,7 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
     /// Whether this arc represents a full ellipse or more
     @inlinable
     public var isFullEllipse: Bool {
-        abs(sweep) >= Radian.twoPi
+        abs(sweep) >= Radian.pi.two
     }
 }
 
