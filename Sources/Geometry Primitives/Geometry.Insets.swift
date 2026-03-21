@@ -7,6 +7,11 @@ extension Geometry {
     /// Uses `Height` for vertical insets (top, bottom) and `Width` for horizontal
     /// insets (leading, trailing), ensuring type safety in layout calculations.
     ///
+    /// - Note: Replacing this struct with a `Product<Height, Width, Height, Width>`
+    ///   typealias was investigated and refuted — Swift 6.2.4 does not unwrap pack
+    ///   types inside concrete extensions, blocking labeled accessors and Codable.
+    ///   See `swift-institute/Experiments/parameter-pack-concrete-extension/`.
+    ///
     /// ## Example
     ///
     /// ```swift
