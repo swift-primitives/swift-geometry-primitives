@@ -26,7 +26,7 @@ let package = Package(
         .package(path: "../swift-affine-primitives"),
         .package(path: "../swift-affine-geometry-primitives"),
         .package(path: "../swift-dimension-primitives"),
-        .package(path: "../swift-formatting-primitives"),
+        .package(path: "../swift-format-primitives"),
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-numeric-primitives"),
     ],
@@ -38,7 +38,7 @@ let package = Package(
                 .product(name: "Affine Primitives", package: "swift-affine-primitives"),
                 .product(name: "Affine Geometry Primitives", package: "swift-affine-geometry-primitives"),
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
-                .product(name: "Formatting Primitives", package: "swift-formatting-primitives"),
+                .product(name: "Format Primitives", package: "swift-format-primitives"),
                 .product(name: "Region Primitives", package: "swift-region-primitives"),
                 .product(name: "Real Primitives", package: "swift-numeric-primitives"),
             ]
