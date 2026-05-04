@@ -27,11 +27,6 @@ jobs:
   docs:
     uses: swift-institute/.github/.github/workflows/swift-docs.yml@main
     with:
-      umbrella-module: Geometry_Primitives
-      umbrella-display-name: "Geometry Primitives"
-      umbrella-bundle-id: "swift-geometry-primitives.Geometry-Primitives"
-      umbrella-docc-path: "Sources/Geometry Primitives/Geometry Primitives.docc"
-      exclude-modules: "Geometry_Primitives_Test_Support"
       enable-private-repos: true
     secrets:
       PRIVATE_REPO_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
