@@ -432,11 +432,11 @@ extension Geometry.Ngon where Scalar: FloatingPoint {
 
             if (vi.y > point.y) != (vj.y > point.y) {
                 // Compute x-intercept using raw values
-                let dx = (vj.x - vi.x).rawValue
-                let dy = (vj.y - vi.y).rawValue
-                let py = (point.y - vi.y).rawValue
-                let xIntersect = vi.x.rawValue + dx / dy * py
-                if point.x.rawValue < xIntersect {
+                let dx = (vj.x - vi.x).underlying
+                let dy = (vj.y - vi.y).underlying
+                let py = (point.y - vi.y).underlying
+                let xIntersect = vi.x.underlying + dx / dy * py
+                if point.x.underlying < xIntersect {
                     inside.toggle()
                 }
             }
@@ -492,14 +492,14 @@ extension Geometry.Ngon where Scalar == Double {
         at center: Geometry.Point<2> = .zero
     ) -> Self {
         let piOverNValue: Scalar = Scalar.pi / Scalar(N)
-        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
+        let piOverN = Radian<Scalar>(_unchecked: piOverNValue)
         let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
             let twoPi: Scalar = Scalar(2) * Scalar.pi
             let fraction: Scalar = Scalar(i) / Scalar(N)
             let angleValue: Scalar = twoPi * fraction
-            let angle = Radian<Scalar>(__unchecked: (), angleValue)
+            let angle = Radian<Scalar>(_unchecked: angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -518,7 +518,7 @@ extension Geometry.Ngon where Scalar == Double {
             let twoPi: Scalar = Scalar(2) * Scalar.pi
             let fraction: Scalar = Scalar(i) / Scalar(N)
             let angleValue: Scalar = twoPi * fraction
-            let angle = Radian<Scalar>(__unchecked: (), angleValue)
+            let angle = Radian<Scalar>(_unchecked: angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -533,7 +533,7 @@ extension Geometry.Ngon where Scalar == Double {
         at center: Geometry.Point<2> = .zero
     ) -> Self {
         let piOverNValue: Scalar = Scalar.pi / Scalar(N)
-        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
+        let piOverN = Radian<Scalar>(_unchecked: piOverNValue)
         let circumradius = inradius / piOverN.cos.value
         return regular(circumradius: circumradius, at: center)
     }
@@ -549,14 +549,14 @@ extension Geometry.Ngon where Scalar == Float {
         at center: Geometry.Point<2> = .zero
     ) -> Self {
         let piOverNValue: Scalar = Scalar.pi / Scalar(N)
-        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
+        let piOverN = Radian<Scalar>(_unchecked: piOverNValue)
         let circumradius = sideLength / (Scalar(2) * piOverN.sin.value)
         var verts = InlineArray<N, Geometry.Point<2>>(repeating: center)
         for i in 0..<N {
             let twoPi: Scalar = Scalar(2) * Scalar.pi
             let fraction: Scalar = Scalar(i) / Scalar(N)
             let angleValue: Scalar = twoPi * fraction
-            let angle = Radian<Scalar>(__unchecked: (), angleValue)
+            let angle = Radian<Scalar>(_unchecked: angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -575,7 +575,7 @@ extension Geometry.Ngon where Scalar == Float {
             let twoPi: Scalar = Scalar(2) * Scalar.pi
             let fraction: Scalar = Scalar(i) / Scalar(N)
             let angleValue: Scalar = twoPi * fraction
-            let angle = Radian<Scalar>(__unchecked: (), angleValue)
+            let angle = Radian<Scalar>(_unchecked: angleValue)
             let dx = Linear<Scalar, Space>.Dx(circumradius * angle.cos.value)
             let dy = Linear<Scalar, Space>.Dy(circumradius * angle.sin.value)
             verts[i] = Geometry.Point(x: center.x + dx, y: center.y + dy)
@@ -590,7 +590,7 @@ extension Geometry.Ngon where Scalar == Float {
         at center: Geometry.Point<2> = .zero
     ) -> Self {
         let piOverNValue: Scalar = Scalar.pi / Scalar(N)
-        let piOverN = Radian<Scalar>(__unchecked: (), piOverNValue)
+        let piOverN = Radian<Scalar>(_unchecked: piOverNValue)
         let circumradius = inradius / piOverN.cos.value
         return regular(circumradius: circumradius, at: center)
     }
@@ -602,7 +602,7 @@ extension Geometry where Scalar: FloatingPoint {
     /// Calculate the area of an N-gon (always positive).
     @inlinable
     public static func area<let N: Int>(of ngon: Ngon<N>) -> Area {
-        Area(abs(ngon.signedArea.rawValue))
+        Area(abs(ngon.signedArea.underlying))
     }
 
     /// Calculate the signed double area of an N-gon using the shoelace formula.
@@ -629,7 +629,7 @@ extension Geometry where Scalar: FloatingPoint {
     where Scalar: SignedNumeric {
         // Centroid formula uses raw values because it inherently mixes
         // coordinate components in ways that don't fit dimensional analysis
-        let a = signedDoubleArea(of: ngon).rawValue
+        let a = signedDoubleArea(of: ngon).underlying
         guard abs(a) > .ulpOfOne else { return nil }
 
         var cx: Scalar = .zero
@@ -637,10 +637,10 @@ extension Geometry where Scalar: FloatingPoint {
 
         for i in 0..<N {
             let j = (i + 1) % N
-            let xi = ngon.vertices[i].x.rawValue
-            let yi = ngon.vertices[i].y.rawValue
-            let xj = ngon.vertices[j].x.rawValue
-            let yj = ngon.vertices[j].y.rawValue
+            let xi = ngon.vertices[i].x.underlying
+            let yi = ngon.vertices[i].y.underlying
+            let xj = ngon.vertices[j].x.underlying
+            let yj = ngon.vertices[j].y.underlying
             let cross = xi * yj - xj * yi
             cx += (xi + xj) * cross
             cy += (yi + yj) * cross
@@ -844,14 +844,14 @@ extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
         // Orthocenter uses raw values due to coordinate mixing
         guard let cc = circumcircle else { return nil }
 
-        let ax = vertices[0].x.rawValue
-        let ay = vertices[0].y.rawValue
-        let bx = vertices[1].x.rawValue
-        let by = vertices[1].y.rawValue
-        let cx = vertices[2].x.rawValue
-        let cy = vertices[2].y.rawValue
-        let ccx = cc.center.x.rawValue
-        let ccy = cc.center.y.rawValue
+        let ax = vertices[0].x.underlying
+        let ay = vertices[0].y.underlying
+        let bx = vertices[1].x.underlying
+        let by = vertices[1].y.underlying
+        let cx = vertices[2].x.underlying
+        let cy = vertices[2].y.underlying
+        let ccx = cc.center.x.underlying
+        let ccy = cc.center.y.underlying
 
         let ox = ax + bx + cx - Scalar(2) * ccx
         let oy = ay + by + cy - Scalar(2) * ccy
@@ -870,9 +870,9 @@ extension Geometry.Ngon where N == 3, Scalar == Double {
     public var angles: (atA: Radian<Scalar>, atB: Radian<Scalar>, atC: Radian<Scalar>) {
         // Law of cosines uses raw values for side lengths
         let sides = sideLengths
-        let ab = sides.ab.rawValue
-        let bc = sides.bc.rawValue
-        let ca = sides.ca.rawValue
+        let ab = sides.ab.underlying
+        let bc = sides.bc.underlying
+        let ca = sides.ca.underlying
 
         // cos(A) = (b² + c² - a²) / (2bc) - break up for type checker
         let abSq = ab * ab
@@ -907,9 +907,9 @@ extension Geometry.Ngon where N == 3, Scalar == Float {
     public var angles: (atA: Radian<Scalar>, atB: Radian<Scalar>, atC: Radian<Scalar>) {
         // Law of cosines uses raw values for side lengths
         let sides = sideLengths
-        let ab = sides.ab.rawValue
-        let bc = sides.bc.rawValue
-        let ca = sides.ca.rawValue
+        let ab = sides.ab.underlying
+        let bc = sides.bc.underlying
+        let ca = sides.ca.underlying
 
         // cos(A) = (b² + c² - a²) / (2bc) - break up for type checker
         let abSq = ab * ab

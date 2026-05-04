@@ -227,12 +227,12 @@ extension Geometry.Orthotope where N == 2, Scalar: BinaryInteger {
         urx: Geometry.X,
         ury: Geometry.Y
     ) {
-        let halfWidth = (urx.rawValue - llx.rawValue) / 2
-        let halfHeight = (ury.rawValue - lly.rawValue) / 2
+        let halfWidth = (urx.underlying - llx.underlying) / 2
+        let halfHeight = (ury.underlying - lly.underlying) / 2
         self.init(
             center: Geometry.Point(
-                x: Geometry.X(llx.rawValue + halfWidth),
-                y: Geometry.Y(lly.rawValue + halfHeight)
+                x: Geometry.X(llx.underlying + halfWidth),
+                y: Geometry.Y(lly.underlying + halfHeight)
             ),
             halfExtents: Geometry.Size(
                 width: Geometry.Width(halfWidth),
@@ -314,7 +314,7 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
     /// Check if the rectangle has zero or negative area.
     @inlinable
     public var isEmpty: Bool {
-        halfExtents.width.rawValue <= 0 || halfExtents.height.rawValue <= 0
+        halfExtents.width.underlying <= 0 || halfExtents.height.underlying <= 0
     }
 
     /// Check if the rectangle contains a point.
@@ -518,8 +518,8 @@ extension Geometry.Orthotope where N == 3, Scalar: FloatingPoint {
     /// Volume (width × height × depth).
     @inlinable
     public var volume: Scalar {
-        let w = halfExtents.width.rawValue * 2
-        let h = halfExtents.height.rawValue * 2
+        let w = halfExtents.width.underlying * 2
+        let h = halfExtents.height.underlying * 2
         let d = halfExtents.depth * 2
         return w * h * d
     }
@@ -527,8 +527,8 @@ extension Geometry.Orthotope where N == 3, Scalar: FloatingPoint {
     /// Surface area (2 × (wh + wd + hd)).
     @inlinable
     public var surfaceArea: Scalar {
-        let w = halfExtents.width.rawValue * 2
-        let h = halfExtents.height.rawValue * 2
+        let w = halfExtents.width.underlying * 2
+        let h = halfExtents.height.underlying * 2
         let d = halfExtents.depth * 2
         return 2 * (w * h + w * d + h * d)
     }
@@ -536,8 +536,8 @@ extension Geometry.Orthotope where N == 3, Scalar: FloatingPoint {
     /// Space diagonal.
     @inlinable
     public var diagonal: Geometry.Magnitude {
-        let w = halfExtents.width.rawValue * 2
-        let h = halfExtents.height.rawValue * 2
+        let w = halfExtents.width.underlying * 2
+        let h = halfExtents.height.underlying * 2
         let d = halfExtents.depth * 2
         return Geometry.Magnitude(
             Linear<Scalar, Space>.Magnitude((w * w + h * h + d * d).squareRoot())
@@ -566,22 +566,22 @@ extension Geometry where Scalar: FloatingPoint {
     /// Calculate the area of a rectangle.
     @inlinable
     public static func area(of rectangle: Orthotope<2>) -> Area {
-        Area(rectangle.width.rawValue * rectangle.height.rawValue)
+        Area(rectangle.width.underlying * rectangle.height.underlying)
     }
 
     /// Calculate the perimeter of a rectangle.
     @inlinable
     public static func perimeter(of rectangle: Orthotope<2>) -> Perimeter {
-        Perimeter((rectangle.width.rawValue + rectangle.height.rawValue) * 2)
+        Perimeter((rectangle.width.underlying + rectangle.height.underlying) * 2)
     }
 
     /// Check if a rectangle contains a point.
     @inlinable
     public static func contains(_ rectangle: Orthotope<2>, point: Point<2>) -> Bool {
-        let dx = point.x.rawValue - rectangle.center.x.rawValue
-        let dy = point.y.rawValue - rectangle.center.y.rawValue
-        let hw = rectangle.halfExtents.width.rawValue
-        let hh = rectangle.halfExtents.height.rawValue
+        let dx = point.x.underlying - rectangle.center.x.underlying
+        let dy = point.y.underlying - rectangle.center.y.underlying
+        let hw = rectangle.halfExtents.width.underlying
+        let hh = rectangle.halfExtents.height.underlying
         return dx >= -hw && dx <= hw && dy >= -hh && dy <= hh
     }
 

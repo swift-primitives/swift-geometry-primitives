@@ -136,12 +136,12 @@ extension Geometry {
     /// ```
     public struct Magnitude {
         /// Underlying raw magnitude value.
-        public var rawValue: Linear<Scalar, Space>.Magnitude
+        public var underlying: Linear<Scalar, Space>.Magnitude
 
         /// Creates a magnitude from a raw value.
         @inlinable
         public init(_ rawValue: Linear<Scalar, Space>.Magnitude) {
-            self.rawValue = rawValue
+            self.underlying = rawValue
         }
     }
 }
@@ -156,7 +156,7 @@ extension Geometry.Magnitude: Codable where Scalar: Codable {}
 extension Geometry.Magnitude: Comparable where Scalar: Comparable {
     @inlinable
     public static func < (lhs: Self, rhs: Self) -> Bool {
-        lhs.rawValue < rhs.rawValue
+        lhs.underlying < rhs.underlying
     }
 }
 
@@ -164,14 +164,14 @@ extension Geometry.Magnitude: ExpressibleByIntegerLiteral
 where Scalar: ExpressibleByIntegerLiteral {
     @inlinable
     public init(integerLiteral value: Scalar.IntegerLiteralType) {
-        self.rawValue = .init(Scalar(integerLiteral: value))
+        self.underlying = .init(Scalar(integerLiteral: value))
     }
 }
 
 extension Geometry.Magnitude: ExpressibleByFloatLiteral where Scalar: ExpressibleByFloatLiteral {
     @inlinable
     public init(floatLiteral value: Scalar.FloatLiteralType) {
-        self.rawValue = .init(Scalar(floatLiteral: value))
+        self.underlying = .init(Scalar(floatLiteral: value))
     }
 }
 
@@ -179,19 +179,19 @@ extension Geometry.Magnitude {
     /// Project magnitude as horizontal displacement (width).
     @inlinable
     public var width: Geometry.Width {
-        Geometry.Width(rawValue.rawValue)
+        Geometry.Width(underlying.underlying)
     }
 
     /// Project magnitude as vertical displacement (height).
     @inlinable
     public var height: Geometry.Height {
-        Geometry.Height(rawValue.rawValue)
+        Geometry.Height(underlying.underlying)
     }
 
     /// Underlying scalar value.
     @inlinable
     public var value: Scalar {
-        rawValue.rawValue
+        underlying.underlying
     }
 }
 

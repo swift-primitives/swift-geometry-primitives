@@ -133,16 +133,16 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
     public var boundingBox: Geometry.Rectangle? {
         guard let first = vertices.first else { return nil }
 
-        var minX = first.x.rawValue
-        var maxX = first.x.rawValue
-        var minY = first.y.rawValue
-        var maxY = first.y.rawValue
+        var minX = first.x.underlying
+        var maxX = first.x.underlying
+        var minY = first.y.underlying
+        var maxY = first.y.underlying
 
         for vertex in vertices.dropFirst() {
-            minX = min(minX, vertex.x.rawValue)
-            maxX = max(maxX, vertex.x.rawValue)
-            minY = min(minY, vertex.y.rawValue)
-            maxY = max(maxY, vertex.y.rawValue)
+            minX = min(minX, vertex.x.underlying)
+            maxX = max(maxX, vertex.x.underlying)
+            minY = min(minY, vertex.y.underlying)
+            maxY = max(maxY, vertex.y.underlying)
         }
 
         return Geometry.Rectangle(
@@ -235,10 +235,10 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
             let vi = vertices[i]
             let vj = vertices[j]
 
-            if (vi.y.rawValue > point.y.rawValue) != (vj.y.rawValue > point.y.rawValue) {
-                let slope = (vj.x.rawValue - vi.x.rawValue) / (vj.y.rawValue - vi.y.rawValue)
-                let xIntersect = vi.x.rawValue + slope * (point.y.rawValue - vi.y.rawValue)
-                if point.x.rawValue < xIntersect {
+            if (vi.y.underlying > point.y.underlying) != (vj.y.underlying > point.y.underlying) {
+                let slope = (vj.x.underlying - vi.x.underlying) / (vj.y.underlying - vi.y.underlying)
+                let xIntersect = vi.x.underlying + slope * (point.y.underlying - vi.y.underlying)
+                if point.x.underlying < xIntersect {
                     inside.toggle()
                 }
             }
@@ -377,7 +377,7 @@ extension Geometry where Scalar: FloatingPoint {
     public static func area(of polygon: Polygon) -> Area {
         let signedArea = signedDoubleArea(of: polygon)
         // abs of typed area, then divide by 2
-        let absArea = signedArea.rawValue < 0 ? -signedArea.rawValue : signedArea.rawValue
+        let absArea = signedArea.underlying < 0 ? -signedArea.underlying : signedArea.underlying
         return Area(absArea / 2)
     }
 
@@ -409,7 +409,7 @@ extension Geometry where Scalar: FloatingPoint {
         guard polygon.vertices.count >= 3 else { return nil }
 
         // Use typed signedDoubleArea, extract raw value for centroid math
-        let a = signedDoubleArea(of: polygon).rawValue
+        let a = signedDoubleArea(of: polygon).underlying
         guard abs(a) > .ulpOfOne else { return nil }
 
         var cx: Scalar = .zero
@@ -426,10 +426,10 @@ extension Geometry where Scalar: FloatingPoint {
             let xj = polygon.vertices[j].x - zeroX
             let yj = polygon.vertices[j].y - zeroY
             // Dx × Dy = Area, extract raw value for centroid mixing
-            let cross = (xi * yj - xj * yi).rawValue
+            let cross = (xi * yj - xj * yi).underlying
             // Centroid formula inherently mixes coordinates (weighted average)
-            cx += (xi.rawValue + xj.rawValue) * cross
-            cy += (yi.rawValue + yj.rawValue) * cross
+            cx += (xi.underlying + xj.underlying) * cross
+            cy += (yi.underlying + yj.underlying) * cross
         }
 
         // Normalize by 1/(3*area) to get centroid coordinates

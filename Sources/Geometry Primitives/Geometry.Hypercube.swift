@@ -75,13 +75,13 @@ extension Geometry.Hypercube where Scalar: FloatingPoint {
     /// Creates a hypercube with the given center and full side length.
     @inlinable
     public init(center: consuming Geometry.Point<N>, side: Linear<Scalar, Space>.Magnitude) {
-        self.init(center: center, halfSide: Linear<Scalar, Space>.Magnitude(side.rawValue / 2))
+        self.init(center: center, halfSide: Linear<Scalar, Space>.Magnitude(side.underlying / 2))
     }
 
     /// Creates a hypercube centered at origin with given full side length.
     @inlinable
     public init(side: Linear<Scalar, Space>.Magnitude) where Scalar: AdditiveArithmetic {
-        self.init(center: .zero, halfSide: Linear<Scalar, Space>.Magnitude(side.rawValue / 2))
+        self.init(center: .zero, halfSide: Linear<Scalar, Space>.Magnitude(side.underlying / 2))
     }
 }
 
@@ -101,7 +101,7 @@ extension Geometry.Hypercube where Scalar: FloatingPoint {
     /// Full side length with projections to Width/Height.
     @inlinable
     public var side: Geometry.Magnitude {
-        Geometry.Magnitude(Linear<Scalar, Space>.Magnitude(halfSide.rawValue * 2))
+        Geometry.Magnitude(Linear<Scalar, Space>.Magnitude(halfSide.underlying * 2))
     }
 }
 
@@ -111,21 +111,21 @@ extension Geometry.Hypercube where N == 2, Scalar: FloatingPoint {
     /// Diagonal length (side × √2).
     @inlinable
     public var diagonal: Geometry.Magnitude {
-        let s = halfSide.rawValue * 2
+        let s = halfSide.underlying * 2
         return Geometry.Magnitude(Linear<Scalar, Space>.Magnitude(s * Scalar(2).squareRoot()))
     }
 
     /// Area (side²).
     @inlinable
     public var area: Geometry.Area {
-        let s = halfSide.rawValue * 2
+        let s = halfSide.underlying * 2
         return Geometry.Area(s * s)
     }
 
     /// Perimeter (4 × side).
     @inlinable
     public var perimeter: Geometry.Perimeter {
-        Geometry.Perimeter(halfSide.rawValue * 8)
+        Geometry.Perimeter(halfSide.underlying * 8)
     }
 
     /// Axis-aligned bounding rectangle (same as the square itself for axis-aligned squares).
@@ -170,13 +170,13 @@ extension Geometry.Hypercube where N == 2, Scalar: FloatingPoint {
     /// Width (same as side for square).
     @inlinable
     public var width: Geometry.Width {
-        Geometry.Width(halfSide.rawValue * 2)
+        Geometry.Width(halfSide.underlying * 2)
     }
 
     /// Height (same as side for square).
     @inlinable
     public var height: Geometry.Height {
-        Geometry.Height(halfSide.rawValue * 2)
+        Geometry.Height(halfSide.underlying * 2)
     }
 }
 
@@ -186,21 +186,21 @@ extension Geometry.Hypercube where N == 3, Scalar: FloatingPoint {
     /// Space diagonal (side × √3).
     @inlinable
     public var diagonal: Geometry.Magnitude {
-        let s = halfSide.rawValue * 2
+        let s = halfSide.underlying * 2
         return Geometry.Magnitude(Linear<Scalar, Space>.Magnitude(s * Scalar(3).squareRoot()))
     }
 
     /// Volume (side³).
     @inlinable
     public var volume: Scalar {
-        let s = halfSide.rawValue * 2
+        let s = halfSide.underlying * 2
         return s * s * s
     }
 
     /// Surface area (6 × side²).
     @inlinable
     public var surfaceArea: Scalar {
-        let s = halfSide.rawValue * 2
+        let s = halfSide.underlying * 2
         return 6 * s * s
     }
 }
@@ -211,9 +211,9 @@ extension Geometry.Hypercube where N == 2, Scalar: FloatingPoint {
     /// Checks if point is inside or on the square boundary.
     @inlinable
     public func contains(_ point: Geometry.Point<2>) -> Bool {
-        let h = halfSide.rawValue
-        let dx = point.x.rawValue - center.x.rawValue
-        let dy = point.y.rawValue - center.y.rawValue
+        let h = halfSide.underlying
+        let dx = point.x.underlying - center.x.underlying
+        let dy = point.y.underlying - center.y.underlying
         return dx >= -h && dx <= h && dy >= -h && dy <= h
     }
 }
@@ -232,7 +232,7 @@ extension Geometry.Hypercube where N == 2, Scalar: FloatingPoint {
     public func scaled(by factor: Scale<1, Scalar>) -> Self {
         Self(
             center: center,
-            halfSide: Linear<Scalar, Space>.Magnitude(halfSide.rawValue * factor.value)
+            halfSide: Linear<Scalar, Space>.Magnitude(halfSide.underlying * factor.value)
         )
     }
 }

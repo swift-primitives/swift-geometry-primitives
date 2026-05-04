@@ -136,21 +136,21 @@ extension Geometry.Size where N == 1 {
     @inlinable
     public var length: Geometry.Length {
         get { Geometry.Length(dimensions[0]) }
-        set { dimensions[0] = newValue.rawValue }
+        set { dimensions[0] = newValue.underlying }
     }
 
     /// Project as width (horizontal extent)
     @inlinable
     public var width: Geometry.Width {
         get { Geometry.Width(dimensions[0]) }
-        set { dimensions[0] = newValue.rawValue }
+        set { dimensions[0] = newValue.underlying }
     }
 
     /// Project as height (vertical extent)
     @inlinable
     public var height: Geometry.Height {
         get { Geometry.Height(dimensions[0]) }
-        set { dimensions[0] = newValue.rawValue }
+        set { dimensions[0] = newValue.underlying }
     }
 
     /// Create from a scalar value
@@ -185,20 +185,20 @@ extension Geometry.Size where N == 2 {
     @inlinable
     public var width: Geometry.Width {
         get { Geometry.Width(dimensions[0]) }
-        set { dimensions[0] = newValue.rawValue }
+        set { dimensions[0] = newValue.underlying }
     }
 
     /// Height (second dimension, type-safe)
     @inlinable
     public var height: Geometry.Height {
         get { Geometry.Height(dimensions[1]) }
-        set { dimensions[1] = newValue.rawValue }
+        set { dimensions[1] = newValue.underlying }
     }
 
     /// Create a 2D size from typed Width and Height values
     @inlinable
     public init(width: Geometry.Width, height: Geometry.Height) {
-        self.init([width.rawValue, height.rawValue])
+        self.init([width.underlying, height.underlying])
     }
 }
 
@@ -209,14 +209,14 @@ extension Geometry.Size where N == 3 {
     @inlinable
     public var width: Geometry.Width {
         get { .init(dimensions[0]) }
-        set { dimensions[0] = newValue.rawValue }
+        set { dimensions[0] = newValue.underlying }
     }
 
     /// Height (second dimension)
     @inlinable
     public var height: Geometry.Height {
         get { .init(dimensions[1]) }
-        set { dimensions[1] = newValue.rawValue }
+        set { dimensions[1] = newValue.underlying }
     }
 
     /// Depth (third dimension) - raw scalar as we don't have typed Dz
@@ -229,7 +229,7 @@ extension Geometry.Size where N == 3 {
     /// Create a 3D size from typed values with raw depth
     @inlinable
     public init(width: Geometry.Width, height: Geometry.Height, depth: Scalar) {
-        self.init([width.rawValue, height.rawValue, depth])
+        self.init([width.underlying, height.underlying, depth])
     }
 
     /// Create a 3D size from a 2D size with depth

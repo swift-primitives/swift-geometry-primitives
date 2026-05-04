@@ -190,7 +190,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
     public func tangent(at t: Scale<1, Scalar>) -> Geometry.Vector<2> {
         let angle = startAngle + t * sweep
         // Tangent is perpendicular to radius, in direction of sweep
-        let sign: Scalar = sweep.rawValue >= 0 ? 1 : -1
+        let sign: Scalar = sweep.underlying >= 0 ? 1 : -1
         return Geometry.Vector(
             dx: Linear<Scalar, Space>.Dx(-sign * angle.sin.value),
             dy: Linear<Scalar, Space>.Dy(sign * angle.cos.value)
@@ -207,7 +207,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
     @inlinable
     public var length: Geometry.ArcLength {
         // Radians are dimensionless, so we use the raw value as a scale factor
-        radius * Scale(abs(sweep.rawValue))
+        radius * Scale(abs(sweep.underlying))
     }
 }
 
@@ -228,9 +228,9 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
     /// requiring raw scalar arithmetic similar to matrix transforms.
     @inlinable
     public static func boundingBox(of arc: Arc) -> Rectangle {
-        let cx = arc.center.x.rawValue
-        let cy = arc.center.y.rawValue
-        let r = arc.radius.rawValue
+        let cx = arc.center.x.underlying
+        let cy = arc.center.y.underlying
+        let r = arc.radius.underlying
 
         // Special case for full circle or more
         if arc.isFullCircle {
@@ -242,20 +242,20 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
             )
         }
 
-        var minX = min(arc.startPoint.x.rawValue, arc.endPoint.x.rawValue)
-        var maxX = max(arc.startPoint.x.rawValue, arc.endPoint.x.rawValue)
-        var minY = min(arc.startPoint.y.rawValue, arc.endPoint.y.rawValue)
-        var maxY = max(arc.startPoint.y.rawValue, arc.endPoint.y.rawValue)
+        var minX = min(arc.startPoint.x.underlying, arc.endPoint.x.underlying)
+        var maxX = max(arc.startPoint.x.underlying, arc.endPoint.x.underlying)
+        var minY = min(arc.startPoint.y.underlying, arc.endPoint.y.underlying)
+        var maxY = max(arc.startPoint.y.underlying, arc.endPoint.y.underlying)
 
         // Check if arc crosses cardinal directions
         let start = arc.startAngle.normalized
         let end = arc.endAngle.normalized
-        let sweep = arc.sweep.rawValue
+        let sweep = arc.sweep.underlying
 
         func containsAngle(_ angle: Radian<Scalar>) -> Bool {
-            let a = angle.rawValue
-            let s = start.rawValue
-            let e = end.rawValue
+            let a = angle.underlying
+            let s = start.underlying
+            let e = end.underlying
             if sweep >= 0 {
                 if s <= e {
                     return a >= s && a <= e
@@ -280,11 +280,11 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
             maxY = max(maxY, cy + r)
         }
         // Left (180°)
-        if containsAngle(Radian(__unchecked: (), Scalar.pi)) {
+        if containsAngle(Radian(_unchecked: Scalar.pi)) {
             minX = min(minX, cx - r)
         }
         // Bottom (270°)
-        if containsAngle(Radian(__unchecked: (), Scalar.pi * 1.5)) {
+        if containsAngle(Radian(_unchecked: Scalar.pi * 1.5)) {
             minY = min(minY, cy - r)
         }
 
@@ -308,7 +308,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
     public func contains(_ point: Geometry.Point<2>) -> Bool {
         // Check if point is at correct distance from center
         let dist = center.distance(to: point)
-        guard abs(dist.rawValue - radius.rawValue) < Scalar.ulpOfOne * 100 else { return false }
+        guard abs(dist.underlying - radius.underlying) < Scalar.ulpOfOne * 100 else { return false }
 
         // Check if point's angle is within the arc
         let dx = point.x - center.x
@@ -325,7 +325,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
         let normStart = startAngle.normalized
         let normEnd = endAngle.normalized
 
-        if sweep.rawValue >= 0 {
+        if sweep.underlying >= 0 {
             if normStart <= normEnd {
                 return normAngle >= normStart && normAngle <= normEnd
             } else {
@@ -353,7 +353,7 @@ extension Array {
     public init<Scalar: BinaryFloatingPoint & Numeric.Transcendental, Space>(
         arc: Geometry<Scalar, Space>.Arc
     ) where Element == Geometry<Scalar, Space>.Bezier {
-        let sweepRaw = arc.sweep.rawValue
+        let sweepRaw = arc.sweep.underlying
         guard abs(sweepRaw) > 0 else {
             self = []
             return
@@ -372,7 +372,7 @@ extension Array {
         var currentAngle = arc.startAngle
 
         for _ in 0..<segmentCount {
-            let nextAngle: Radian<Scalar> = currentAngle + Radian(__unchecked: (), segmentAngle)
+            let nextAngle: Radian<Scalar> = currentAngle + Radian(_unchecked: segmentAngle)
 
             // Create Bezier for this segment
             let bezier = Self.arcSegmentToBezier(
@@ -401,17 +401,17 @@ extension Array {
         from startAngle: Radian<Scalar>,
         to endAngle: Radian<Scalar>
     ) -> Geometry<Scalar, Space>.Bezier where Element == Geometry<Scalar, Space>.Bezier {
-        let sweepRaw = (endAngle - startAngle).rawValue
+        let sweepRaw = (endAngle - startAngle).underlying
         let halfSweepRaw = sweepRaw / 2
 
         // Control point distance factor: k = (4/3) * tan(θ/2)
-        let halfAngle = Radian<Scalar>(__unchecked: (), halfSweepRaw / 2)
+        let halfAngle = Radian<Scalar>(_unchecked: halfSweepRaw / 2)
         let k = Scalar(4.0 / 3.0) * halfAngle.tan.value
 
         // Extract raw values for arithmetic
-        let cx = arc.center.x.rawValue
-        let cy = arc.center.y.rawValue
-        let r = arc.radius.rawValue
+        let cx = arc.center.x.underlying
+        let cy = arc.center.y.underlying
+        let r = arc.radius.underlying
 
         // Start and end points
         let cosStart = startAngle.cos.value
@@ -501,8 +501,8 @@ extension Geometry.Arc {
         self.init(
             center: try Affine.Continuous<Scalar, Space>.Point<2>(other.center, transform),
             radius: try other.radius.map(transform),
-            startAngle: Radian(__unchecked: (), try transform(other.startAngle.rawValue)),
-            endAngle: Radian(__unchecked: (), try transform(other.endAngle.rawValue))
+            startAngle: Radian(_unchecked: try transform(other.startAngle.underlying)),
+            endAngle: Radian(_unchecked: try transform(other.endAngle.underlying))
         )
     }
 
@@ -514,8 +514,8 @@ extension Geometry.Arc {
         .init(
             center: try center.map(transform),
             radius: try radius.map(transform),
-            startAngle: Radian(__unchecked: (), try transform(startAngle.rawValue)),
-            endAngle: Radian(__unchecked: (), try transform(endAngle.rawValue))
+            startAngle: Radian(_unchecked: try transform(startAngle.underlying)),
+            endAngle: Radian(_unchecked: try transform(endAngle.underlying))
         )
     }
 }

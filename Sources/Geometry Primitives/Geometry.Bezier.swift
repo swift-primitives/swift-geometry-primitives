@@ -161,7 +161,7 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     public func tangent(at t: Scale<1, Scalar>) -> Geometry.Vector<2>? {
         guard let d = derivative(at: t) else { return nil }
         let normalized = Linear<Scalar, Space>.Vector.normalized(d)
-        guard normalized.length.rawValue > 0 else { return nil }
+        guard normalized.length.underlying > 0 else { return nil }
         return normalized
     }
 
@@ -174,8 +174,8 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
         guard let tang = tangent(at: t) else { return nil }
         // Rotate 90° counter-clockwise
         return Geometry.Vector(
-            dx: Linear<Scalar, Space>.Dx(-tang.dy.rawValue),
-            dy: Linear<Scalar, Space>.Dy(tang.dx.rawValue)
+            dx: Linear<Scalar, Space>.Dx(-tang.dy.underlying),
+            dy: Linear<Scalar, Space>.Dy(tang.dx.underlying)
         )
     }
 }
@@ -366,10 +366,10 @@ extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcende
         // k = (4/3) * tan(π/8) ≈ 0.5522847498
         let k: Scalar = Scalar(0.5522847498307936)
 
-        let cx: Scalar = ellipse.center.x.rawValue
-        let cy: Scalar = ellipse.center.y.rawValue
-        let a: Scalar = ellipse.semiMajor.rawValue
-        let b: Scalar = ellipse.semiMinor.rawValue
+        let cx: Scalar = ellipse.center.x.underlying
+        let cy: Scalar = ellipse.center.y.underlying
+        let a: Scalar = ellipse.semiMajor.underlying
+        let b: Scalar = ellipse.semiMinor.underlying
         let cosR: Scalar = ellipse.rotation.cos.value
         let sinR: Scalar = ellipse.rotation.sin.value
 
@@ -462,8 +462,8 @@ extension Geometry where Scalar: FloatingPoint {
         var derivPoints: [Point<2>] = []
         derivPoints.reserveCapacity(bezier.controlPoints.count - 1)
         for i in 0..<(bezier.controlPoints.count - 1) {
-            let dx = bezier.controlPoints[i + 1].x.rawValue - bezier.controlPoints[i].x.rawValue
-            let dy = bezier.controlPoints[i + 1].y.rawValue - bezier.controlPoints[i].y.rawValue
+            let dx = bezier.controlPoints[i + 1].x.underlying - bezier.controlPoints[i].x.underlying
+            let dy = bezier.controlPoints[i + 1].y.underlying - bezier.controlPoints[i].y.underlying
             derivPoints.append(Point(x: X(dx), y: Y(dy)))
         }
 
@@ -481,8 +481,8 @@ extension Geometry where Scalar: FloatingPoint {
 
         guard let p = points.first else { return nil }
         return Vector(
-            dx: Linear<Scalar, Space>.Dx(n * p.x.rawValue),
-            dy: Linear<Scalar, Space>.Dy(n * p.y.rawValue)
+            dx: Linear<Scalar, Space>.Dx(n * p.x.underlying),
+            dy: Linear<Scalar, Space>.Dy(n * p.y.underlying)
         )
     }
 }

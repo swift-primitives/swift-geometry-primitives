@@ -98,7 +98,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     /// Circumference (2π × radius).
     @inlinable
     public var circumference: Geometry.Circumference {
-        Geometry.Circumference(2 * Scalar.pi * radius.rawValue)
+        Geometry.Circumference(2 * Scalar.pi * radius.underlying)
     }
 
     /// Area (π × radius²).
@@ -118,7 +118,7 @@ extension Geometry.Ball where N == 3, Scalar: FloatingPoint {
     public var surfaceArea: Scalar {
         // radius * radius = Area, multiply by scalar, extract raw value
         let radiusSq = radius * radius
-        return 4 * Scalar.pi * radiusSq.rawValue
+        return 4 * Scalar.pi * radiusSq.underlying
     }
 
     /// Volume (4/3 × π × radius³).
@@ -127,7 +127,7 @@ extension Geometry.Ball where N == 3, Scalar: FloatingPoint {
         // radius² × radius = Volume (via Area × Length = Volume)
         let radiusSq = radius * radius
         let radiusCubed = radiusSq * radius
-        return (4 / 3) * Scalar.pi * radiusCubed.rawValue
+        return (4 / 3) * Scalar.pi * radiusCubed.underlying
     }
 }
 
@@ -140,7 +140,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     /// - Returns: A circle if the ellipse has equal semi-major and semi-minor axes, `nil` otherwise.
     @inlinable
     public init?(_ ellipse: Geometry.Ellipse) {
-        let diff: Scalar = ellipse.semiMajor.rawValue - ellipse.semiMinor.rawValue
+        let diff: Scalar = ellipse.semiMajor.underlying - ellipse.semiMinor.underlying
         guard abs(diff) < Scalar.ulpOfOne else { return nil }
         self.init(center: ellipse.center, radius: ellipse.semiMajor)
     }
@@ -195,20 +195,20 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint & Numeric.Tran
     /// Returns closest point on circle boundary to given point.
     @inlinable
     public func closestPoint(to point: Geometry.Point<2>) -> Geometry.Point<2> {
-        let vx = point.x.rawValue - center.x.rawValue
-        let vy = point.y.rawValue - center.y.rawValue
+        let vx = point.x.underlying - center.x.underlying
+        let vy = point.y.underlying - center.y.underlying
         let len = (vx * vx + vy * vy).squareRoot()
-        let r = radius.rawValue
+        let r = radius.underlying
         guard len > 0 else {
             return Geometry.Point(
-                x: Affine.Continuous<Scalar, Space>.X(center.x.rawValue + r),
+                x: Affine.Continuous<Scalar, Space>.X(center.x.underlying + r),
                 y: center.y
             )
         }
         let scale = r / len
         return Geometry.Point(
-            x: Affine.Continuous<Scalar, Space>.X(center.x.rawValue + vx * scale),
-            y: Affine.Continuous<Scalar, Space>.Y(center.y.rawValue + vy * scale)
+            x: Affine.Continuous<Scalar, Space>.X(center.x.underlying + vx * scale),
+            y: Affine.Continuous<Scalar, Space>.Y(center.y.underlying + vy * scale)
         )
     }
 }
@@ -246,7 +246,7 @@ extension Geometry where Scalar: FloatingPoint {
     @inlinable
     public static func area(of circle: Ball<2>) -> Area {
         let radiusSq = circle.radius * circle.radius  // Linear.Area
-        return Area(Scalar.pi * radiusSq.rawValue)
+        return Area(Scalar.pi * radiusSq.underlying)
     }
 
     /// Calculate the axis-aligned bounding rectangle of a circle.
@@ -286,11 +286,11 @@ extension Geometry where Scalar: FloatingPoint {
     /// Find intersection points between a circle and a line.
     @inlinable
     public static func intersection(_ circle: Ball<2>, _ line: Line) -> [Point<2>] {
-        let fx = line.point.x.rawValue - circle.center.x.rawValue
-        let fy = line.point.y.rawValue - circle.center.y.rawValue
-        let dx = line.direction.dx.rawValue
-        let dy = line.direction.dy.rawValue
-        let r = circle.radius.rawValue
+        let fx = line.point.x.underlying - circle.center.x.underlying
+        let fy = line.point.y.underlying - circle.center.y.underlying
+        let dx = line.direction.dx.underlying
+        let dy = line.direction.dy.underlying
+        let r = circle.radius.underlying
 
         let a = dx * dx + dy * dy
         let b = 2 * (fx * dx + fy * dy)
@@ -320,13 +320,13 @@ extension Geometry where Scalar: FloatingPoint {
             circle1.radius >= circle2.radius
             ? circle1.radius - circle2.radius : circle2.radius - circle1.radius
 
-        guard dist <= sumRadii && dist >= diffRadii && dist.rawValue > 0 else {
+        guard dist <= sumRadii && dist >= diffRadii && dist.underlying > 0 else {
             return []
         }
 
-        let d = dist.rawValue
-        let r1 = circle1.radius.rawValue
-        let r2 = circle2.radius.rawValue
+        let d = dist.underlying
+        let r1 = circle1.radius.underlying
+        let r2 = circle2.radius.underlying
 
         let a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
         let hSq = r1 * r1 - a * a
@@ -334,10 +334,10 @@ extension Geometry where Scalar: FloatingPoint {
         guard hSq >= 0 else { return [] }
         let h = hSq.squareRoot()
 
-        let cx = circle1.center.x.rawValue
-        let cy = circle1.center.y.rawValue
-        let ocx = circle2.center.x.rawValue
-        let ocy = circle2.center.y.rawValue
+        let cx = circle1.center.x.underlying
+        let cy = circle1.center.y.underlying
+        let ocx = circle2.center.x.underlying
+        let ocy = circle2.center.y.underlying
         let dirX = (ocx - cx) / d
         let dirY = (ocy - cy) / d
         let px = cx + a * dirX
@@ -379,10 +379,10 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     @inlinable
     public func scaled(by factor: Scale<1, Scalar>, about point: Geometry.Point<2>) -> Self {
         let f = factor.value
-        let px = point.x.rawValue
-        let py = point.y.rawValue
-        let cx = center.x.rawValue
-        let cy = center.y.rawValue
+        let px = point.x.underlying
+        let py = point.y.underlying
+        let cx = center.x.underlying
+        let cy = center.y.underlying
         let newCenter = Geometry.Point(
             x: Affine.Continuous<Scalar, Space>.X(px + f * (cx - px)),
             y: Affine.Continuous<Scalar, Space>.Y(py + f * (cy - py))
@@ -470,9 +470,9 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     @inlinable
     public static func incircle(of triangle: Geometry.Triangle) -> Geometry.Circle? {
         let sides = triangle.sideLengths
-        let ab = sides.ab.rawValue
-        let bc = sides.bc.rawValue
-        let ca = sides.ca.rawValue
+        let ab = sides.ab.underlying
+        let bc = sides.bc.underlying
+        let ca = sides.ca.underlying
 
         let perimeter = ab + bc + ca
         guard perimeter > 0 else { return nil }
@@ -480,12 +480,12 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         // Incenter is weighted centroid: I = (a*A + b*B + c*C) / (a+b+c)
         // where a,b,c are opposite side lengths
         let v = triangle.vertices
-        let ax = v[0].x.rawValue
-        let ay = v[0].y.rawValue
-        let bx = v[1].x.rawValue
-        let by = v[1].y.rawValue
-        let cx = v[2].x.rawValue
-        let cy = v[2].y.rawValue
+        let ax = v[0].x.underlying
+        let ay = v[0].y.underlying
+        let bx = v[1].x.underlying
+        let by = v[1].y.underlying
+        let cx = v[2].x.underlying
+        let cy = v[2].y.underlying
 
         let weightedX1 = bc * ax
         let weightedX2 = ca * bx
@@ -499,7 +499,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
 
         // Inradius = Area / semi-perimeter
         let semiPerimeter = perimeter / 2
-        let inradius = triangle.area.rawValue / semiPerimeter
+        let inradius = triangle.area.underlying / semiPerimeter
 
         return Geometry.Circle(
             center: Geometry.Point(x: Geometry.X(centerX), y: Geometry.Y(centerY)),
@@ -513,12 +513,12 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     @inlinable
     public static func circumcircle(of triangle: Geometry.Triangle) -> Geometry.Circle? {
         let v = triangle.vertices
-        let ax = v[0].x.rawValue
-        let ay = v[0].y.rawValue
-        let bx = v[1].x.rawValue
-        let by = v[1].y.rawValue
-        let cx = v[2].x.rawValue
-        let cy = v[2].y.rawValue
+        let ax = v[0].x.underlying
+        let ay = v[0].y.underlying
+        let bx = v[1].x.underlying
+        let by = v[1].y.underlying
+        let cx = v[2].x.underlying
+        let cy = v[2].y.underlying
 
         // Break up complex expressions for type checker
         let dTerm1 = ax * (by - cy)
