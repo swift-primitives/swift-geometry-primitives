@@ -1,8 +1,8 @@
 // Arc.swift
 // A circular arc defined by center, radius, and angle range.
 
-import Affine_Primitives
 public import Affine_Geometry_Primitives
+import Affine_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 import Real_Primitives

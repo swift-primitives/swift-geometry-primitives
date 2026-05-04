@@ -601,8 +601,7 @@ extension Geometry where Scalar: FloatingPoint {
 
     /// Calculate the union of two rectangles.
     @inlinable
-    public static func union(_ rectangle1: Orthotope<2>, _ rectangle2: Orthotope<2>) -> Orthotope<2>
-    {
+    public static func union(_ rectangle1: Orthotope<2>, _ rectangle2: Orthotope<2>) -> Orthotope<2> {
         // Use Swift.min/max on typed values directly to preserve quantization
         Orthotope<2>(
             llx: Swift.min(rectangle1.llx, rectangle2.llx),

@@ -1,8 +1,8 @@
 // Geometry.Ball.swift
 // N-dimensional ball (hypersphere) defined by center and radius.
 
-import Affine_Primitives
 public import Affine_Geometry_Primitives
+import Affine_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 import Real_Primitives

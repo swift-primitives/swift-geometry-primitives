@@ -1,8 +1,8 @@
 // Ellipse.swift
 // An ellipse defined by center, semi-axes, and rotation.
 
-import Affine_Primitives
 public import Affine_Geometry_Primitives
+import Affine_Primitives
 public import Algebra_Linear_Primitives
 public import Dimension_Primitives
 import Real_Primitives

@@ -341,8 +341,10 @@ extension Geometry.Path {
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Path {
-        .init(subpaths: try subpaths.map { (subpath: Geometry<Scalar, Space>.Path.Subpath) throws(E) -> Geometry<Result, Space>.Path.Subpath in
-            try subpath.map(transform)
-        })
+        .init(
+            subpaths: try subpaths.map { (subpath: Geometry<Scalar, Space>.Path.Subpath) throws(E) -> Geometry<Result, Space>.Path.Subpath in
+                try subpath.map(transform)
+            }
+        )
     }
 }

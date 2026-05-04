@@ -1,8 +1,8 @@
 // Line.swift
 // An infinite line and its bounded segment in 2D space.
 
-import Affine_Primitives
 public import Affine_Geometry_Primitives
+import Affine_Primitives
 public import Algebra_Linear_Primitives
 
 extension Geometry {
@@ -441,8 +441,7 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry where Scalar: FloatingPoint {
     /// Find the intersection point between two line segments.
     @inlinable
-    public static func intersection(_ segment1: Line.Segment, _ segment2: Line.Segment) -> Point<2>?
-    {
+    public static func intersection(_ segment1: Line.Segment, _ segment2: Line.Segment) -> Point<2>? {
         let d1 = segment1.vector
         let d2 = segment2.vector
 

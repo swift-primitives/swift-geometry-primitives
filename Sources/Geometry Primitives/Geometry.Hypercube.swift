@@ -33,8 +33,7 @@ extension Geometry {
 
         /// Creates a hypercube with the given center and half-side.
         @inlinable
-        public init(center: consuming Point<N>, halfSide: consuming Linear<Scalar, Space>.Magnitude)
-        {
+        public init(center: consuming Point<N>, halfSide: consuming Linear<Scalar, Space>.Magnitude) {
             self.center = center
             self.halfSide = halfSide
         }
