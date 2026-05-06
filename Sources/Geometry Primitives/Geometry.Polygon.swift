@@ -229,7 +229,7 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
         guard vertices.count >= 3 else { return false }
 
         var inside = false
-        var j = vertices.count - 1
+        var j = vertices.endIndex - 1
 
         for i in 0..<vertices.count {
             let vi = vertices[i]
@@ -321,6 +321,11 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
             var earFound = false
 
             for i in 0..<remaining.count {
+                // reason: Canonical cyclic-polygon previous-vertex formula
+                // in ear-clipping triangulation. `(i + N − 1) mod N` is the
+                // unsigned-int standard for `i − 1 mod N` (avoiding negative
+                // intermediate via `+N`). Math IS the expression.
+                // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
                 let prev = (i + remaining.count - 1) % remaining.count
                 let next = (i + 1) % remaining.count
 

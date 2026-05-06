@@ -272,7 +272,7 @@ extension Geometry.Path {
     public static func polygon(vertices: [Geometry.Point<2>]) -> Self? {
         guard vertices.count >= 3 else { return nil }
         var segments: [Segment] = []
-        for i in 0..<(vertices.count - 1) {
+        for i in vertices.indices.dropLast() {
             segments.append(.line(.init(start: vertices[i], end: vertices[i + 1])))
         }
         return Self(subpaths: [
@@ -285,7 +285,7 @@ extension Geometry.Path {
     public static func polyline(vertices: [Geometry.Point<2>]) -> Self? {
         guard vertices.count >= 2 else { return nil }
         var segments: [Segment] = []
-        for i in 0..<(vertices.count - 1) {
+        for i in vertices.indices.dropLast() {
             segments.append(.line(.init(start: vertices[i], end: vertices[i + 1])))
         }
         return Self(subpaths: [

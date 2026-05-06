@@ -83,6 +83,9 @@ extension Geometry.Bezier: Hashable where Scalar: Hashable {}
 extension Geometry.Bezier {
     /// The degree of the curve (number of control points - 1)
     @inlinable
+    // reason: Canonical Bezier degree formula — degree = #controlPoints − 1
+    // (textbook: degree-3 cubic has 4 control points). Math IS the expression.
+    // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
     public var degree: Int { max(0, controlPoints.count - 1) }
 
     /// Whether this is a valid Bezier curve (at least 2 control points)
@@ -205,8 +208,8 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
 
         while points.count > 1 {
             var next: [Geometry.Point<2>] = []
-            next.reserveCapacity(points.count - 1)
-            for i in 0..<(points.count - 1) {
+            next.reserveCapacity(points.dropLast().count)
+            for i in points.indices.dropLast() {
                 let p = points[i].lerp(to: points[i + 1], t: t)
                 next.append(p)
             }
@@ -307,7 +310,7 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
         guard points.count >= 2 else { return .zero }
 
         var len: Geometry.Length = .zero
-        for i in 0..<(points.count - 1) {
+        for i in points.indices.dropLast() {
             len += points[i].distance(to: points[i + 1])
         }
         return len
@@ -440,8 +443,8 @@ extension Geometry where Scalar: FloatingPoint {
         var points = bezier.controlPoints
         while points.count > 1 {
             var next: [Point<2>] = []
-            next.reserveCapacity(points.count - 1)
-            for i in 0..<(points.count - 1) {
+            next.reserveCapacity(points.dropLast().count)
+            for i in points.indices.dropLast() {
                 let p = points[i].lerp(to: points[i + 1], t: t)
                 next.append(p)
             }
@@ -456,12 +459,16 @@ extension Geometry where Scalar: FloatingPoint {
         guard bezier.controlPoints.count >= 2 else { return nil }
 
         // Derivative of Bezier curve is n * Bezier(P[i+1] - P[i])
+        // reason: Canonical Bezier derivative degree formula — n = degree =
+        // #controlPoints − 1, used in the derivative recursion above. Same
+        // formula as the `degree` property; math IS the expression.
+        // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
         let n = Scalar(bezier.controlPoints.count - 1)
 
         // Create derivative control points
         var derivPoints: [Point<2>] = []
-        derivPoints.reserveCapacity(bezier.controlPoints.count - 1)
-        for i in 0..<(bezier.controlPoints.count - 1) {
+        derivPoints.reserveCapacity(bezier.controlPoints.dropLast().count)
+        for i in bezier.controlPoints.indices.dropLast() {
             let dx = bezier.controlPoints[i + 1].x.underlying - bezier.controlPoints[i].x.underlying
             let dy = bezier.controlPoints[i + 1].y.underlying - bezier.controlPoints[i].y.underlying
             derivPoints.append(Point(x: X(dx), y: Y(dy)))
@@ -471,8 +478,8 @@ extension Geometry where Scalar: FloatingPoint {
         var points = derivPoints
         while points.count > 1 {
             var next: [Point<2>] = []
-            next.reserveCapacity(points.count - 1)
-            for i in 0..<(points.count - 1) {
+            next.reserveCapacity(points.dropLast().count)
+            for i in points.indices.dropLast() {
                 let p = points[i].lerp(to: points[i + 1], t: t)
                 next.append(p)
             }
