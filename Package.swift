@@ -28,6 +28,7 @@ let package = Package(
         .package(path: "../swift-dimension-primitives"),
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-numeric-primitives"),
+        .package(path: "../swift-pair-primitives"),
     ],
     targets: [
         .target(
@@ -39,6 +40,7 @@ let package = Package(
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
                 .product(name: "Region Primitives", package: "swift-region-primitives"),
                 .product(name: "Real Primitives", package: "swift-numeric-primitives"),
+                .product(name: "Pair Primitives", package: "swift-pair-primitives"),
             ]
         ),
         .target(
