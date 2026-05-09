@@ -331,7 +331,7 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry.Ray {
     /// Create a ray by transforming the coordinates of another ray
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Ray,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -343,7 +343,7 @@ extension Geometry.Ray {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Ray {
         Geometry<Result, Space>.Ray(

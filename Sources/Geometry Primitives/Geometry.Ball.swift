@@ -396,7 +396,7 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
 extension Geometry.Ball {
     /// Transforms coordinates using the given closure.
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Ball<N> {
         Geometry<Result, Space>.Ball(

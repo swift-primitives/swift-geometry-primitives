@@ -448,7 +448,7 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry.Polygon {
     /// Create a polygon by transforming the coordinates of another polygon
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Polygon,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -462,7 +462,7 @@ extension Geometry.Polygon {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Polygon {
         var result: [Geometry<Result, Space>.Point<2>] = []

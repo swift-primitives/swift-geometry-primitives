@@ -361,7 +361,7 @@ extension Geometry {
 extension Geometry.Line {
     /// Create a line by transforming the coordinates of another line
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Line,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -373,7 +373,7 @@ extension Geometry.Line {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Line {
         Geometry<Result, Space>.Line(
@@ -499,7 +499,7 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry.Line.Segment {
     /// Create a segment by transforming the coordinates of another segment
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Line.Segment,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -511,7 +511,7 @@ extension Geometry.Line.Segment {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Line.Segment {
         Geometry<Result, Space>.Line.Segment(

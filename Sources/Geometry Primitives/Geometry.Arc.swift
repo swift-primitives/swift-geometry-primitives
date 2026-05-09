@@ -494,7 +494,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 extension Geometry.Arc {
     /// Create an arc by transforming the coordinates of another arc
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Arc,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -508,7 +508,7 @@ extension Geometry.Arc {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Arc {
         .init(

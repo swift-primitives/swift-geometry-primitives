@@ -499,7 +499,7 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry.Bezier {
     /// Create a curve by transforming the coordinates of another curve
     @inlinable
-    public init<U, E: Error>(
+    public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Bezier,
         _ transform: (U) throws(E) -> Scalar
     ) throws(E) {
@@ -513,7 +513,7 @@ extension Geometry.Bezier {
 
     /// Transform coordinates using the given closure
     @inlinable
-    public func map<Result, E: Error>(
+    public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Bezier {
         var result: [Geometry<Result, Space>.Point<2>] = []
