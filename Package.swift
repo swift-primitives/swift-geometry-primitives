@@ -28,7 +28,7 @@ let package = Package(
         .package(path: "../swift-dimension-primitives"),
         .package(path: "../swift-region-primitives"),
         .package(path: "../swift-numeric-primitives"),
-        .package(path: "../swift-pair-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-pair-primitives.git", branch: "main"),
     ],
     targets: [
         .target(
