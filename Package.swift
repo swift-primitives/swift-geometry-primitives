@@ -22,12 +22,12 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../swift-linear-primitives"),
-        .package(path: "../swift-affine-primitives"),
-        .package(path: "../swift-affine-geometry-primitives"),
-        .package(path: "../swift-dimension-primitives"),
-        .package(path: "../swift-region-primitives"),
-        .package(path: "../swift-numeric-primitives"),
+        .package(url: "https://github.com/swift-primitives/swift-linear-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-affine-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-affine-geometry-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-dimension-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-region-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-numeric-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-pair-primitives.git", branch: "main"),
     ],
     targets: [
