@@ -37,7 +37,7 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
 }
 
 private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
-    return abs(a - b).rawValue < tol
+    return abs(a.underlying - b.underlying) < tol
 }
 
 // MARK: - Initialization Tests

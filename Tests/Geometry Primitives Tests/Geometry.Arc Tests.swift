@@ -53,7 +53,7 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
 
 private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e-10) -> Bool {
     let diff = a - b
-    return diff > Radian(__unchecked: (), -tol) && diff < Radian(__unchecked: (), tol)
+    return diff > Radian(_unchecked: -tol) && diff < Radian(_unchecked: tol)
 }
 
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {

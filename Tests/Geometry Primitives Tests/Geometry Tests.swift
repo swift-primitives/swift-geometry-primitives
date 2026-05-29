@@ -328,16 +328,16 @@ struct RadianTests {
 
     @Test
     func `Radian arithmetic`() {
-        let a: Radian<Double> = .init(__unchecked: (), 1.0)
-        let b: Radian<Double> = .init(__unchecked: (), 2.0)
+        let a: Radian<Double> = .init(_unchecked: 1.0)
+        let b: Radian<Double> = .init(_unchecked: 2.0)
         let sum = a + b
         #expect(sum == 3.0)
     }
 
     @Test
     func `Radian comparable`() {
-        let a: Radian<Double> = .init(__unchecked: (), 1.0)
-        let b: Radian<Double> = .init(__unchecked: (), 2.0)
+        let a: Radian<Double> = .init(_unchecked: 1.0)
+        let b: Radian<Double> = .init(_unchecked: 2.0)
         #expect(a < b)
     }
 }

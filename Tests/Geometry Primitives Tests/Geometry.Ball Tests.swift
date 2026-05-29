@@ -58,7 +58,7 @@ private func isApprox(_ a: Width, _ b: Width, tol: Double = 1e-10) -> Bool {
 }
 
 private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
-    return abs(a - b).rawValue < tol
+    return abs(a.underlying - b.underlying) < tol
 }
 
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {
@@ -361,7 +361,7 @@ struct `Geometry.Ball - Tangent Vectors` {
     @Test
     func `Tangent is perpendicular to radius`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let angle: Radian = .init(__unchecked: (), Double.pi / 3)
+        let angle: Radian = .init(_unchecked: Double.pi / 3)
         let point = circle.point(at: angle)
         let tangent = circle.tangent(at: angle)
         // Create a vector from center to point (which is the radius vector)

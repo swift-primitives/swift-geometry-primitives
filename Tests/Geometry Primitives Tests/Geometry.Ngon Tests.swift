@@ -42,12 +42,12 @@ private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bo
 }
 
 private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
-    return abs(a - b).rawValue < tol
+    return abs(a.underlying - b.underlying) < tol
 }
 
 private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e-10) -> Bool {
     let diff = a - b
-    return diff > Radian(__unchecked: (), -tol) && diff < Radian(__unchecked: (), tol)
+    return diff > Radian(_unchecked: -tol) && diff < Radian(_unchecked: tol)
 }
 
 // MARK: - Triangle (Ngon<3>) Initialization Tests

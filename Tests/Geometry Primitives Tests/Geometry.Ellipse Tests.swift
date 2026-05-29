@@ -56,7 +56,7 @@ private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bo
 
 private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e-10) -> Bool {
     let diff = a - b
-    return diff > Radian(__unchecked: (), -tol) && diff < Radian(__unchecked: (), tol)
+    return diff > Radian(_unchecked: -tol) && diff < Radian(_unchecked: tol)
 }
 
 // MARK: - Initialization Tests
@@ -191,7 +191,7 @@ struct `Geometry.Ellipse - Static Functions` {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
         let area = Geometry.area(of: ellipse)
         // Area = π * a * b = π * 5 * 3 = 15π
-        #expect(isApproxScalar(area.rawValue, 15 * .pi))
+        #expect(isApproxScalar(area.underlying, 15 * .pi))
     }
 
     @Test
@@ -250,7 +250,7 @@ struct `Geometry.Ellipse - Area and Perimeter` {
     @Test
     func `Area property matches static function`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
-        #expect(isApproxScalar(ellipse.area.rawValue, 15 * .pi))
+        #expect(isApproxScalar(ellipse.area.underlying, 15 * .pi))
     }
 
     @Test
