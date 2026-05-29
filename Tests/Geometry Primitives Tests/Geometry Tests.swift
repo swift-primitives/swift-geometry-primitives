@@ -1,7 +1,7 @@
 // GeometryTests.swift
 
 import Affine_Primitives
-import Algebra_Linear_Primitives
+import Linear_Primitives
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Region_Primitives

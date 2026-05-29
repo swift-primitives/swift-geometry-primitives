@@ -2,7 +2,7 @@
 // Tests for Geometry.Line and Geometry.Line.Segment types.
 
 import Affine_Primitives
-import Algebra_Linear_Primitives
+import Linear_Primitives
 import Geometry_Primitives_Test_Support
 import Testing
 

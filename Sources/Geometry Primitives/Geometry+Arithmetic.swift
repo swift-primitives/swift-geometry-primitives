@@ -5,7 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 14/12/2025.
 //
 
-import Algebra_Linear_Primitives
+import Linear_Primitives
 public import Dimension_Primitives
 import Real_Primitives
 

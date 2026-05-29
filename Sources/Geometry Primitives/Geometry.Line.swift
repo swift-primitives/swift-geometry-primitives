@@ -3,7 +3,7 @@
 
 public import Affine_Geometry_Primitives
 import Affine_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 
 extension Geometry {
     /// An infinite line in 2D space.

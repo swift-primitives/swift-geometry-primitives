@@ -2,7 +2,7 @@
 // A half-line (ray) extending from an origin in a direction.
 
 public import Affine_Geometry_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 public import Dimension_Primitives
 
 extension Geometry {

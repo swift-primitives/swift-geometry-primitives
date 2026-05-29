@@ -40,7 +40,7 @@
 
 public import Affine_Geometry_Primitives
 public import Affine_Primitives
-public import Algebra_Linear_Primitives
+public import Linear_Primitives
 import Dimension_Primitives
 
 public enum Geometry<Scalar: ~Copyable, Space>: ~Copyable {}
