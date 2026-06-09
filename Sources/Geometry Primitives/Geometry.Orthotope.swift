@@ -357,7 +357,7 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
 extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
     /// Get a corner coordinate.
     @inlinable
-    public func corner(_ corner: Region.Corner) -> Geometry.Point<2> {
+    public func corner(_ corner: Boundary.Corner) -> Geometry.Point<2> {
         switch corner {
         case .bottomLeft:
             return Geometry.Point(x: llx, y: lly)
@@ -367,8 +367,6 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
             return Geometry.Point(x: llx, y: ury)
         case .topRight:
             return Geometry.Point(x: urx, y: ury)
-        default:
-            fatalError("Invalid corner")
         }
     }
 }

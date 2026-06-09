@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/swift-primitives/swift-affine-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-affine-geometry-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-dimension-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-region-primitives.git", branch: "main"),
+        .package(url: "https://github.com/swift-primitives/swift-boundary-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-numeric-primitives.git", branch: "main"),
         .package(url: "https://github.com/swift-primitives/swift-pair-primitives.git", branch: "main"),
     ],
@@ -38,7 +38,7 @@ let package = Package(
                 .product(name: "Affine Primitives", package: "swift-affine-primitives"),
                 .product(name: "Affine Geometry Primitives", package: "swift-affine-geometry-primitives"),
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
-                .product(name: "Region Primitives", package: "swift-region-primitives"),
+                .product(name: "Boundary Primitives", package: "swift-boundary-primitives"),
                 .product(name: "Real Primitives", package: "swift-numeric-primitives"),
                 .product(name: "Pair Primitives", package: "swift-pair-primitives"),
             ]
