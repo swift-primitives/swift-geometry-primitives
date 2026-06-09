@@ -4,7 +4,6 @@ import Affine_Primitives
 import Linear_Primitives
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
-import Region_Primitives
 import Testing
 
 @testable import Geometry_Primitives
