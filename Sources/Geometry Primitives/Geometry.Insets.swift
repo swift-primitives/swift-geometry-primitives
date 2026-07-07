@@ -67,6 +67,10 @@ extension Geometry.Insets: Hashable where Scalar: Hashable {}
             case top, leading, bottom, trailing
         }
 
+        // `any Decoder`/`any Encoder` and untyped `throws` are the Codable requirements' own
+        // signatures; disable the existential/typed-throws rules across the conformance.
+        // swiftlint:disable no_any_protocol_existential typed_throws_required
+        /// Creates insets by decoding from the given decoder.
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.top = try container.decode(Geometry.Height.self, forKey: .top)
@@ -75,6 +79,7 @@ extension Geometry.Insets: Hashable where Scalar: Hashable {}
             self.trailing = try container.decode(Geometry.Width.self, forKey: .trailing)
         }
 
+        /// Encodes these insets into the given encoder.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(top, forKey: .top)
@@ -82,6 +87,7 @@ extension Geometry.Insets: Hashable where Scalar: Hashable {}
             try container.encode(bottom, forKey: .bottom)
             try container.encode(trailing, forKey: .trailing)
         }
+        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 

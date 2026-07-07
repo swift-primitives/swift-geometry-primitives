@@ -2,8 +2,8 @@
 // A polygon defined by an ordered sequence of vertices.
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 
 extension Geometry {
     /// A polygon in 2D space defined by an ordered sequence of vertices.
@@ -26,10 +26,10 @@ extension Geometry {
     /// print(square.isConvex)   // true
     /// ```
     public struct Polygon {
-        /// The vertices of the polygon in order
+        /// The vertices of the polygon in order.
         public var vertices: [Point<2>]
 
-        /// Create a polygon from an array of vertices
+        /// Create a polygon from an array of vertices.
         @inlinable
         public init(vertices: consuming [Point<2>]) {
             self.vertices = vertices
@@ -48,11 +48,11 @@ extension Geometry.Polygon: Hashable where Scalar: Hashable {}
 // MARK: - Basic Properties
 
 extension Geometry.Polygon {
-    /// The number of vertices (and edges)
+    /// The number of vertices (and edges).
     @inlinable
     public var vertexCount: Int { vertices.count }
 
-    /// Whether the polygon has at least 3 vertices
+    /// Whether the polygon has at least 3 vertices.
     @inlinable
     public var isValid: Bool { vertices.count >= 3 }
 }
@@ -60,7 +60,7 @@ extension Geometry.Polygon {
 // MARK: - Edges
 
 extension Geometry.Polygon where Scalar: AdditiveArithmetic {
-    /// The edges of the polygon as line segments
+    /// The edges of the polygon as line segments.
     @inlinable
     public var edges: [Geometry.Line.Segment] {
         guard vertices.count >= 2 else { return [] }
@@ -104,11 +104,11 @@ extension Geometry.Polygon where Scalar: SignedNumeric {
 }
 
 extension Geometry.Polygon where Scalar: FloatingPoint {
-    /// The area of the polygon (always positive)
+    /// The area of the polygon (always positive).
     @inlinable
     public var area: Geometry.Area { Geometry.area(of: self) }
 
-    /// The perimeter of the polygon
+    /// The perimeter of the polygon.
     @inlinable
     public var perimeter: Geometry.Perimeter { Geometry.perimeter(of: self) }
 }
@@ -446,7 +446,7 @@ extension Geometry where Scalar: FloatingPoint {
 // MARK: - Functorial Map
 
 extension Geometry.Polygon {
-    /// Create a polygon by transforming the coordinates of another polygon
+    /// Create a polygon by transforming the coordinates of another polygon.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Polygon,
@@ -460,7 +460,7 @@ extension Geometry.Polygon {
         self.init(vertices: result)
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

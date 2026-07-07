@@ -30,13 +30,13 @@ extension Geometry {
     /// )
     /// ```
     public struct Line {
-        /// A point on the line
+        /// A point on the line.
         public var point: Point<2>
 
-        /// The direction vector of the line (not necessarily normalized)
+        /// The direction vector of the line (not necessarily normalized).
         public var direction: Vector<2>
 
-        /// Create a line from a point and direction vector
+        /// Create a line from a point and direction vector.
         @inlinable
         public init(point: consuming Point<2>, direction: consuming Vector<2>) {
             self.point = point
@@ -56,7 +56,7 @@ extension Geometry.Line: Hashable where Scalar: Hashable {}
 // MARK: - Factory Methods (AdditiveArithmetic)
 
 extension Geometry.Line where Scalar: AdditiveArithmetic {
-    /// Create a line through two points
+    /// Create a line through two points.
     ///
     /// - Parameters:
     ///   - from: First point on the line
@@ -71,13 +71,13 @@ extension Geometry.Line where Scalar: AdditiveArithmetic {
 // MARK: - FloatingPoint Operations
 
 extension Geometry.Line where Scalar: FloatingPoint {
-    /// A normalized direction vector (unit length)
+    /// A normalized direction vector (unit length).
     @inlinable
     public var normalizedDirection: Geometry.Vector<2> {
         direction.normalized
     }
 
-    /// Get a point on the line at parameter t
+    /// Get a point on the line at parameter t.
     ///
     /// - Parameter t: The parameter (0 = base point, 1 = base point + direction)
     /// - Returns: The point at parameter t
@@ -108,7 +108,7 @@ extension Geometry.Line where Scalar: FloatingPoint {
 
     /// Project a point onto this line.
     ///
-    /// - Parameter point: The point to project
+    /// - Parameter other: The point to project
     /// - Returns: The closest point on the line, or `nil` if line has zero-length direction
     @inlinable
     public func projection(of other: Geometry.Point<2>) -> Geometry.Point<2>? {
@@ -117,7 +117,7 @@ extension Geometry.Line where Scalar: FloatingPoint {
 
     /// Reflect a point across this line.
     ///
-    /// - Parameter point: The point to reflect
+    /// - Parameter other: The point to reflect
     /// - Returns: The reflected point, or `nil` if line has zero-length direction
     @inlinable
     public func reflection(of other: Geometry.Point<2>) -> Geometry.Point<2>? {
@@ -184,13 +184,13 @@ extension Geometry.Line {
     /// print(segment.length)  // 141.42...
     /// ```
     public struct Segment {
-        /// The start point
+        /// The start point.
         public var start: Geometry.Point<2>
 
-        /// The end point
+        /// The end point.
         public var end: Geometry.Point<2>
 
-        /// Create a line segment between two points
+        /// Create a line segment between two points.
         @inlinable
         public init(start: consuming Geometry.Point<2>, end: consuming Geometry.Point<2>) {
             self.start = start
@@ -210,7 +210,7 @@ extension Geometry.Line.Segment: Hashable where Scalar: Hashable {}
 // MARK: - Segment Reversed
 
 extension Geometry.Line.Segment {
-    /// Return the segment with reversed direction
+    /// Return the segment with reversed direction.
     @inlinable
     public var reversed: Self {
         Self(start: end, end: start)
@@ -220,7 +220,7 @@ extension Geometry.Line.Segment {
 // MARK: - Vector from Line.Segment
 
 extension Linear.Vector where N == 2, Scalar: AdditiveArithmetic {
-    /// Create a vector from a line segment (direction from start to end)
+    /// Create a vector from a line segment (direction from start to end).
     @inlinable
     public init(from segment: Geometry<Scalar, Space>.Line.Segment) {
         self.init(dx: segment.end.x - segment.start.x, dy: segment.end.y - segment.start.y)
@@ -230,7 +230,7 @@ extension Linear.Vector where N == 2, Scalar: AdditiveArithmetic {
 // MARK: - Line from Segment
 
 extension Geometry.Line where Scalar: AdditiveArithmetic {
-    /// Create a line by extending a segment to infinity
+    /// Create a line by extending a segment to infinity.
     @inlinable
     public init(extending segment: Segment) {
         self.init(point: segment.start, direction: .init(from: segment))
@@ -240,11 +240,11 @@ extension Geometry.Line where Scalar: AdditiveArithmetic {
 // MARK: - Segment Vector (AdditiveArithmetic)
 
 extension Geometry.Line.Segment where Scalar: AdditiveArithmetic {
-    /// The vector from start to end
+    /// The vector from start to end.
     @inlinable
     public var vector: Geometry.Vector<2> { .init(from: self) }
 
-    /// The infinite line containing this segment
+    /// The infinite line containing this segment.
     @inlinable
     public var line: Geometry.Line { .init(extending: self) }
 }
@@ -252,7 +252,7 @@ extension Geometry.Line.Segment where Scalar: AdditiveArithmetic {
 // MARK: - Point Midpoint Initializer
 
 extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
-    /// Create a point at the midpoint of a line segment
+    /// Create a point at the midpoint of a line segment.
     @inlinable
     public init(midpointOf segment: Geometry<Scalar, Space>.Line.Segment) {
         self.init(
@@ -265,7 +265,7 @@ extension Affine.Continuous.Point where N == 2, Scalar: FloatingPoint {
 // MARK: - Segment FloatingPoint Operations
 
 extension Geometry.Line.Segment where Scalar: FloatingPoint {
-    /// The squared length of the segment
+    /// The squared length of the segment.
     ///
     /// Use this when comparing lengths to avoid the sqrt computation.
     @inlinable
@@ -273,17 +273,17 @@ extension Geometry.Line.Segment where Scalar: FloatingPoint {
         vector.lengthSquared
     }
 
-    /// The length of the segment
+    /// The length of the segment.
     @inlinable
     public var length: Geometry.Length {
         Geometry.Length(vector.length.underlying)
     }
 
-    /// The midpoint of the segment
+    /// The midpoint of the segment.
     @inlinable
     public var midpoint: Geometry.Point<2> { .init(midpointOf: self) }
 
-    /// Get a point along the segment at parameter t
+    /// Get a point along the segment at parameter t.
     ///
     /// - Parameter t: Parameter from 0 (start) to 1 (end)
     /// - Returns: The interpolated point
@@ -321,7 +321,7 @@ extension Geometry.Line.Segment where Scalar: FloatingPoint {
     ///
     /// Returns the distance to the closest point on the segment (including endpoints).
     ///
-    /// - Parameter point: The point to measure from
+    /// - Parameter other: The point to measure from
     /// - Returns: The distance to the closest point on the segment
     @inlinable
     public func distance(to other: Geometry.Point<2>) -> Geometry.Distance {
@@ -359,7 +359,7 @@ extension Geometry {
 // MARK: - Functorial Map (Line)
 
 extension Geometry.Line {
-    /// Create a line by transforming the coordinates of another line
+    /// Create a line by transforming the coordinates of another line.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Line,
@@ -371,7 +371,7 @@ extension Geometry.Line {
         )
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -497,7 +497,7 @@ extension Geometry where Scalar: FloatingPoint {
 // MARK: - Functorial Map (Line.Segment)
 
 extension Geometry.Line.Segment {
-    /// Create a segment by transforming the coordinates of another segment
+    /// Create a segment by transforming the coordinates of another segment.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Line.Segment,
@@ -509,7 +509,7 @@ extension Geometry.Line.Segment {
         )
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

@@ -2,8 +2,8 @@
 // An N-sided polygon with exactly N vertices (compile-time enforced).
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 public import Real_Primitives
 
 extension Geometry {
@@ -29,10 +29,10 @@ extension Geometry {
     /// print(quad.perimeter)  // 4.0
     /// ```
     public struct Ngon<let N: Int> {
-        /// The vertices stored inline with compile-time known count
+        /// The vertices stored inline with compile-time known count.
         public var vertices: InlineArray<N, Point<2>>
 
-        /// Create an N-gon from an inline array of vertices
+        /// Create an N-gon from an inline array of vertices.
         @inlinable
         public init(_ vertices: consuming InlineArray<N, Point<2>>) {
             self.vertices = vertices
@@ -45,6 +45,7 @@ extension Geometry.Ngon: Sendable where Scalar: Sendable {}
 // MARK: - Equatable
 
 extension Geometry.Ngon: Equatable where Scalar: Equatable {
+    /// Returns whether two N-gons are equal.
     @inlinable
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         for i in 0..<N {
@@ -59,6 +60,7 @@ extension Geometry.Ngon: Equatable where Scalar: Equatable {
 // MARK: - Hashable
 
 extension Geometry.Ngon: Hashable where Scalar: Hashable {
+    /// Hashes the essential components of this N-gon into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         for i in 0..<N {
@@ -71,6 +73,10 @@ extension Geometry.Ngon: Hashable where Scalar: Hashable {
 
 #if !hasFeature(Embedded)
     extension Geometry.Ngon: Codable where Scalar: Codable {
+        // `any Decoder`/`any Encoder` and untyped `throws` are the Codable requirements' own
+        // signatures; disable the existential/typed-throws rules across the conformance.
+        // swiftlint:disable no_any_protocol_existential typed_throws_required
+        /// Creates an N-gon by decoding from the given decoder.
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
             let first = try container.decode(Geometry.Point<2>.self)
@@ -81,32 +87,34 @@ extension Geometry.Ngon: Hashable where Scalar: Hashable {
             self.vertices = verts
         }
 
+        /// Encodes this N-gon into the given encoder.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.unkeyedContainer()
             for i in 0..<N {
                 try container.encode(vertices[i])
             }
         }
+        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 
 // MARK: - Typealiases
 
 extension Geometry {
-    /// A quadrilateral (4-sided polygon)
+    /// A quadrilateral (4-sided polygon).
     public typealias Quadrilateral = Ngon<4>
 
-    /// A pentagon (5-sided polygon)
+    /// A pentagon (5-sided polygon).
     public typealias Pentagon = Ngon<5>
 
-    /// A hexagon (6-sided polygon)
+    /// A hexagon (6-sided polygon).
     public typealias Hexagon = Ngon<6>
 }
 
 // MARK: - Subscript
 
 extension Geometry.Ngon {
-    /// Access vertex by index
+    /// Access vertex by index.
     @inlinable
     public subscript(index: Int) -> Geometry.Point<2> {
         get { vertices[index] }
@@ -119,8 +127,7 @@ extension Geometry.Ngon {
 extension Geometry.Ngon {
     /// Create an N-gon from an array of exactly N vertices.
     ///
-    /// - Parameter vertices: Array of N points
-    /// - Returns: An N-gon, or `nil` if the array doesn't have exactly N points
+    /// - Parameter array: Array of N points; the initializer fails unless it has exactly N.
     @inlinable
     public init?(vertices array: [Geometry.Point<2>]) {
         guard array.count == N, let first = array.first else { return nil }
@@ -135,7 +142,7 @@ extension Geometry.Ngon {
 // MARK: - Vertices as Array
 
 extension Geometry.Ngon {
-    /// The vertices as a Swift array
+    /// The vertices as a Swift array.
     @inlinable
     public var vertexArray: [Geometry.Point<2>] {
         var result: [Geometry.Point<2>] = []
@@ -173,6 +180,7 @@ extension Geometry {
 extension Geometry.Edges: Sendable where Scalar: Sendable {}
 
 extension Geometry.Edges: Equatable where Scalar: Equatable {
+    /// Returns whether two edge collections are equal.
     @inlinable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         for i in 0..<N {
@@ -185,6 +193,7 @@ extension Geometry.Edges: Equatable where Scalar: Equatable {
 }
 
 extension Geometry.Edges: Hashable where Scalar: Hashable {
+    /// Hashes the essential components of these edges into the given hasher.
     @inlinable
     public func hash(into hasher: inout Hasher) {
         for i in 0..<N {
@@ -294,17 +303,17 @@ extension Geometry.Ngon where Scalar: SignedNumeric {
 }
 
 extension Geometry.Ngon where Scalar: FloatingPoint {
-    /// The signed area of the polygon
+    /// The signed area of the polygon.
     @inlinable
     public var signedArea: Linear<Scalar, Space>.Area {
         signedDoubleArea / Scale(2)
     }
 
-    /// The area of the polygon (always positive)
+    /// The area of the polygon (always positive).
     @inlinable
     public var area: Geometry.Area { Geometry.area(of: self) }
 
-    /// The perimeter of the polygon
+    /// The perimeter of the polygon.
     @inlinable
     public var perimeter: Geometry.Perimeter { Geometry.perimeter(of: self) }
 }
@@ -654,7 +663,7 @@ extension Geometry where Scalar: FloatingPoint {
 // MARK: - Polygon Conversion
 
 extension Geometry.Ngon {
-    /// Convert to a dynamic-size polygon
+    /// Convert to a dynamic-size polygon.
     @inlinable
     public var polygon: Geometry.Polygon {
         Geometry.Polygon(vertices: vertexArray)
@@ -664,7 +673,7 @@ extension Geometry.Ngon {
 // MARK: - Functorial Map
 
 extension Geometry.Ngon {
-    /// Create an N-gon by transforming the coordinates of another N-gon
+    /// Create an N-gon by transforming the coordinates of another N-gon.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Ngon<N>,
@@ -678,7 +687,7 @@ extension Geometry.Ngon {
         self.init(result)
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -695,35 +704,35 @@ extension Geometry.Ngon {
 // MARK: - Quadrilateral (N == 4) Named Vertices
 
 extension Geometry.Ngon where N == 4 {
-    /// First vertex
+    /// First vertex.
     @inlinable
     public var a: Geometry.Point<2> {
         get { vertices[0] }
         set { vertices[0] = newValue }
     }
 
-    /// Second vertex
+    /// Second vertex.
     @inlinable
     public var b: Geometry.Point<2> {
         get { vertices[1] }
         set { vertices[1] = newValue }
     }
 
-    /// Third vertex
+    /// Third vertex.
     @inlinable
     public var c: Geometry.Point<2> {
         get { vertices[2] }
         set { vertices[2] = newValue }
     }
 
-    /// Fourth vertex
+    /// Fourth vertex.
     @inlinable
     public var d: Geometry.Point<2> {
         get { vertices[3] }
         set { vertices[3] = newValue }
     }
 
-    /// Create a quadrilateral with four named vertices
+    /// Create a quadrilateral with four named vertices.
     @inlinable
     public init(
         a: Geometry.Point<2>,
@@ -738,7 +747,7 @@ extension Geometry.Ngon where N == 4 {
 // MARK: - Quadrilateral Diagonals
 
 extension Geometry.Ngon where N == 4, Scalar: AdditiveArithmetic {
-    /// The two diagonals of the quadrilateral
+    /// The two diagonals of the quadrilateral.
     @inlinable
     public var diagonals: (ac: Geometry.Line.Segment, bd: Geometry.Line.Segment) {
         (
@@ -766,28 +775,28 @@ extension Geometry.Ngon where N == 4 {
 // MARK: - Triangle (N == 3) Named Vertices
 
 extension Geometry.Ngon where N == 3 {
-    /// First vertex
+    /// First vertex.
     @inlinable
     public var a: Geometry.Point<2> {
         get { vertices[0] }
         set { vertices[0] = newValue }
     }
 
-    /// Second vertex
+    /// Second vertex.
     @inlinable
     public var b: Geometry.Point<2> {
         get { vertices[1] }
         set { vertices[1] = newValue }
     }
 
-    /// Third vertex
+    /// Third vertex.
     @inlinable
     public var c: Geometry.Point<2> {
         get { vertices[2] }
         set { vertices[2] = newValue }
     }
 
-    /// Create a triangle with three named vertices
+    /// Create a triangle with three named vertices.
     @inlinable
     public init(
         a: consuming Geometry.Point<2>,
@@ -801,7 +810,7 @@ extension Geometry.Ngon where N == 3 {
 // MARK: - Triangle Side Lengths
 
 extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
-    /// The lengths of the three sides
+    /// The lengths of the three sides.
     @inlinable
     public var sideLengths: (ab: Geometry.Distance, bc: Geometry.Distance, ca: Geometry.Distance) {
         (
@@ -1128,6 +1137,6 @@ extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
 // MARK: - Triangle Typealias
 
 extension Geometry {
-    /// A triangle (3-sided polygon)
+    /// A triangle (3-sided polygon).
     public typealias Triangle = Ngon<3>
 }

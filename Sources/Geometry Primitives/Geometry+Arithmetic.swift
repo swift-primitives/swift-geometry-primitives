@@ -5,8 +5,8 @@
 //  Created by Coen ten Thije Boonkkamp on 14/12/2025.
 //
 
-import Linear_Primitives
 public import Dimension_Primitives
+import Linear_Primitives
 import Real_Primitives
 
 // MARK: - Size × Scale
@@ -86,7 +86,7 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
 // MARK: - Negation
 
 extension Geometry.Depth where Scalar: SignedNumeric {
-    /// Negate
+    /// Negate.
     @inlinable
     public static prefix func - (value: borrowing Self) -> Self {
         Self(-value.value)
@@ -94,12 +94,14 @@ extension Geometry.Depth where Scalar: SignedNumeric {
 }
 
 extension Geometry.Depth where Scalar: AdditiveArithmetic {
+    /// Returns the sum of two depths.
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         Self(lhs.value + rhs.value)
     }
 
+    /// Returns the difference of two depths.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -110,6 +112,7 @@ extension Geometry.Depth where Scalar: AdditiveArithmetic {
 // MARK: - Comparable
 
 extension Geometry.Depth: Comparable where Scalar: Comparable {
+    /// Returns whether the left depth is less than the right.
     @inlinable
     @_disfavoredOverload
     public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
@@ -160,7 +163,7 @@ extension Geometry.Insets where Scalar: SignedNumeric {
 }
 
 extension Geometry.Size where Scalar: AdditiveArithmetic {
-    /// Add two sizes component-wise
+    /// Add two sizes component-wise.
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -171,7 +174,7 @@ extension Geometry.Size where Scalar: AdditiveArithmetic {
         return Self(result)
     }
 
-    /// Subtract two sizes component-wise
+    /// Subtract two sizes component-wise.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -186,7 +189,7 @@ extension Geometry.Size where Scalar: AdditiveArithmetic {
 // MARK: - Negation
 
 extension Geometry.Size where Scalar: SignedNumeric {
-    /// Negate all dimensions
+    /// Negate all dimensions.
     @inlinable
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {

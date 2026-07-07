@@ -1,9 +1,9 @@
 // GeometryTests.swift
 
 import Affine_Primitives
-import Linear_Primitives
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
+import Linear_Primitives
 import Testing
 
 @testable import Geometry_Primitives
@@ -50,7 +50,7 @@ private func isApprox(_ a: Length, _ b: Length, tol: Double = 1e-10) -> Bool {
 
 // MARK: - Test Unit Type
 
-/// A custom unit type for testing
+/// A custom unit type for testing.
 struct TestUnit: AdditiveArithmetic, Comparable, Codable, Hashable, ExpressibleByIntegerLiteral,
     ExpressibleByFloatLiteral
 {
@@ -68,17 +68,17 @@ struct TestUnit: AdditiveArithmetic, Comparable, Codable, Hashable, ExpressibleB
         self.value = value
     }
 
-    static var zero: TestUnit { TestUnit(0) }
+    static var zero: Self { Self(0) }
 
-    static func + (lhs: TestUnit, rhs: TestUnit) -> TestUnit {
-        TestUnit(lhs.value + rhs.value)
+    static func + (lhs: Self, rhs: Self) -> Self {
+        Self(lhs.value + rhs.value)
     }
 
-    static func - (lhs: TestUnit, rhs: TestUnit) -> TestUnit {
-        TestUnit(lhs.value - rhs.value)
+    static func - (lhs: Self, rhs: Self) -> Self {
+        Self(lhs.value - rhs.value)
     }
 
-    static func < (lhs: TestUnit, rhs: TestUnit) -> Bool {
+    static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.value < rhs.value
     }
 }

@@ -40,9 +40,10 @@
 
 public import Affine_Geometry_Primitives
 public import Affine_Primitives
-public import Linear_Primitives
 import Dimension_Primitives
+public import Linear_Primitives
 
+/// Namespace for geometric primitives parameterized by a scalar type and coordinate space.
 public enum Geometry<Scalar: ~Copyable, Space>: ~Copyable {}
 
 extension Geometry: Copyable where Scalar: Copyable {}
@@ -51,30 +52,30 @@ extension Geometry: Sendable where Scalar: Sendable {}
 // MARK: - Type Aliases (Canonical types from Affine/Linear)
 
 extension Geometry {
-    /// See ``Affine/X``
+    /// See ``Affine/X``.
     public typealias Area = Linear<Scalar, Space>.Area
 }
 
 extension Geometry {
-    /// See ``Affine/X``
+    /// See ``Affine/X``.
     public typealias X = Affine.Continuous<Scalar, Space>.X
 
-    /// See ``Affine/Y``
+    /// See ``Affine/Y``.
     public typealias Y = Affine.Continuous<Scalar, Space>.Y
 
-    /// See ``Linear/Width``
+    /// See ``Linear/Width``.
     public typealias Width = Linear<Scalar, Space>.Width
 
-    /// See ``Linear/Height``
+    /// See ``Linear/Height``.
     public typealias Height = Linear<Scalar, Space>.Height
 
-    /// See ``Linear/Dx``
+    /// See ``Linear/Dx``.
     public typealias Dx = Linear<Scalar, Space>.Dx
 
-    /// See ``Linear/Dy``
+    /// See ``Linear/Dy``.
     public typealias Dy = Linear<Scalar, Space>.Dy
 
-    /// See ``Linear/Magnitude``
+    /// See ``Linear/Magnitude``.
     public typealias Length = Linear<Scalar, Space>.Magnitude
 
     /// Radius of a circle or arc (non-directional magnitude).
@@ -107,16 +108,16 @@ extension Geometry {
     /// Semantically identical to `Length` but provides clearer intent for curved paths.
     public typealias ArcLength = Linear<Scalar, Space>.Magnitude
 
-    /// See ``Affine/Translation``
+    /// See ``Affine/Translation``.
     public typealias Translation = Affine.Continuous<Scalar, Space>.Translation
 
-    /// See ``Affine/Transform``
+    /// See ``Affine/Transform``.
     public typealias Transform = Affine.Continuous<Scalar, Space>.Transform
 
-    /// See ``Affine/Point``
+    /// See ``Affine/Point``.
     public typealias Point<let N: Int> = Affine.Continuous<Scalar, Space>.Point<N>
 
-    /// See ``Linear/Vector``
+    /// See ``Linear/Vector``.
     public typealias Vector<let N: Int> = Linear<Scalar, Space>.Vector<N>
 }
 
@@ -154,6 +155,7 @@ extension Geometry.Magnitude: Hashable where Scalar: Hashable {}
 #endif
 
 extension Geometry.Magnitude: Comparable where Scalar: Comparable {
+    /// Returns whether the left magnitude is less than the right.
     @inlinable
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.underlying < rhs.underlying
@@ -162,6 +164,7 @@ extension Geometry.Magnitude: Comparable where Scalar: Comparable {
 
 extension Geometry.Magnitude: ExpressibleByIntegerLiteral
 where Scalar: ExpressibleByIntegerLiteral {
+    /// Creates a magnitude from an integer literal.
     @inlinable
     public init(integerLiteral value: Scalar.IntegerLiteralType) {
         self.underlying = .init(Scalar(integerLiteral: value))
@@ -169,6 +172,7 @@ where Scalar: ExpressibleByIntegerLiteral {
 }
 
 extension Geometry.Magnitude: ExpressibleByFloatLiteral where Scalar: ExpressibleByFloatLiteral {
+    /// Creates a magnitude from a floating-point literal.
     @inlinable
     public init(floatLiteral value: Scalar.FloatLiteralType) {
         self.underlying = .init(Scalar(floatLiteral: value))

@@ -2,8 +2,8 @@
 // N-dimensional orthotope (axis-aligned box with independent side lengths).
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 
 extension Geometry {
     /// N-dimensional orthotope — axis-aligned box with independent side lengths.
@@ -361,10 +361,13 @@ extension Geometry.Orthotope where N == 2, Scalar: FloatingPoint {
         switch corner {
         case .bottomLeft:
             return Geometry.Point(x: llx, y: lly)
+
         case .bottomRight:
             return Geometry.Point(x: urx, y: lly)
+
         case .topLeft:
             return Geometry.Point(x: llx, y: ury)
+
         case .topRight:
             return Geometry.Point(x: urx, y: ury)
         }

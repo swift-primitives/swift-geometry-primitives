@@ -2,8 +2,8 @@
 // N-dimensional hypercube (axis-aligned box with uniform side length).
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 
 extension Geometry {
     /// N-dimensional hypercube — axis-aligned box with uniform side length.

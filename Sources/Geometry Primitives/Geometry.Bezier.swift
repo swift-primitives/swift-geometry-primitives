@@ -2,8 +2,8 @@
 // Bezier curves of arbitrary degree.
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
@@ -27,10 +27,10 @@ extension Geometry {
     /// let midpoint = curve.point(at: 0.5)
     /// ```
     public struct Bezier {
-        /// The control points defining the curve
+        /// The control points defining the curve.
         public var controlPoints: [Point<2>]
 
-        /// Create a Bezier curve from control points
+        /// Create a Bezier curve from control points.
         @inlinable
         public init(controlPoints: consuming [Point<2>]) {
             self.controlPoints = controlPoints
@@ -81,22 +81,22 @@ extension Geometry.Bezier: Hashable where Scalar: Hashable {}
 // MARK: - Basic Properties
 
 extension Geometry.Bezier {
-    /// The degree of the curve (number of control points - 1)
+    /// The degree of the curve (number of control points - 1).
     @inlinable
     // reason: Canonical Bezier degree formula — degree = #controlPoints − 1
     // (textbook: degree-3 cubic has 4 control points). Math IS the expression.
     // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
     public var degree: Int { max(0, controlPoints.count - 1) }
 
-    /// Whether this is a valid Bezier curve (at least 2 control points)
+    /// Whether this is a valid Bezier curve (at least 2 control points).
     @inlinable
     public var isValid: Bool { controlPoints.count >= 2 }
 
-    /// The start point of the curve
+    /// The start point of the curve.
     @inlinable
     public var startPoint: Geometry.Point<2>? { controlPoints.first }
 
-    /// The end point of the curve
+    /// The end point of the curve.
     @inlinable
     public var endPoint: Geometry.Point<2>? { controlPoints.last }
 }
@@ -104,7 +104,7 @@ extension Geometry.Bezier {
 // MARK: - Convenience Initializers
 
 extension Geometry.Bezier {
-    /// Create a linear (degree 1) Bezier curve
+    /// Create a linear (degree 1) Bezier curve.
     @inlinable
     public static func linear(
         from start: Geometry.Point<2>,
@@ -113,7 +113,7 @@ extension Geometry.Bezier {
         Self(controlPoints: [start, end])
     }
 
-    /// Create a quadratic (degree 2) Bezier curve
+    /// Create a quadratic (degree 2) Bezier curve.
     @inlinable
     public static func quadratic(
         from start: Geometry.Point<2>,
@@ -123,7 +123,7 @@ extension Geometry.Bezier {
         Self(controlPoints: [start, control, end])
     }
 
-    /// Create a cubic (degree 3) Bezier curve
+    /// Create a cubic (degree 3) Bezier curve.
     @inlinable
     public static func cubic(
         from start: Geometry.Point<2>,
@@ -186,6 +186,10 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
 // MARK: - Subdivision (FloatingPoint)
 
 extension Geometry.Bezier where Scalar: FloatingPoint {
+    // `points`/`next` are non-empty at every `.first!`/`.last!` below: the method
+    // returns early unless `isValid` (≥2 control points), and the loop runs only
+    // while `points.count > 1` (so `next` has ≥1 element). Deliberate force-unwraps.
+    // swift-format-ignore: NeverForceUnwrap
     /// Split the curve at parameter t into two curves.
     ///
     /// Uses de Casteljau's algorithm to compute the split.
@@ -497,7 +501,7 @@ extension Geometry where Scalar: FloatingPoint {
 // MARK: - Functorial Map
 
 extension Geometry.Bezier {
-    /// Create a curve by transforming the coordinates of another curve
+    /// Create a curve by transforming the coordinates of another curve.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Bezier,
@@ -511,7 +515,7 @@ extension Geometry.Bezier {
         self.init(controlPoints: result)
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

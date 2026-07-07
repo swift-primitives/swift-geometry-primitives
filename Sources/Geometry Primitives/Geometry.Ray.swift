@@ -2,8 +2,8 @@
 // A half-line (ray) extending from an origin in a direction.
 
 public import Affine_Geometry_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 
 extension Geometry {
     /// A ray (half-line) in 2D space, extending from an origin point in a direction.
@@ -21,13 +21,13 @@ extension Geometry {
     /// let pointOnRay = ray.point(at: 5)  // (5, 5)
     /// ```
     public struct Ray {
-        /// The starting point of the ray
+        /// The starting point of the ray.
         public var origin: Point<2>
 
-        /// The direction of the ray (not necessarily normalized)
+        /// The direction of the ray (not necessarily normalized).
         public var direction: Vector<2>
 
-        /// Create a ray from an origin point and direction vector
+        /// Create a ray from an origin point and direction vector.
         @inlinable
         public init(origin: consuming Point<2>, direction: consuming Vector<2>) {
             self.origin = origin
@@ -47,7 +47,7 @@ extension Geometry.Ray: Hashable where Scalar: Hashable {}
 // MARK: - Factory Methods
 
 extension Geometry.Ray where Scalar: AdditiveArithmetic {
-    /// Create a ray from the origin to a target point
+    /// Create a ray from the origin to a target point.
     @inlinable
     public init(from origin: Geometry.Point<2>, through point: Geometry.Point<2>) {
         self.origin = origin
@@ -56,7 +56,7 @@ extension Geometry.Ray where Scalar: AdditiveArithmetic {
 }
 
 extension Geometry.Ray where Scalar: FloatingPoint {
-    /// Create a ray from an origin point in a cardinal direction
+    /// Create a ray from an origin point in a cardinal direction.
     @inlinable
     public init(origin: Geometry.Point<2>, in cardinalDirection: Geometry.Direction) {
         self.origin = origin
@@ -67,7 +67,7 @@ extension Geometry.Ray where Scalar: FloatingPoint {
 // MARK: - Properties (FloatingPoint)
 
 extension Geometry.Ray where Scalar: FloatingPoint {
-    /// A normalized direction vector (unit length), or nil if direction is zero
+    /// A normalized direction vector (unit length), or nil if direction is zero.
     @inlinable
     public var unitDirection: Geometry.Vector<2>? {
         let normalized = Linear<Scalar, Space>.Vector.normalized(direction)
@@ -75,7 +75,7 @@ extension Geometry.Ray where Scalar: FloatingPoint {
         return normalized
     }
 
-    /// The infinite line containing this ray
+    /// The infinite line containing this ray.
     @inlinable
     public var line: Geometry.Line {
         Geometry.Line(point: origin, direction: direction)
@@ -299,7 +299,7 @@ extension Geometry where Scalar: FloatingPoint {
         guard t >= 0 else { return false }
 
         // Check if point is actually on the line (perpendicular distance is negligible)
-        let projected = Geometry.point(of: ray, at: t)
+        let projected = Self.point(of: ray, at: t)
         let distSq = point.distance.squared(to: projected)
         // Compare Area to Area - use a small epsilon squared as tolerance
         let tolerance: Linear<Scalar, Space>.Area = Tagged(Scalar.ulpOfOne * 100)
@@ -321,7 +321,7 @@ extension Geometry where Scalar: FloatingPoint {
         // Area / Area = Scale<1, Scalar>
         let t: Scale<1, Scalar> = max(0, (ray.direction.dx * vx + ray.direction.dy * vy) / lenSq)
 
-        let closest = Geometry.point(of: ray, at: t)
+        let closest = Self.point(of: ray, at: t)
         return point.distance(to: closest)
     }
 }
@@ -329,7 +329,7 @@ extension Geometry where Scalar: FloatingPoint {
 // MARK: - Functorial Map
 
 extension Geometry.Ray {
-    /// Create a ray by transforming the coordinates of another ray
+    /// Create a ray by transforming the coordinates of another ray.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Ray,
@@ -341,7 +341,7 @@ extension Geometry.Ray {
         )
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -356,11 +356,11 @@ extension Geometry.Ray {
 // MARK: - Cardinal Directions
 
 extension Geometry where Scalar: FloatingPoint {
-    /// Cardinal directions for creating rays
+    /// Cardinal directions for creating rays.
     public enum Direction {
         case right, up, left, down
 
-        /// The unit vector for this direction
+        /// The unit vector for this direction.
         @inlinable
         public var unitVector: Geometry.Vector<2> {
             switch self {

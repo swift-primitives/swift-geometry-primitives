@@ -3,8 +3,8 @@
 
 public import Affine_Geometry_Primitives
 import Affine_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
@@ -136,8 +136,9 @@ extension Geometry.Ball where N == 3, Scalar: FloatingPoint {
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     /// Creates a circle from an ellipse if the ellipse is circular.
     ///
+    /// Fails unless the ellipse has equal semi-major and semi-minor axes.
+    ///
     /// - Parameter ellipse: The ellipse to convert.
-    /// - Returns: A circle if the ellipse has equal semi-major and semi-minor axes, `nil` otherwise.
     @inlinable
     public init?(_ ellipse: Geometry.Ellipse) {
         let diff: Scalar = ellipse.semiMajor.underlying - ellipse.semiMinor.underlying

@@ -7,8 +7,8 @@ import Real_Primitives
 import Testing
 
 @testable import Affine_Primitives
-@testable import Linear_Primitives
 @testable import Geometry_Primitives
+@testable import Linear_Primitives
 
 // MARK: - Test Helpers
 

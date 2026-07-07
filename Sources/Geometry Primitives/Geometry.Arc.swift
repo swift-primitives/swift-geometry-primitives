@@ -3,8 +3,8 @@
 
 public import Affine_Geometry_Primitives
 import Affine_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
@@ -26,19 +26,19 @@ extension Geometry {
     /// print(arc.length)  // ~15.71 (quarter of circumference)
     /// ```
     public struct Arc {
-        /// The center of the arc's circle
+        /// The center of the arc's circle.
         public var center: Point<2>
 
-        /// The radius of the arc
+        /// The radius of the arc.
         public var radius: Radius
 
-        /// The starting angle (from positive x-axis, counter-clockwise)
+        /// The starting angle (from positive x-axis, counter-clockwise).
         public var startAngle: Radian<Scalar>
 
-        /// The ending angle (from positive x-axis, counter-clockwise)
+        /// The ending angle (from positive x-axis, counter-clockwise).
         public var endAngle: Radian<Scalar>
 
-        /// Create an arc with center, radius, and angle range
+        /// Create an arc with center, radius, and angle range.
         @inlinable
         public init(
             center: consuming Point<2>,
@@ -65,7 +65,7 @@ extension Geometry.Arc: Hashable where Scalar: Hashable {}
 // MARK: - Factory Methods
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint {
-    /// Create a semicircle arc
+    /// Create a semicircle arc.
     @inlinable
     public static func semicircle(
         center: Geometry.Point<2>,
@@ -82,7 +82,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 }
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint {
-    /// Create a full circle arc
+    /// Create a full circle arc.
     @inlinable
     public static func fullCircle(center: Geometry.Point<2>, radius: Geometry.Radius) -> Self {
         Self(
@@ -93,7 +93,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
         )
     }
 
-    /// Create a quarter circle arc
+    /// Create a quarter circle arc.
     @inlinable
     public static func quarterCircle(
         center: Geometry.Point<2>,
@@ -112,13 +112,13 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 // MARK: - Angle Properties
 
 extension Geometry.Arc where Scalar: AdditiveArithmetic & Comparable {
-    /// The angular span of the arc
+    /// The angular span of the arc.
     @inlinable
     public var sweep: Radian<Scalar> {
         endAngle - startAngle
     }
 
-    /// Whether this arc sweeps counter-clockwise (positive sweep)
+    /// Whether this arc sweeps counter-clockwise (positive sweep).
     @inlinable
     public var isCounterClockwise: Bool {
         sweep > .zero
@@ -126,7 +126,7 @@ extension Geometry.Arc where Scalar: AdditiveArithmetic & Comparable {
 }
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint {
-    /// Whether this arc represents a full circle or more
+    /// Whether this arc represents a full circle or more.
     @inlinable
     public var isFullCircle: Bool {
         abs(sweep) >= Radian.pi.two
@@ -136,7 +136,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 // MARK: - Endpoints (BinaryFloatingPoint & Numeric.Transcendental)
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The starting point of the arc
+    /// The starting point of the arc.
     @inlinable
     public var startPoint: Geometry.Point<2> {
         // center + radius * cos/sin: Coordinate + Magnitude * Scale = Coordinate
@@ -146,7 +146,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
         )
     }
 
-    /// The ending point of the arc
+    /// The ending point of the arc.
     @inlinable
     public var endPoint: Geometry.Point<2> {
         Geometry.Point(
@@ -155,7 +155,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
         )
     }
 
-    /// The midpoint of the arc
+    /// The midpoint of the arc.
     @inlinable
     public var midPoint: Geometry.Point<2> {
         let midAngle = (startAngle + endAngle) / 2
@@ -201,7 +201,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
 // MARK: - Length (Real & BinaryFloatingPoint)
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint {
-    /// The arc length
+    /// The arc length.
     ///
     /// Formula: s = r × θ where θ is the angle in radians (dimensionless).
     @inlinable
@@ -214,7 +214,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 // MARK: - Bounding Box (BinaryFloatingPoint & Numeric.Transcendental)
 
 extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The axis-aligned bounding box of the arc
+    /// The axis-aligned bounding box of the arc.
     @inlinable
     public var boundingBox: Geometry.Rectangle { Geometry.boundingBox(of: self) }
 }
@@ -256,19 +256,12 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
             let a = angle.underlying
             let s = start.underlying
             let e = end.underlying
-            if sweep >= 0 {
-                if s <= e {
-                    return a >= s && a <= e
-                } else {
-                    return a >= s || a <= e
-                }
-            } else {
-                if s >= e {
-                    return a <= s && a >= e
-                } else {
-                    return a <= s || a >= e
-                }
+            guard sweep >= 0 else {
+                guard s >= e else { return a <= s || a >= e }
+                return a <= s && a >= e
             }
+            guard s <= e else { return a >= s || a <= e }
+            return a >= s && a <= e
         }
 
         // Right (0°)
@@ -318,26 +311,23 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
         return angleIsInArc(pointAngle)
     }
 
-    /// Check if an angle falls within the arc's range
+    /// Check if an angle falls within the arc's range.
     @inlinable
     internal func angleIsInArc(_ angle: Radian<Scalar>) -> Bool {
         let normAngle = angle.normalized
         let normStart = startAngle.normalized
         let normEnd = endAngle.normalized
 
-        if sweep.underlying >= 0 {
-            if normStart <= normEnd {
-                return normAngle >= normStart && normAngle <= normEnd
-            } else {
-                return normAngle >= normStart || normAngle <= normEnd
-            }
-        } else {
-            if normStart >= normEnd {
-                return normAngle <= normStart && normAngle >= normEnd
-            } else {
+        guard sweep.underlying >= 0 else {
+            guard normStart >= normEnd else {
                 return normAngle <= normStart || normAngle >= normEnd
             }
+            return normAngle <= normStart && normAngle >= normEnd
         }
+        guard normStart <= normEnd else {
+            return normAngle >= normStart || normAngle <= normEnd
+        }
+        return normAngle >= normStart && normAngle <= normEnd
     }
 }
 
@@ -388,7 +378,7 @@ extension Array {
         self = beziers
     }
 
-    /// Convert a single arc segment (≤90°) to a cubic Bezier
+    /// Convert a single arc segment (≤90°) to a cubic Bezier.
     ///
     /// Note: Bezier control point calculations inherently mix coordinate components,
     /// requiring raw scalar arithmetic.
@@ -492,7 +482,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint {
 // MARK: - Functorial Map
 
 extension Geometry.Arc {
-    /// Create an arc by transforming the coordinates of another arc
+    /// Create an arc by transforming the coordinates of another arc.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Arc,
@@ -506,7 +496,7 @@ extension Geometry.Arc {
         )
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

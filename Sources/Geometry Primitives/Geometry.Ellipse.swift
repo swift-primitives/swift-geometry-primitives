@@ -3,8 +3,8 @@
 
 public import Affine_Geometry_Primitives
 import Affine_Primitives
-public import Linear_Primitives
 public import Dimension_Primitives
+public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
@@ -22,19 +22,19 @@ extension Geometry {
     /// print(ellipse.area)  // ~157.08
     /// ```
     public struct Ellipse {
-        /// The center of the ellipse
+        /// The center of the ellipse.
         public var center: Point<2>
 
-        /// The semi-major axis length (larger radius)
+        /// The semi-major axis length (larger radius).
         public var semiMajor: Length
 
-        /// The semi-minor axis length (smaller radius)
+        /// The semi-minor axis length (smaller radius).
         public var semiMinor: Length
 
-        /// The rotation angle (counter-clockwise from x-axis to major axis)
+        /// The rotation angle (counter-clockwise from x-axis to major axis).
         public var rotation: Radian<Scalar>
 
-        /// Create an ellipse with center, semi-axes, and rotation
+        /// Create an ellipse with center, semi-axes, and rotation.
         @inlinable
         public init(
             center: consuming Point<2>,
@@ -61,7 +61,7 @@ extension Geometry.Ellipse: Hashable where Scalar: Hashable {}
 // MARK: - Convenience Initializers
 
 extension Geometry.Ellipse where Scalar: AdditiveArithmetic {
-    /// Create an axis-aligned ellipse centered at the origin
+    /// Create an axis-aligned ellipse centered at the origin.
     @inlinable
     public init(
         semiMajor: Geometry.Length,
@@ -70,7 +70,7 @@ extension Geometry.Ellipse where Scalar: AdditiveArithmetic {
         self.init(center: .zero, semiMajor: semiMajor, semiMinor: semiMinor, rotation: .zero)
     }
 
-    /// Create an axis-aligned ellipse (rotation defaults to zero)
+    /// Create an axis-aligned ellipse (rotation defaults to zero).
     @inlinable
     public init(
         center: Geometry.Point<2>,
@@ -87,7 +87,7 @@ extension Geometry.Ellipse where Scalar: AdditiveArithmetic {
 }
 
 extension Geometry.Ellipse where Scalar: FloatingPoint {
-    /// Create a circle as a special case of ellipse
+    /// Create a circle as a special case of ellipse.
     @inlinable
     public static func circle(center: Geometry.Point<2>, radius: Geometry.Radius) -> Self {
         Self(center: center, semiMajor: radius, semiMinor: radius, rotation: Radian(_unchecked: 0))
@@ -97,19 +97,19 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
 // MARK: - Geometric Properties (FloatingPoint)
 
 extension Geometry.Ellipse where Scalar: FloatingPoint {
-    /// The major axis length (2 * semiMajor)
+    /// The major axis length (2 * semiMajor).
     @inlinable
     public var majorAxis: Geometry.Length {
         semiMajor * 2
     }
 
-    /// The minor axis length (2 * semiMinor)
+    /// The minor axis length (2 * semiMinor).
     @inlinable
     public var minorAxis: Geometry.Length {
         semiMinor * 2
     }
 
-    /// The eccentricity of the ellipse (0 = circle, approaching 1 = more elongated)
+    /// The eccentricity of the ellipse (0 = circle, approaching 1 = more elongated).
     ///
     /// Returns a dimensionless `Scale<1>` since eccentricity is a ratio.
     @inlinable
@@ -121,7 +121,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
         return sqrt((aSq - bSq) / aSq)
     }
 
-    /// The linear eccentricity (distance from center to focus)
+    /// The linear eccentricity (distance from center to focus).
     @inlinable
     public var focalDistance: Geometry.Distance {
         // semiMajor * semiMajor returns Area (Measure<2, Space>)
@@ -135,7 +135,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
 // MARK: - Foci (Real & BinaryFloatingPoint)
 
 extension Geometry.Ellipse where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The two foci of the ellipse
+    /// The two foci of the ellipse.
     @inlinable
     public var foci: (f1: Geometry.Point<2>, f2: Geometry.Point<2>) {
         let c: Scalar = focalDistance.underlying
@@ -161,14 +161,14 @@ extension Geometry.Ellipse where Scalar: BinaryFloatingPoint & Numeric.Transcend
 // MARK: - Area and Perimeter (FloatingPoint)
 
 extension Geometry.Ellipse where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The area of the ellipse (π * a * b)
+    /// The area of the ellipse (π * a * b).
     @inlinable
     public var area: Geometry.Area { Geometry.area(of: self) }
 }
 
 extension Geometry.Ellipse where Scalar: FloatingPoint {
 
-    /// The approximate perimeter using Ramanujan's approximation
+    /// The approximate perimeter using Ramanujan's approximation.
     ///
     /// Uses raw scalar math for the Ramanujan h-term calculation since it involves
     /// dimensionless ratios and transcendental operations that don't benefit from type tracking.
@@ -186,7 +186,7 @@ extension Geometry.Ellipse where Scalar: FloatingPoint {
         return Geometry.Length(perimeter)
     }
 
-    /// Whether this ellipse is actually a circle (semi-major equals semi-minor)
+    /// Whether this ellipse is actually a circle (semi-major equals semi-minor).
     @inlinable
     public var isCircle: Bool {
         semiMajor == semiMinor
@@ -247,7 +247,7 @@ extension Geometry.Ellipse where Scalar: BinaryFloatingPoint & Numeric.Transcend
 // MARK: - Bounding Box (Real & BinaryFloatingPoint)
 
 extension Geometry.Ellipse where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The axis-aligned bounding box of the ellipse
+    /// The axis-aligned bounding box of the ellipse.
     @inlinable
     public var boundingBox: Geometry.Rectangle {
         // Typed area calculations: Length × Length → Area
@@ -390,7 +390,7 @@ extension Geometry where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
 // MARK: - Functorial Map
 
 extension Geometry.Ellipse {
-    /// Create an ellipse by transforming the coordinates of another ellipse
+    /// Create an ellipse by transforming the coordinates of another ellipse.
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Ellipse,
@@ -404,7 +404,7 @@ extension Geometry.Ellipse {
         )
     }
 
-    /// Transform coordinates using the given closure
+    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -440,25 +440,25 @@ extension Geometry.Ellipse {
     /// print(arc.sweep)  // π radians (half ellipse)
     /// ```
     public struct Arc {
-        /// The center of the parent ellipse
+        /// The center of the parent ellipse.
         public var center: Geometry.Point<2>
 
-        /// The semi-major axis length (larger radius)
+        /// The semi-major axis length (larger radius).
         public var semiMajor: Geometry.Length
 
-        /// The semi-minor axis length (smaller radius)
+        /// The semi-minor axis length (smaller radius).
         public var semiMinor: Geometry.Length
 
-        /// The rotation angle of the ellipse (counter-clockwise from x-axis to major axis)
+        /// The rotation angle of the ellipse (counter-clockwise from x-axis to major axis).
         public var rotation: Radian<Scalar>
 
-        /// The starting angle (parameter angle, not geometric angle)
+        /// The starting angle (parameter angle, not geometric angle).
         public var startAngle: Radian<Scalar>
 
-        /// The ending angle (parameter angle, not geometric angle)
+        /// The ending angle (parameter angle, not geometric angle).
         public var endAngle: Radian<Scalar>
 
-        /// Create an elliptical arc with center, semi-axes, rotation, and angle range
+        /// Create an elliptical arc with center, semi-axes, rotation, and angle range.
         @inlinable
         public init(
             center: consuming Geometry.Point<2>,
@@ -490,13 +490,13 @@ extension Geometry.Ellipse.Arc: Hashable where Scalar: Hashable {}
 // MARK: - Ellipse.Arc Angle Properties
 
 extension Geometry.Ellipse.Arc where Scalar: AdditiveArithmetic & Comparable {
-    /// The angular span of the arc
+    /// The angular span of the arc.
     @inlinable
     public var sweep: Radian<Scalar> {
         endAngle - startAngle
     }
 
-    /// Whether this arc sweeps counter-clockwise (positive sweep)
+    /// Whether this arc sweeps counter-clockwise (positive sweep).
     @inlinable
     public var isCounterClockwise: Bool {
         sweep > .zero
@@ -504,7 +504,7 @@ extension Geometry.Ellipse.Arc where Scalar: AdditiveArithmetic & Comparable {
 }
 
 extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Whether this arc represents a full ellipse or more
+    /// Whether this arc represents a full ellipse or more.
     @inlinable
     public var isFullEllipse: Bool {
         abs(sweep) >= Radian.pi.two
@@ -514,19 +514,19 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
 // MARK: - Ellipse.Arc Endpoints
 
 extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The starting point of the arc
+    /// The starting point of the arc.
     @inlinable
     public var startPoint: Geometry.Point<2> {
         point(at: Scale(0))
     }
 
-    /// The ending point of the arc
+    /// The ending point of the arc.
     @inlinable
     public var endPoint: Geometry.Point<2> {
         point(at: Scale(1))
     }
 
-    /// The midpoint of the arc
+    /// The midpoint of the arc.
     @inlinable
     public var midPoint: Geometry.Point<2> {
         point(at: Scale(0.5))
@@ -710,19 +710,12 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
         let normS = s - (s / twoPi).rounded(.down) * twoPi
         let normE = e - (e / twoPi).rounded(.down) * twoPi
 
-        if sweepVal >= 0 {
-            if normS <= normE {
-                return normA >= normS && normA <= normE
-            } else {
-                return normA >= normS || normA <= normE
-            }
-        } else {
-            if normS >= normE {
-                return normA <= normS && normA >= normE
-            } else {
-                return normA <= normS || normA >= normE
-            }
+        guard sweepVal >= 0 else {
+            guard normS >= normE else { return normA <= normS || normA >= normE }
+            return normA <= normS && normA >= normE
         }
+        guard normS <= normE else { return normA >= normS || normA <= normE }
+        return normA >= normS && normA <= normE
     }
 }
 
