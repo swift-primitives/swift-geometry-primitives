@@ -554,7 +554,7 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
     /// - Parameter angle: The parameter angle on the ellipse
     /// - Returns: The point on the ellipse at that angle
     @inlinable
-    internal func pointAtAngle(_ angle: Radian<Scalar>) -> Geometry.Point<2> {
+    package func pointAtAngle(_ angle: Radian<Scalar>) -> Geometry.Point<2> {
         let cosT = angle.cos
         let sinT = angle.sin
 
@@ -698,7 +698,7 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
 
     /// Check if an angle falls within the arc's range.
     @inlinable
-    internal func containsAngle(_ angle: Radian<Scalar>) -> Bool {
+    package func containsAngle(_ angle: Radian<Scalar>) -> Bool {
         let a = angle.underlying
         let s = startAngle.underlying
         let e = endAngle.underlying
@@ -905,7 +905,7 @@ extension Geometry.Ellipse.Arc where Scalar: BinaryFloatingPoint & Numeric.Trans
 
     /// Compute the angle between two vectors.
     @inlinable
-    internal static func angleBetween(ux: Scalar, uy: Scalar, vx: Scalar, vy: Scalar) -> Scalar {
+    package static func angleBetween(ux: Scalar, uy: Scalar, vx: Scalar, vy: Scalar) -> Scalar {
         let dot = ux * vx + uy * vy
         let lenU = Scalar._sqrt(ux * ux + uy * uy)
         let lenV = Scalar._sqrt(vx * vx + vy * vy)
@@ -974,7 +974,7 @@ extension Array {
     /// Note: Control point calculations inherently mix coordinate components,
     /// requiring raw scalar arithmetic similar to matrix transforms.
     @inlinable
-    internal static func ellipticalArcSegmentToBezier<
+    package static func ellipticalArcSegmentToBezier<
         Scalar: BinaryFloatingPoint & Numeric.Transcendental,
         Space
     >(

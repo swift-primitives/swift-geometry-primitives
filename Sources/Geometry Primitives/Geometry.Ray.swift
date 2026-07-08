@@ -359,16 +359,18 @@ extension Geometry where Scalar: FloatingPoint {
     /// Cardinal directions for creating rays.
     public enum Direction {
         case right, up, left, down
+    }
+}
 
-        /// The unit vector for this direction.
-        @inlinable
-        public var unitVector: Geometry.Vector<2> {
-            switch self {
-            case .right: return Geometry.Vector(dx: .init(_unchecked: 1), dy: .init(_unchecked: 0))
-            case .up: return Geometry.Vector(dx: .init(_unchecked: 0), dy: .init(_unchecked: 1))
-            case .left: return Geometry.Vector(dx: .init(_unchecked: -1), dy: .init(_unchecked: 0))
-            case .down: return Geometry.Vector(dx: .init(_unchecked: 0), dy: .init(_unchecked: -1))
-            }
+extension Geometry.Direction where Scalar: FloatingPoint {
+    /// The unit vector for this direction.
+    @inlinable
+    public var unitVector: Geometry.Vector<2> {
+        switch self {
+        case .right: return Geometry.Vector(dx: .init(_unchecked: 1), dy: .init(_unchecked: 0))
+        case .up: return Geometry.Vector(dx: .init(_unchecked: 0), dy: .init(_unchecked: 1))
+        case .left: return Geometry.Vector(dx: .init(_unchecked: -1), dy: .init(_unchecked: 0))
+        case .down: return Geometry.Vector(dx: .init(_unchecked: 0), dy: .init(_unchecked: -1))
         }
     }
 }

@@ -313,7 +313,7 @@ extension Geometry.Arc where Scalar: BinaryFloatingPoint & Numeric.Transcendenta
 
     /// Check if an angle falls within the arc's range.
     @inlinable
-    internal func angleIsInArc(_ angle: Radian<Scalar>) -> Bool {
+    package func angleIsInArc(_ angle: Radian<Scalar>) -> Bool {
         let normAngle = angle.normalized
         let normStart = startAngle.normalized
         let normEnd = endAngle.normalized
@@ -383,7 +383,7 @@ extension Array {
     /// Note: Bezier control point calculations inherently mix coordinate components,
     /// requiring raw scalar arithmetic.
     @inlinable
-    internal static func arcSegmentToBezier<
+    package static func arcSegmentToBezier<
         Scalar: BinaryFloatingPoint & Numeric.Transcendental,
         Space
     >(
