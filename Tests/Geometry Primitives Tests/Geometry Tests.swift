@@ -67,7 +67,9 @@ struct TestUnit: AdditiveArithmetic, Comparable, Codable, Hashable, ExpressibleB
     init(floatLiteral value: Double) {
         self.value = value
     }
+}
 
+extension TestUnit {
     static var zero: Self { Self(0) }
 
     static func + (lhs: Self, rhs: Self) -> Self {
