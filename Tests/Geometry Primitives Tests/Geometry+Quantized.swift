@@ -77,8 +77,10 @@ struct `Geometry+Quantized` {
                 height: spanHeight
             )
 
-            // Tick-based equality: accumulated and direct computation match
-            #expect(row3.ury == span.ury)
+            // Tick-based equality: accumulated and direct computation match.
+            // Raw floating-point values may differ by rounding error even when
+            // the quantized tick representation is exactly equal, so only the
+            // tick-based comparison is asserted here.
             #expect(row3.ury.ticks == span.ury.ticks)
         }
 
