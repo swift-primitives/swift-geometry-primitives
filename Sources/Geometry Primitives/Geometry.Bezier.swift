@@ -83,9 +83,9 @@ extension Geometry.Bezier: Hashable where Scalar: Hashable {}
 extension Geometry.Bezier {
     /// The degree of the curve (number of control points - 1).
     @inlinable
-    // reason: Canonical Bezier degree formula — degree = #controlPoints − 1
+    // REASON: Canonical Bezier degree formula — degree = #controlPoints − 1
     // (textbook: degree-3 cubic has 4 control points). Math IS the expression.
-    // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
+    // swift-linter:disable:next count minus one
     public var degree: Int { max(0, controlPoints.count - 1) }
 
     /// Whether this is a valid Bezier curve (at least 2 control points).
@@ -402,26 +402,26 @@ extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcende
 
         // Control points for each quadrant
         // Quadrant 1: right to top
-        let c1_1 = rotated(x: a, y: kb)
-        let c1_2 = rotated(x: ka, y: b)
+        let c1Control1 = rotated(x: a, y: kb)
+        let c1Control2 = rotated(x: ka, y: b)
 
         // Quadrant 2: top to left
-        let c2_1 = rotated(x: -ka, y: b)
-        let c2_2 = rotated(x: -a, y: kb)
+        let c2Control1 = rotated(x: -ka, y: b)
+        let c2Control2 = rotated(x: -a, y: kb)
 
         // Quadrant 3: left to bottom
-        let c3_1 = rotated(x: -a, y: -kb)
-        let c3_2 = rotated(x: -ka, y: -b)
+        let c3Control1 = rotated(x: -a, y: -kb)
+        let c3Control2 = rotated(x: -ka, y: -b)
 
         // Quadrant 4: bottom to right
-        let c4_1 = rotated(x: ka, y: -b)
-        let c4_2 = rotated(x: a, y: -kb)
+        let c4Control1 = rotated(x: ka, y: -b)
+        let c4Control2 = rotated(x: a, y: -kb)
 
         return [
-            .cubic(from: right, control1: c1_1, control2: c1_2, to: top),
-            .cubic(from: top, control1: c2_1, control2: c2_2, to: left),
-            .cubic(from: left, control1: c3_1, control2: c3_2, to: bottom),
-            .cubic(from: bottom, control1: c4_1, control2: c4_2, to: right),
+            .cubic(from: right, control1: c1Control1, control2: c1Control2, to: top),
+            .cubic(from: top, control1: c2Control1, control2: c2Control2, to: left),
+            .cubic(from: left, control1: c3Control1, control2: c3Control2, to: bottom),
+            .cubic(from: bottom, control1: c4Control1, control2: c4Control2, to: right),
         ]
     }
 
@@ -463,10 +463,10 @@ extension Geometry where Scalar: FloatingPoint {
         guard bezier.controlPoints.count >= 2 else { return nil }
 
         // Derivative of Bezier curve is n * Bezier(P[i+1] - P[i])
-        // reason: Canonical Bezier derivative degree formula — n = degree =
+        // REASON: Canonical Bezier derivative degree formula — n = degree =
         // #controlPoints − 1, used in the derivative recursion above. Same
         // formula as the `degree` property; math IS the expression.
-        // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
+        // swift-linter:disable:next count minus one
         let n = Scalar(bezier.controlPoints.count - 1)
 
         // Create derivative control points
