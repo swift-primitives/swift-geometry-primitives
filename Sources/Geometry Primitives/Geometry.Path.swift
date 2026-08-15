@@ -334,7 +334,10 @@ extension Geometry.Path.Subpath {
     ) throws(E) -> Geometry<Result, Space>.Path.Subpath {
         .init(
             startPoint: try startPoint.map(transform),
-            segments: try segments.map { (segment: Geometry<Scalar, Space>.Path.Segment) throws(E) -> Geometry<Result, Space>.Path.Segment in
+            segments: try segments.map {
+                (
+                    segment: Geometry<Scalar, Space>.Path.Segment
+                ) throws(E) -> Geometry<Result, Space>.Path.Segment in
                 try segment.map(transform)
             },
             isClosed: isClosed
@@ -351,7 +354,10 @@ extension Geometry.Path {
         _ transform: (Scalar) throws(E) -> Result
     ) throws(E) -> Geometry<Result, Space>.Path {
         .init(
-            subpaths: try subpaths.map { (subpath: Geometry<Scalar, Space>.Path.Subpath) throws(E) -> Geometry<Result, Space>.Path.Subpath in
+            subpaths: try subpaths.map {
+                (
+                    subpath: Geometry<Scalar, Space>.Path.Subpath
+                ) throws(E) -> Geometry<Result, Space>.Path.Subpath in
                 try subpath.map(transform)
             }
         )

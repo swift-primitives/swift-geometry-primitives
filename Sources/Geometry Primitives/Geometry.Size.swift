@@ -65,9 +65,6 @@ extension Geometry.Size: Hashable where Scalar: Hashable {
 
 #if !hasFeature(Embedded)
     extension Geometry.Size: Codable where Scalar: Codable {
-        // `any Decoder`/`any Encoder` and untyped `throws` are the Codable requirements' own
-        // signatures; disable the existential/typed-throws rules across the conformance.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Creates a size by decoding from the given decoder.
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
@@ -85,7 +82,6 @@ extension Geometry.Size: Hashable where Scalar: Hashable {
                 try container.encode(dimensions[i])
             }
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 

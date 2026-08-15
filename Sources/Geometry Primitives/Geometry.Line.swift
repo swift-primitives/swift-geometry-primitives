@@ -441,7 +441,8 @@ extension Geometry where Scalar: FloatingPoint {
 extension Geometry where Scalar: FloatingPoint {
     /// Find the intersection point between two line segments.
     @inlinable
-    public static func intersection(_ segment1: Line.Segment, _ segment2: Line.Segment) -> Point<2>? {
+    public static func intersection(_ segment1: Line.Segment, _ segment2: Line.Segment) -> Point<2>?
+    {
         let d1 = segment1.vector
         let d2 = segment2.vector
 

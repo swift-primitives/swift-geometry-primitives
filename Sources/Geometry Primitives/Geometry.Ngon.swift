@@ -73,9 +73,6 @@ extension Geometry.Ngon: Hashable where Scalar: Hashable {
 
 #if !hasFeature(Embedded)
     extension Geometry.Ngon: Codable where Scalar: Codable {
-        // `any Decoder`/`any Encoder` and untyped `throws` are the Codable requirements' own
-        // signatures; disable the existential/typed-throws rules across the conformance.
-        // swiftlint:disable no_any_protocol_existential typed_throws_required
         /// Creates an N-gon by decoding from the given decoder.
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
@@ -94,7 +91,6 @@ extension Geometry.Ngon: Hashable where Scalar: Hashable {
                 try container.encode(vertices[i])
             }
         }
-        // swiftlint:enable no_any_protocol_existential typed_throws_required
     }
 #endif
 
@@ -1000,13 +996,13 @@ extension Geometry.Ngon where N == 3, Scalar: FloatingPoint {
         // Barycentric weights are dimensionless ratios (Scale)
         let vScale = Scale<1, Scalar>(v)
         let wScale = Scale<1, Scalar>(w)
-        let ab_dx = vertices[1].x - vertices[0].x
-        let ab_dy = vertices[1].y - vertices[0].y
-        let ac_dx = vertices[2].x - vertices[0].x
-        let ac_dy = vertices[2].y - vertices[0].y
+        let abDeltaX = vertices[1].x - vertices[0].x
+        let abDeltaY = vertices[1].y - vertices[0].y
+        let acDeltaX = vertices[2].x - vertices[0].x
+        let acDeltaY = vertices[2].y - vertices[0].y
         return Geometry.Point(
-            x: vertices[0].x + vScale * ab_dx + wScale * ac_dx,
-            y: vertices[0].y + vScale * ab_dy + wScale * ac_dy
+            x: vertices[0].x + vScale * abDeltaX + wScale * acDeltaX,
+            y: vertices[0].y + vScale * abDeltaY + wScale * acDeltaY
         )
     }
 }

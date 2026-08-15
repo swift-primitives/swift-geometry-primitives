@@ -345,7 +345,12 @@ extension Geometry where Scalar: FloatingPoint {
         let py = cy + a * dirY
 
         if h == 0 {
-            return [Point(x: Affine.Continuous<Scalar, Space>.X(px), y: Affine.Continuous<Scalar, Space>.Y(py))]
+            return [
+                Point(
+                    x: Affine.Continuous<Scalar, Space>.X(px),
+                    y: Affine.Continuous<Scalar, Space>.Y(py)
+                )
+            ]
         }
 
         return [

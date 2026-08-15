@@ -236,7 +236,8 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
             let vj = vertices[j]
 
             if (vi.y.underlying > point.y.underlying) != (vj.y.underlying > point.y.underlying) {
-                let slope = (vj.x.underlying - vi.x.underlying) / (vj.y.underlying - vi.y.underlying)
+                let slope =
+                    (vj.x.underlying - vi.x.underlying) / (vj.y.underlying - vi.y.underlying)
                 let xIntersect = vi.x.underlying + slope * (point.y.underlying - vi.y.underlying)
                 if point.x.underlying < xIntersect {
                     inside.toggle()
@@ -321,11 +322,6 @@ extension Geometry.Polygon where Scalar: FloatingPoint {
             var earFound = false
 
             for i in 0..<remaining.count {
-                // reason: Canonical cyclic-polygon previous-vertex formula
-                // in ear-clipping triangulation. `(i + N − 1) mod N` is the
-                // unsigned-int standard for `i − 1 mod N` (avoiding negative
-                // intermediate via `+N`). Math IS the expression.
-                // swiftlint:disable:next cardinal_count_minus_one_anti_pattern
                 let prev = (i + remaining.count - 1) % remaining.count
                 let next = (i + 1) % remaining.count
 
