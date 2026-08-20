@@ -39,7 +39,7 @@
 // ```
 
 public import Affine_Geometry_Primitives
-public import Affine_Primitives
+import Affine_Primitives
 import Dimension_Primitives
 public import Linear_Primitives
 
