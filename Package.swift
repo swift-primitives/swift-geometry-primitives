@@ -1,15 +1,15 @@
-// swift-tools-version: 6.3.3
+// swift-tools-version: 6.4
 
 import PackageDescription
 
 let package = Package(
     name: "swift-geometry-primitives",
     platforms: [
-        .macOS("27"),
-        .iOS("27"),
-        .tvOS("27"),
-        .watchOS("27"),
-        .visionOS("27")
+        .macOS(.v27),
+        .iOS(.v27),
+        .tvOS(.v27),
+        .watchOS(.v27),
+        .visionOS(.v27),
     ],
     products: [
         .library(
@@ -22,13 +22,34 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-primitives/swift-linear-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-affine-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-affine-geometry-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-dimension-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-boundary-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-numeric-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-pair-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-linear-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-affine-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-affine-geometry-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-dimension-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-boundary-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-numeric-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-pair-primitives.git",
+            branch: "main"
+        ),
     ],
     targets: [
         .target(
@@ -36,7 +57,10 @@ let package = Package(
             dependencies: [
                 .product(name: "Linear Primitives", package: "swift-linear-primitives"),
                 .product(name: "Affine Primitives", package: "swift-affine-primitives"),
-                .product(name: "Affine Geometry Primitives", package: "swift-affine-geometry-primitives"),
+                .product(
+                    name: "Affine Geometry Primitives",
+                    package: "swift-affine-geometry-primitives"
+                ),
                 .product(name: "Dimension Primitives", package: "swift-dimension-primitives"),
                 .product(name: "Boundary Primitives", package: "swift-boundary-primitives"),
                 .product(name: "Real Primitives", package: "swift-numeric-primitives"),
@@ -47,7 +71,10 @@ let package = Package(
             name: "Geometry Primitives Test Support",
             dependencies: [
                 "Geometry Primitives",
-                .product(name: "Affine Primitives Test Support", package: "swift-affine-primitives"),
+                .product(
+                    name: "Affine Primitives Test Support",
+                    package: "swift-affine-primitives"
+                ),
             ],
             path: "Tests/Support"
         ),
