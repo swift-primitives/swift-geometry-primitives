@@ -1,6 +1,3 @@
-// Geometry.Bezier Tests.swift
-// Tests for Geometry.Bezier type.
-
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Testing
@@ -8,8 +5,6 @@ import Testing
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -51,8 +46,6 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {
     return abs(a - b) < tol
 }
-
-// MARK: - Initialization Tests
 
 @Suite
 struct `Geometry.Bezier - Initialization` {
@@ -101,8 +94,6 @@ struct `Geometry.Bezier - Initialization` {
     }
 }
 
-// MARK: - Properties Tests
-
 @Suite
 struct `Geometry.Bezier - Properties` {
     @Test
@@ -142,8 +133,6 @@ struct `Geometry.Bezier - Properties` {
         #expect(bezier.endPoint?.y == 8)
     }
 }
-
-// MARK: - Evaluation Tests
 
 @Suite
 struct `Geometry.Bezier - Evaluation` {
@@ -199,8 +188,6 @@ struct `Geometry.Bezier - Evaluation` {
     }
 }
 
-// MARK: - Derivative Tests
-
 @Suite
 struct `Geometry.Bezier - Derivative` {
     @Test
@@ -242,8 +229,6 @@ struct `Geometry.Bezier - Derivative` {
     }
 }
 
-// MARK: - Subdivision Tests
-
 @Suite
 struct `Geometry.Bezier - Subdivision` {
     @Test
@@ -283,8 +268,6 @@ struct `Geometry.Bezier - Subdivision` {
     }
 }
 
-// MARK: - Bounding Box Tests
-
 @Suite
 struct `Geometry.Bezier - Bounding Box` {
     @Test
@@ -302,8 +285,6 @@ struct `Geometry.Bezier - Bounding Box` {
         #expect(bbox.ury == Y(10))
     }
 }
-
-// MARK: - Length Tests
 
 @Suite
 struct `Geometry.Bezier - Length` {
@@ -330,8 +311,6 @@ struct `Geometry.Bezier - Length` {
         #expect(length < 30)
     }
 }
-
-// MARK: - Transformation Tests
 
 @Suite
 struct `Geometry.Bezier - Transformations` {
@@ -372,8 +351,6 @@ struct `Geometry.Bezier - Transformations` {
         #expect(reversed.endPoint?.x == X(0))
     }
 }
-
-// MARK: - Ellipse Approximation Tests
 
 @Suite
 struct `Geometry.Bezier - Ellipse Approximation` {
@@ -429,8 +406,6 @@ struct `Geometry.Bezier - Ellipse Approximation` {
         #expect(isApprox(lastEnd.y, firstStart.y))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Bezier - Functorial Map` {

@@ -1,14 +1,9 @@
-// Geometry.Line Tests.swift
-// Tests for Geometry.Line and Geometry.Line.Segment types.
-
 import Affine_Primitives
 import Geometry_Primitives_Test_Support
 import Linear_Primitives
 import Testing
 
 @testable import Geometry_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -34,8 +29,6 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
     let tolerance = Distance(tol)
     return diff > -tolerance && diff < tolerance
 }
-
-// MARK: - Line Initialization Tests
 
 @Suite
 struct `Geometry.Line - Initialization` {
@@ -64,8 +57,6 @@ struct `Geometry.Line - Initialization` {
     }
 }
 
-// MARK: - Line Properties Tests
-
 @Suite
 struct `Geometry.Line - Properties` {
     @Test
@@ -89,8 +80,6 @@ struct `Geometry.Line - Properties` {
         #expect(p.y == 5)
     }
 }
-
-// MARK: - Line Static Functions Tests
 
 @Suite
 struct `Geometry.Line - Static Functions` {
@@ -183,8 +172,6 @@ struct `Geometry.Line - Static Functions` {
         #expect(isApprox(projection!.y, Y(2)))
     }
 }
-
-// MARK: - Line Method Tests
 
 @Suite
 struct `Geometry.Line - Instance Methods` {
@@ -280,8 +267,6 @@ struct `Geometry.Line - Instance Methods` {
     }
 }
 
-// MARK: - Line.Segment Initialization Tests
-
 @Suite
 struct `Geometry.Line.Segment - Initialization` {
     @Test
@@ -305,8 +290,6 @@ struct `Geometry.Line.Segment - Initialization` {
         #expect(segment.length == 5)
     }
 }
-
-// MARK: - Line.Segment Properties Tests
 
 @Suite
 struct `Geometry.Line.Segment - Properties` {
@@ -375,8 +358,6 @@ struct `Geometry.Line.Segment - Properties` {
     }
 }
 
-// MARK: - Line.Segment Parametric Tests
-
 @Suite
 struct `Geometry.Line.Segment - Parametric Points` {
     @Test
@@ -412,8 +393,6 @@ struct `Geometry.Line.Segment - Parametric Points` {
         #expect(point.y == 10)
     }
 }
-
-// MARK: - Line.Segment Static Functions Tests
 
 @Suite
 struct `Geometry.Line.Segment - Static Functions` {
@@ -543,11 +522,9 @@ struct `Geometry.Line.Segment - Static Functions` {
         )
         let point: Geometry<Double, Void>.Point<2> = .init(x: 8, y: 9)
         let distance = Geometry.distance(from: segment, to: point)
-        #expect(isApprox(distance, Distance(5)))  // 3-4-5 triangle
+        #expect(isApprox(distance, Distance(5)))
     }
 }
-
-// MARK: - Line.Segment Method Tests
 
 @Suite
 struct `Geometry.Line.Segment - Instance Methods` {
@@ -590,8 +567,6 @@ struct `Geometry.Line.Segment - Instance Methods` {
         #expect(isApprox(segment.distance(to: point), Distance(3)))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Line - Functorial Map` {

@@ -1,6 +1,3 @@
-// Geometry.Ball Tests.swift
-// Tests for Geometry.Ball type (N-dimensional ball/hypersphere).
-
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Testing
@@ -8,8 +5,6 @@ import Testing
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -64,8 +59,6 @@ private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {
     return abs(a - b) < tol
 }
-
-// MARK: - Initialization Tests
 
 @Suite
 struct `Geometry.Ball - Initialization` {
@@ -127,8 +120,6 @@ struct `Geometry.Ball - Initialization` {
     }
 }
 
-// MARK: - Properties Tests
-
 @Suite
 struct `Geometry.Ball - Properties` {
     @Test
@@ -152,19 +143,17 @@ struct `Geometry.Ball - Properties` {
     @Test
     func `Sphere surface area`() {
         let sphere: Geometry<Double, Void>.Sphere = .init(center: .zero, radius: 2)
-        // Surface area = 4πr² = 4π(4) = 16π
+
         #expect(isApproxScalar(sphere.surfaceArea, 16 * .pi))
     }
 
     @Test
     func `Sphere volume`() {
         let sphere: Geometry<Double, Void>.Sphere = .init(center: .zero, radius: 3)
-        // Volume = (4/3)πr³ = (4/3)π(27) = 36π
+
         #expect(isApproxScalar(sphere.volume, 36 * .pi))
     }
 }
-
-// MARK: - Static Function Tests
 
 @Suite
 struct `Geometry.Ball - Static Functions` {
@@ -191,21 +180,21 @@ struct `Geometry.Ball - Static Functions` {
     @Test
     func `Geometry.contains(_:point:) for point inside`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 10)
-        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)  // distance 5
+        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)
         #expect(Geometry.contains(circle, point: point))
     }
 
     @Test
     func `Geometry.contains(_:point:) for point on boundary`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)  // distance 5
+        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)
         #expect(Geometry.contains(circle, point: point))
     }
 
     @Test
     func `Geometry.contains(_:point:) for point outside`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let point: Geometry<Double, Void>.Point<2> = .init(x: 6, y: 8)  // distance 10
+        let point: Geometry<Double, Void>.Point<2> = .init(x: 6, y: 8)
         #expect(!Geometry.contains(circle, point: point))
     }
 
@@ -245,8 +234,6 @@ struct `Geometry.Ball - Static Functions` {
     }
 }
 
-// MARK: - Containment Tests
-
 @Suite
 struct `Geometry.Ball - Containment` {
     @Test
@@ -268,7 +255,7 @@ struct `Geometry.Ball - Containment` {
     @Test
     func `Boundary point not strictly interior`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
-        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)  // distance 5
+        let point: Geometry<Double, Void>.Point<2> = .init(x: 3, y: 4)
         #expect(!circle.containsInterior(point))
     }
 
@@ -279,8 +266,6 @@ struct `Geometry.Ball - Containment` {
         #expect(outer.contains(inner))
     }
 }
-
-// MARK: - Point on Circle Tests
 
 @Suite
 struct `Geometry.Ball - Parametric Points` {
@@ -332,13 +317,11 @@ struct `Geometry.Ball - Parametric Points` {
     func `Closest point when query point is at center`() {
         let circle: Geometry<Double, Void>.Circle = .init(center: .zero, radius: 5)
         let closest = circle.closestPoint(to: circle.center)
-        // Should return rightmost point when at center
+
         #expect(isApprox(closest.x, X(5)))
         #expect(isApprox(closest.y, Y(0)))
     }
 }
-
-// MARK: - Tangent Tests
 
 @Suite
 struct `Geometry.Ball - Tangent Vectors` {
@@ -364,7 +347,7 @@ struct `Geometry.Ball - Tangent Vectors` {
         let angle: Radian = .init(_unchecked: Double.pi / 3)
         let point = circle.point(at: angle)
         let tangent = circle.tangent(at: angle)
-        // Create a vector from center to point (which is the radius vector)
+
         let radiusVector: Geometry<Double, Void>.Vector<2> = .init(
             dx: point.x - circle.center.x,
             dy: point.y - circle.center.y
@@ -373,8 +356,6 @@ struct `Geometry.Ball - Tangent Vectors` {
         #expect(isApproxScalar(dot, 0))
     }
 }
-
-// MARK: - Bounding Box Tests
 
 @Suite
 struct `Geometry.Ball - Bounding Box` {
@@ -401,8 +382,6 @@ struct `Geometry.Ball - Bounding Box` {
         #expect(bbox.ury == Y(25))
     }
 }
-
-// MARK: - Transformation Tests
 
 @Suite
 struct `Geometry.Ball - Transformations` {
@@ -436,8 +415,6 @@ struct `Geometry.Ball - Transformations` {
         #expect(scaled.radius == Distance(10))
     }
 }
-
-// MARK: - Line Intersection Tests
 
 @Suite
 struct `Geometry.Ball - Line Intersection` {
@@ -479,8 +456,6 @@ struct `Geometry.Ball - Line Intersection` {
         #expect(intersections.isEmpty)
     }
 }
-
-// MARK: - Circle-Circle Intersection Tests
 
 @Suite
 struct `Geometry.Ball - Circle Intersection` {
@@ -526,8 +501,6 @@ struct `Geometry.Ball - Circle Intersection` {
     }
 }
 
-// MARK: - Bezier Approximation Tests
-
 @Suite
 struct `Geometry.Ball - Bezier Curves` {
     @Test
@@ -554,8 +527,6 @@ struct `Geometry.Ball - Bezier Curves` {
         #expect(isApprox(first.start.y, Y(0)))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Ball - Functorial Map` {

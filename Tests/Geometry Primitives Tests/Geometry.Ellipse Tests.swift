@@ -1,6 +1,3 @@
-// Geometry.Ellipse Tests.swift
-// Tests for Geometry.Ellipse type.
-
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Testing
@@ -8,8 +5,6 @@ import Testing
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -58,8 +53,6 @@ private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e
     let diff = a - b
     return diff > Radian(_unchecked: -tol) && diff < Radian(_unchecked: tol)
 }
-
-// MARK: - Initialization Tests
 
 @Suite
 struct `Geometry.Ellipse - Initialization` {
@@ -112,8 +105,6 @@ struct `Geometry.Ellipse - Initialization` {
     }
 }
 
-// MARK: - Properties Tests
-
 @Suite
 struct `Geometry.Ellipse - Properties` {
     @Test
@@ -132,14 +123,14 @@ struct `Geometry.Ellipse - Properties` {
     @Test
     func `Eccentricity of elongated ellipse`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
-        // e = sqrt(1 - (b/a)^2) = sqrt(1 - 9/25) = sqrt(16/25) = 4/5 = 0.8
+
         #expect(abs(ellipse.eccentricity - 0.8) < 1e-10)
     }
 
     @Test
     func `Focal distance`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
-        // c = sqrt(a^2 - b^2) = sqrt(25 - 9) = 4
+
         #expect(isApprox(ellipse.focalDistance, Distance(4)))
     }
 
@@ -156,15 +147,13 @@ struct `Geometry.Ellipse - Properties` {
     }
 }
 
-// MARK: - Foci Tests
-
 @Suite
 struct `Geometry.Ellipse - Foci` {
     @Test
     func `Foci of axis-aligned ellipse`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
         let foci = ellipse.foci
-        // c = sqrt(a^2 - b^2) = sqrt(25 - 9) = 4
+
         #expect(isApprox(foci.f1.x, X(-4)))
         #expect(isApprox(foci.f1.y, Y(0)))
         #expect(isApprox(foci.f2.x, X(4)))
@@ -182,15 +171,13 @@ struct `Geometry.Ellipse - Foci` {
     }
 }
 
-// MARK: - Static Functions Tests
-
 @Suite
 struct `Geometry.Ellipse - Static Functions` {
     @Test
     func `Geometry.area(of:) ellipse`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 5, semiMinor: 3)
         let area = Geometry.area(of: ellipse)
-        // Area = π * a * b = π * 5 * 3 = 15π
+
         #expect(isApproxScalar(area.underlying, 15 * .pi))
     }
 
@@ -243,8 +230,6 @@ struct `Geometry.Ellipse - Static Functions` {
     }
 }
 
-// MARK: - Area and Perimeter Tests
-
 @Suite
 struct `Geometry.Ellipse - Area and Perimeter` {
     @Test
@@ -259,8 +244,6 @@ struct `Geometry.Ellipse - Area and Perimeter` {
         #expect(isApprox(circle.perimeter, Distance(10 * .pi), tol: 0.01))
     }
 }
-
-// MARK: - Point on Ellipse Tests
 
 @Suite
 struct `Geometry.Ellipse - Parametric Points` {
@@ -292,12 +275,10 @@ struct `Geometry.Ellipse - Parametric Points` {
     func `Tangent at parameter`() {
         let ellipse: Geometry<Double, Void>.Ellipse = .init(semiMajor: 10, semiMinor: 5)
         let tangent = ellipse.tangent(at: .zero)
-        // Tangent at rightmost point should point upward
+
         #expect(tangent.dy > Dy(0))
     }
 }
-
-// MARK: - Containment Tests
 
 @Suite
 struct `Geometry.Ellipse - Containment` {
@@ -333,8 +314,6 @@ struct `Geometry.Ellipse - Containment` {
     }
 }
 
-// MARK: - Bounding Box Tests
-
 @Suite
 struct `Geometry.Ellipse - Bounding Box` {
     @Test
@@ -362,8 +341,6 @@ struct `Geometry.Ellipse - Bounding Box` {
     }
 }
 
-// MARK: - Circle Conversion Tests
-
 @Suite
 struct `Geometry.Ellipse - Circle Conversion` {
     @Test
@@ -381,8 +358,6 @@ struct `Geometry.Ellipse - Circle Conversion` {
         #expect(circle == nil)
     }
 }
-
-// MARK: - Transformation Tests
 
 @Suite
 struct `Geometry.Ellipse - Transformations` {
@@ -411,8 +386,6 @@ struct `Geometry.Ellipse - Transformations` {
         #expect(isApprox(rotated.rotation, .pi.half))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Ellipse - Functorial Map` {

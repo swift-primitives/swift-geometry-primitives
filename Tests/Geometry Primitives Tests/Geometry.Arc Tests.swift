@@ -1,6 +1,3 @@
-// Geometry.Arc Tests.swift
-// Tests for Geometry.Arc type.
-
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Real_Primitives
@@ -9,8 +6,6 @@ import Testing
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -59,8 +54,6 @@ private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e
 private func isApproxScalar(_ a: Double, _ b: Double, tol: Double = 1e-10) -> Bool {
     return abs(a - b) < tol
 }
-
-// MARK: - Initialization Tests
 
 @Suite
 struct `Geometry.Arc - Initialization` {
@@ -113,8 +106,6 @@ struct `Geometry.Arc - Initialization` {
     }
 }
 
-// MARK: - Properties Tests
-
 @Suite
 struct `Geometry.Arc - Properties` {
     @Test
@@ -159,8 +150,6 @@ struct `Geometry.Arc - Properties` {
         #expect(!half.isFullCircle)
     }
 }
-
-// MARK: - Endpoints Tests
 
 @Suite
 struct `Geometry.Arc - Endpoints` {
@@ -213,8 +202,6 @@ struct `Geometry.Arc - Endpoints` {
     }
 }
 
-// MARK: - Parametric Points Tests
-
 @Suite
 struct `Geometry.Arc - Parametric Points` {
     @Test
@@ -257,8 +244,6 @@ struct `Geometry.Arc - Parametric Points` {
     }
 }
 
-// MARK: - Tangent Tests
-
 @Suite
 struct `Geometry.Arc - Tangent` {
     @Test
@@ -288,8 +273,6 @@ struct `Geometry.Arc - Tangent` {
     }
 }
 
-// MARK: - Length Tests
-
 @Suite
 struct `Geometry.Arc - Length` {
     @Test
@@ -310,8 +293,6 @@ struct `Geometry.Arc - Length` {
         #expect(isApprox(arc.length, Distance(2 * Double.pi)))
     }
 }
-
-// MARK: - Bounding Box Tests
 
 @Suite
 struct `Geometry.Arc - Bounding Box` {
@@ -346,8 +327,6 @@ struct `Geometry.Arc - Bounding Box` {
     }
 }
 
-// MARK: - Containment Tests
-
 @Suite
 struct `Geometry.Arc - Containment` {
     @Test
@@ -376,8 +355,6 @@ struct `Geometry.Arc - Containment` {
         #expect(!arc.contains(point))
     }
 }
-
-// MARK: - Transformation Tests
 
 @Suite
 struct `Geometry.Arc - Transformations` {
@@ -412,8 +389,6 @@ struct `Geometry.Arc - Transformations` {
         #expect(reversed.endAngle == arc.startAngle)
     }
 }
-
-// MARK: - Bezier Conversion Tests
 
 @Suite
 struct `Geometry.Arc - Bezier Conversion` {
@@ -453,8 +428,6 @@ struct `Geometry.Arc - Bezier Conversion` {
         #expect(isApprox(lastBezier.endPoint!.y, arc.endPoint.y))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Arc - Functorial Map` {

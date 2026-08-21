@@ -1,38 +1,12 @@
-// Path.swift
-// A 2D path composed of line segments, Bezier curves, and arcs.
-
 public import Affine_Geometry_Primitives
 import Real_Primitives
 
-// MARK: - Path
-
 extension Geometry {
-    /// A path consisting of one or more subpaths.
-    ///
-    /// Path is a general-purpose vector path representation that composes
-    /// existing geometric primitives. Use this for representing complex
-    /// shapes, outlines, and composite curves.
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// // Triangle path
-    /// let triangle = Geometry<Double, Void>.Path(subpaths: [
-    ///     .init(
-    ///         startPoint: .init(x: 0, y: 0),
-    ///         segments: [
-    ///             .line(.init(start: .init(x: 0, y: 0), end: .init(x: 100, y: 0))),
-    ///             .line(.init(start: .init(x: 100, y: 0), end: .init(x: 50, y: 86.6))),
-    ///         ],
-    ///         isClosed: true  // Automatically closes back to start
-    ///     )
-    /// ])
-    /// ```
+
     public struct Path {
-        /// The subpaths that make up this path.
+
         public var subpaths: [Subpath]
 
-        /// Create a path from subpaths.
         @inlinable
         public init(subpaths: consuming [Subpath]) {
             self.subpaths = subpaths
@@ -48,25 +22,16 @@ extension Geometry.Path: Hashable where Scalar: Hashable {}
     extension Geometry.Path: Codable where Scalar: Codable {}
 #endif
 
-// MARK: - Path.Subpath
-
 extension Geometry.Path {
-    /// A connected sequence of segments forming a subpath.
-    ///
-    /// A subpath starts at a point and consists of connected segments.
-    /// If `isClosed` is true, a line from the last segment's endpoint
-    /// to `startPoint` is implied.
+
     public struct Subpath {
-        /// The starting point of the subpath.
+
         public var startPoint: Geometry.Point<2>
 
-        /// The segments making up the subpath.
         public var segments: [Segment]
 
-        /// Whether the subpath is closed (end connects to start).
         public var isClosed: Bool
 
-        /// Create a subpath.
         @inlinable
         public init(
             startPoint: consuming Geometry.Point<2>,
@@ -88,23 +53,16 @@ extension Geometry.Path.Subpath: Hashable where Scalar: Hashable {}
     extension Geometry.Path.Subpath: Codable where Scalar: Codable {}
 #endif
 
-// MARK: - Path.Segment
-
 extension Geometry.Path {
-    /// A single segment of a path.
-    ///
-    /// Represents a primitive geometric element that can be part of a path.
+
     public enum Segment {
-        /// A straight line segment
+
         case line(Geometry.Line.Segment)
 
-        /// A Bezier curve (any degree)
         case bezier(Geometry.Bezier)
 
-        /// A circular arc
         case arc(Geometry.Arc)
 
-        /// An elliptical arc
         case ellipticalArc(Geometry.Ellipse.Arc)
     }
 }
@@ -117,10 +75,8 @@ extension Geometry.Path.Segment: Hashable where Scalar: Hashable {}
     extension Geometry.Path.Segment: Codable where Scalar: Codable {}
 #endif
 
-// MARK: - Segment Properties
-
 extension Geometry.Path.Segment where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The starting point of the segment.
+
     @inlinable
     public var startPoint: Geometry.Point<2>? {
         switch self {
@@ -131,7 +87,6 @@ extension Geometry.Path.Segment where Scalar: BinaryFloatingPoint & Numeric.Tran
         }
     }
 
-    /// The ending point of the segment.
     @inlinable
     public var endPoint: Geometry.Point<2>? {
         switch self {
@@ -143,10 +98,8 @@ extension Geometry.Path.Segment where Scalar: BinaryFloatingPoint & Numeric.Tran
     }
 }
 
-// MARK: - Array from Segment
-
 extension Array {
-    /// Create an array of Bezier curves from a path segment.
+
     @inlinable
     public init<Scalar: BinaryFloatingPoint & Numeric.Transcendental, Space>(
         segment: Geometry<Scalar, Space>.Path.Segment
@@ -168,29 +121,24 @@ extension Array {
 }
 
 extension Geometry.Path.Segment where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Convert segment to Bezier curves.
+
     @inlinable
     public func toBeziers() -> [Geometry.Bezier] { .init(segment: self) }
 }
 
-// MARK: - Path Properties
-
 extension Geometry.Path {
-    /// Whether the path is empty (no subpaths).
+
     @inlinable
     public var isEmpty: Bool { subpaths.isEmpty }
 
-    /// Total number of segments across all subpaths.
     @inlinable
     public var segmentCount: Int {
         subpaths.reduce(0) { $0 + $1.segments.count }
     }
 }
 
-// MARK: - Array from Path
-
 extension Array where Element: RangeReplaceableCollection {
-    /// Create a nested array of Bezier curves from a path.
+
     @inlinable
     public init<Scalar: BinaryFloatingPoint & Numeric.Transcendental, Space>(
         path: Geometry<Scalar, Space>.Path
@@ -208,16 +156,13 @@ extension Array where Element: RangeReplaceableCollection {
 }
 
 extension Geometry.Path where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Convert entire path to Bezier curves.
-    ///
-    /// Useful for rendering or geometric operations that work on Beziers.
+
     @inlinable
     public func toBeziers() -> [[Geometry.Bezier]] { .init(path: self) }
 
-    /// Bounding box of the entire path.
     @inlinable
     public var boundingBox: Geometry.Rectangle? {
-        // Collect all Bezier curves and compute union of bounding boxes
+
         let allBeziers = toBeziers().flatMap { $0 }
         guard let first = allBeziers.first?.boundingBoxConservative else { return nil }
         return allBeziers.dropFirst().reduce(first) { rect, bez in
@@ -227,16 +172,14 @@ extension Geometry.Path where Scalar: BinaryFloatingPoint & Numeric.Transcendent
     }
 }
 
-// MARK: - Subpath Properties
-
 extension Geometry.Path.Subpath {
-    /// Whether the subpath is empty (no segments).
+
     @inlinable
     public var isEmpty: Bool { segments.isEmpty }
 }
 
 extension Geometry.Path.Subpath where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// The endpoint of the subpath (last segment's end, or startPoint if empty).
+
     @inlinable
     public var endPoint: Geometry.Point<2>? {
         segments.last?.endPoint ?? startPoint
@@ -244,7 +187,7 @@ extension Geometry.Path.Subpath where Scalar: BinaryFloatingPoint & Numeric.Tran
 }
 
 extension Geometry.Path.Subpath where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Approximate length of the subpath.
+
     @inlinable
     public func length(bezierSegments: Int = 100) -> Geometry.ArcLength {
         var total: Geometry.ArcLength = .zero
@@ -270,10 +213,8 @@ extension Geometry.Path.Subpath where Scalar: BinaryFloatingPoint & Numeric.Tran
     }
 }
 
-// MARK: - Path Convenience Initializers
-
 extension Geometry.Path {
-    /// Create a path from a single closed polygon.
+
     @inlinable
     public static func polygon(vertices: [Geometry.Point<2>]) -> Self? {
         guard vertices.count >= 3 else { return nil }
@@ -286,7 +227,6 @@ extension Geometry.Path {
         ])
     }
 
-    /// Create a path from a polyline (open).
     @inlinable
     public static func polyline(vertices: [Geometry.Point<2>]) -> Self? {
         guard vertices.count >= 2 else { return nil }
@@ -300,10 +240,8 @@ extension Geometry.Path {
     }
 }
 
-// MARK: - Functorial Map (Segment)
-
 extension Geometry.Path.Segment {
-    /// Transform coordinates using the given closure.
+
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -324,10 +262,8 @@ extension Geometry.Path.Segment {
     }
 }
 
-// MARK: - Functorial Map (Subpath)
-
 extension Geometry.Path.Subpath {
-    /// Transform coordinates using the given closure.
+
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -345,10 +281,8 @@ extension Geometry.Path.Subpath {
     }
 }
 
-// MARK: - Functorial Map (Path)
-
 extension Geometry.Path {
-    /// Transform coordinates using the given closure.
+
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

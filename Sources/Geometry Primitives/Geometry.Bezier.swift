@@ -1,36 +1,14 @@
-// Bezier.swift
-// Bezier curves of arbitrary degree.
-
 public import Affine_Geometry_Primitives
 public import Dimension_Primitives
 public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
-    /// A Bezier curve defined by control points.
-    ///
-    /// Supports curves of any degree:
-    /// - Degree 1 (2 points): Linear
-    /// - Degree 2 (3 points): Quadratic
-    /// - Degree 3 (4 points): Cubic
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// // Cubic Bezier curve
-    /// let curve = Geometry<Double, Void>.Bezier(controlPoints: [
-    ///     .init(x: 0, y: 0),
-    ///     .init(x: 1, y: 2),
-    ///     .init(x: 3, y: 2),
-    ///     .init(x: 4, y: 0)
-    /// ])
-    /// let midpoint = curve.point(at: 0.5)
-    /// ```
+
     public struct Bezier {
-        /// The control points defining the curve.
+
         public var controlPoints: [Point<2>]
 
-        /// Create a Bezier curve from control points.
         @inlinable
         public init(controlPoints: consuming [Point<2>]) {
             self.controlPoints = controlPoints
@@ -40,21 +18,18 @@ extension Geometry {
 
 extension Geometry.Bezier: Sendable where Scalar: Sendable {}
 
-// MARK: - Segment
-
 extension Geometry.Bezier {
-    /// Cubic Bézier curve segment.
+
     public struct Segment {
-        /// Start point.
+
         public let start: Geometry.Point<2>
-        /// First control point.
+
         public let control1: Geometry.Point<2>
-        /// Second control point.
+
         public let control2: Geometry.Point<2>
-        /// End point.
+
         public let end: Geometry.Point<2>
 
-        /// Creates a Bézier segment with given control points.
         @inlinable
         public init(
             start: Geometry.Point<2>,
@@ -74,37 +49,28 @@ extension Geometry.Bezier.Segment: Sendable where Scalar: Sendable {}
 extension Geometry.Bezier: Equatable where Scalar: Equatable {}
 extension Geometry.Bezier: Hashable where Scalar: Hashable {}
 
-// MARK: - Codable
 #if !hasFeature(Embedded)
     extension Geometry.Bezier: Codable where Scalar: Codable {}
 #endif
-// MARK: - Basic Properties
 
 extension Geometry.Bezier {
-    /// The degree of the curve (number of control points - 1).
+
     @inlinable
-    // REASON: Canonical Bezier degree formula — degree = #controlPoints − 1
-    // (textbook: degree-3 cubic has 4 control points). Math IS the expression.
-    // swift-linter:disable:next count minus one
+
     public var degree: Int { max(0, controlPoints.count - 1) }
 
-    /// Whether this is a valid Bezier curve (at least 2 control points).
     @inlinable
     public var isValid: Bool { controlPoints.count >= 2 }
 
-    /// The start point of the curve.
     @inlinable
     public var startPoint: Geometry.Point<2>? { controlPoints.first }
 
-    /// The end point of the curve.
     @inlinable
     public var endPoint: Geometry.Point<2>? { controlPoints.last }
 }
 
-// MARK: - Convenience Initializers
-
 extension Geometry.Bezier {
-    /// Create a linear (degree 1) Bezier curve.
+
     @inlinable
     public static func linear(
         from start: Geometry.Point<2>,
@@ -113,7 +79,6 @@ extension Geometry.Bezier {
         Self(controlPoints: [start, end])
     }
 
-    /// Create a quadratic (degree 2) Bezier curve.
     @inlinable
     public static func quadratic(
         from start: Geometry.Point<2>,
@@ -123,7 +88,6 @@ extension Geometry.Bezier {
         Self(controlPoints: [start, control, end])
     }
 
-    /// Create a cubic (degree 3) Bezier curve.
     @inlinable
     public static func cubic(
         from start: Geometry.Point<2>,
@@ -135,31 +99,18 @@ extension Geometry.Bezier {
     }
 }
 
-// MARK: - Evaluation (FloatingPoint)
-
 extension Geometry.Bezier where Scalar: FloatingPoint {
-    /// Evaluate the curve at parameter t using de Casteljau's algorithm.
-    ///
-    /// - Parameter t: Parameter in [0, 1] (0 = start, 1 = end)
-    /// - Returns: The point on the curve at parameter t
+
     @inlinable
     public func point(at t: Scale<1, Scalar>) -> Geometry.Point<2>? {
         Geometry.point(of: self, at: t)
     }
 
-    /// Evaluate the derivative (tangent vector) at parameter t.
-    ///
-    /// - Parameter t: Parameter in [0, 1]
-    /// - Returns: The tangent vector at parameter t, or nil if curve is invalid
     @inlinable
     public func derivative(at t: Scale<1, Scalar>) -> Geometry.Vector<2>? {
         Geometry.derivative(of: self, at: t)
     }
 
-    /// Get the tangent direction (normalized) at parameter t.
-    ///
-    /// - Parameter t: Parameter in [0, 1]
-    /// - Returns: The unit tangent vector, or nil if tangent is zero
     @inlinable
     public func tangent(at t: Scale<1, Scalar>) -> Geometry.Vector<2>? {
         guard let d = derivative(at: t) else { return nil }
@@ -168,14 +119,10 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
         return normalized
     }
 
-    /// Get the normal direction (perpendicular to tangent) at parameter t.
-    ///
-    /// - Parameter t: Parameter in [0, 1]
-    /// - Returns: The unit normal vector (rotated 90° CCW from tangent)
     @inlinable
     public func normal(at t: Scale<1, Scalar>) -> Geometry.Vector<2>? {
         guard let tang = tangent(at: t) else { return nil }
-        // Rotate 90° counter-clockwise
+
         return Geometry.Vector(
             dx: Linear<Scalar, Space>.Dx(-tang.dy.underlying),
             dy: Linear<Scalar, Space>.Dy(tang.dx.underlying)
@@ -183,19 +130,8 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Subdivision (FloatingPoint)
-
 extension Geometry.Bezier where Scalar: FloatingPoint {
-    // `points`/`next` are non-empty at every `.first!`/`.last!` below: the method
-    // returns early unless `isValid` (≥2 control points), and the loop runs only
-    // while `points.count > 1` (so `next` has ≥1 element). Deliberate force-unwraps.
-    // swift-format-ignore: NeverForceUnwrap
-    /// Split the curve at parameter t into two curves.
-    ///
-    /// Uses de Casteljau's algorithm to compute the split.
-    ///
-    /// - Parameter t: Parameter in [0, 1] where to split
-    /// - Returns: Tuple of (left curve, right curve), or nil if invalid
+
     @inlinable
     public func split(at t: Scale<1, Scalar>) -> (left: Self, right: Self)? {
         guard isValid else { return nil }
@@ -225,24 +161,14 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
         return (Self(controlPoints: leftPoints), Self(controlPoints: rightPoints))
     }
 
-    /// Subdivide the curve into multiple segments for approximation.
-    ///
-    /// - Parameter segments: Number of segments to create
-    /// - Returns: Array of points along the curve
     @inlinable
     public func subdivide(into segments: Int) -> [Geometry.Point<2>] {
         .init(subdividing: self, into: segments)
     }
 }
 
-// MARK: - Array from Bezier Subdivision
-
 extension Array {
-    /// Create an array of points by subdividing a Bezier curve.
-    ///
-    /// - Parameters:
-    ///   - bezier: The Bezier curve to subdivide
-    ///   - segments: Number of segments to create
+
     @inlinable
     public init<Scalar: FloatingPoint, Space>(
         subdividing bezier: Geometry<Scalar, Space>.Bezier,
@@ -267,13 +193,8 @@ extension Array {
     }
 }
 
-// MARK: - Bounding Box (FloatingPoint)
-
 extension Geometry.Bezier where Scalar: FloatingPoint {
-    /// A conservative bounding box (control point hull).
-    ///
-    /// This is the axis-aligned bounding box of the control points,
-    /// which always contains the curve.
+
     @inlinable
     public var boundingBoxConservative: Geometry.Rectangle? {
         guard let first = controlPoints.first else { return nil }
@@ -299,15 +220,8 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Length Approximation (FloatingPoint)
-
 extension Geometry.Bezier where Scalar: FloatingPoint {
-    /// Approximate the arc length of the curve.
-    ///
-    /// Uses subdivision to approximate the length by summing chord lengths.
-    ///
-    /// - Parameter segments: Number of segments for approximation (default 100)
-    /// - Returns: Approximate arc length
+
     @inlinable
     public func length(segments: Int = 100) -> Geometry.ArcLength {
         let points = subdivide(into: segments)
@@ -321,23 +235,19 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Transformation (FloatingPoint)
-
 extension Geometry.Bezier where Scalar: FloatingPoint {
-    /// Return a curve translated by the given vector.
+
     @inlinable
     public func translated(by vector: Geometry.Vector<2>) -> Self {
         Self(controlPoints: controlPoints.map { $0 + vector })
     }
 
-    /// Return a curve scaled uniformly about its start point.
     @inlinable
     public func scaled(by factor: Scale<1, Scalar>) -> Self? {
         guard let start = startPoint else { return nil }
         return scaled(by: factor, about: start)
     }
 
-    /// Return a curve scaled uniformly about a given point.
     @inlinable
     public func scaled(by factor: Scale<1, Scalar>, about point: Geometry.Point<2>) -> Self {
         Self(
@@ -350,27 +260,17 @@ extension Geometry.Bezier where Scalar: FloatingPoint {
         )
     }
 
-    /// Return the curve with reversed direction.
     @inlinable
     public var reversed: Self {
         Self(controlPoints: controlPoints.reversed())
     }
 }
 
-// MARK: - Ellipse Approximation (BinaryFloatingPoint & Numeric.Transcendental)
-
 extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Create cubic Bezier curves that approximate an ellipse.
-    ///
-    /// Uses the standard technique of splitting the ellipse into 4 quadrants,
-    /// each approximated by a cubic Bezier curve.
-    ///
-    /// - Parameter ellipse: The ellipse to approximate
-    /// - Returns: Array of 4 cubic Bezier curves approximating the ellipse
+
     @inlinable
     public static func approximating(_ ellipse: Geometry.Ellipse) -> [Self] {
-        // Control point factor for 90° arc approximation
-        // k = (4/3) * tan(π/8) ≈ 0.5522847498
+
         let k: Scalar = Scalar(0.5522847498307936)
 
         let cx: Scalar = ellipse.center.x.underlying
@@ -380,7 +280,6 @@ extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcende
         let cosR: Scalar = ellipse.rotation.cos.value
         let sinR: Scalar = ellipse.rotation.sin.value
 
-        // Helper to rotate a point around the center
         func rotated(x: Scalar, y: Scalar) -> Geometry.Point<2> {
             let rx: Scalar = x * cosR - y * sinR
             let ry: Scalar = x * sinR + y * cosR
@@ -390,30 +289,23 @@ extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcende
             )
         }
 
-        // Cardinal points on the unrotated ellipse (relative to center)
         let right = rotated(x: a, y: Scalar(0))
         let top = rotated(x: Scalar(0), y: b)
         let left = rotated(x: -a, y: Scalar(0))
         let bottom = rotated(x: Scalar(0), y: -b)
 
-        // Control point offsets
         let ka: Scalar = k * a
         let kb: Scalar = k * b
 
-        // Control points for each quadrant
-        // Quadrant 1: right to top
         let c1Control1 = rotated(x: a, y: kb)
         let c1Control2 = rotated(x: ka, y: b)
 
-        // Quadrant 2: top to left
         let c2Control1 = rotated(x: -ka, y: b)
         let c2Control2 = rotated(x: -a, y: kb)
 
-        // Quadrant 3: left to bottom
         let c3Control1 = rotated(x: -a, y: -kb)
         let c3Control2 = rotated(x: -ka, y: -b)
 
-        // Quadrant 4: bottom to right
         let c4Control1 = rotated(x: ka, y: -b)
         let c4Control2 = rotated(x: a, y: -kb)
 
@@ -425,25 +317,18 @@ extension Geometry.Bezier where Scalar: BinaryFloatingPoint & Numeric.Transcende
         ]
     }
 
-    /// Create cubic Bezier curves that approximate a circle.
-    ///
-    /// - Parameter circle: The circle to approximate
-    /// - Returns: Array of 4 cubic Bezier curves approximating the circle
     @inlinable
     public static func approximating(_ circle: Geometry.Circle) -> [Self] {
         approximating(Geometry.Ellipse(circle))
     }
 }
 
-// MARK: - Bezier Static Implementations
-
 extension Geometry where Scalar: FloatingPoint {
-    /// Evaluate a Bezier curve at parameter t using de Casteljau's algorithm.
+
     @inlinable
     public static func point(of bezier: Bezier, at t: Scale<1, Scalar>) -> Point<2>? {
         guard bezier.isValid else { return nil }
 
-        // de Casteljau's algorithm
         var points = bezier.controlPoints
         while points.count > 1 {
             var next: [Point<2>] = []
@@ -457,19 +342,12 @@ extension Geometry where Scalar: FloatingPoint {
         return points.first
     }
 
-    /// Evaluate the derivative (tangent vector) of a Bezier curve at parameter t.
     @inlinable
     public static func derivative(of bezier: Bezier, at t: Scale<1, Scalar>) -> Vector<2>? {
         guard bezier.controlPoints.count >= 2 else { return nil }
 
-        // Derivative of Bezier curve is n * Bezier(P[i+1] - P[i])
-        // REASON: Canonical Bezier derivative degree formula — n = degree =
-        // #controlPoints − 1, used in the derivative recursion above. Same
-        // formula as the `degree` property; math IS the expression.
-        // swift-linter:disable:next count minus one
         let n = Scalar(bezier.controlPoints.count - 1)
 
-        // Create derivative control points
         var derivPoints: [Point<2>] = []
         derivPoints.reserveCapacity(bezier.controlPoints.dropLast().count)
         for i in bezier.controlPoints.indices.dropLast() {
@@ -478,7 +356,6 @@ extension Geometry where Scalar: FloatingPoint {
             derivPoints.append(Point(x: X(dx), y: Y(dy)))
         }
 
-        // Evaluate the derivative curve
         var points = derivPoints
         while points.count > 1 {
             var next: [Point<2>] = []
@@ -498,10 +375,8 @@ extension Geometry where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Functorial Map
-
 extension Geometry.Bezier {
-    /// Create a curve by transforming the coordinates of another curve.
+
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Bezier,
@@ -515,7 +390,6 @@ extension Geometry.Bezier {
         self.init(controlPoints: result)
     }
 
-    /// Transform coordinates using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result

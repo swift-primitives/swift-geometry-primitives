@@ -1,5 +1,3 @@
-// GeometryTests.swift
-
 import Affine_Primitives
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
@@ -7,8 +5,6 @@ import Linear_Primitives
 import Testing
 
 @testable import Geometry_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias GeoFloat = Geometry<Float, Void>
@@ -48,9 +44,6 @@ private func isApprox(_ a: Length, _ b: Length, tol: Double = 1e-10) -> Bool {
     return diff > -tolerance && diff < tolerance
 }
 
-// MARK: - Test Unit Type
-
-/// A custom unit type for testing.
 struct TestUnit: AdditiveArithmetic, Comparable, Codable, Hashable, ExpressibleByIntegerLiteral,
     ExpressibleByFloatLiteral
 {
@@ -85,8 +78,6 @@ extension TestUnit {
     }
 }
 
-// MARK: - Geometry Unit Tests
-
 @Suite
 struct `Geometry Unit Tests` {
     @Test
@@ -101,8 +92,6 @@ struct `Geometry Unit Tests` {
         #expect(point.x == 10)
     }
 }
-
-// MARK: - Point Tests
 
 @Suite
 struct `Point Tests` {
@@ -122,7 +111,7 @@ struct `Point Tests` {
 
     @Test
     func `Point subtraction returns Vector`() {
-        // In affine geometry, Point - Point = Vector (the displacement)
+
         let a: Geometry<TestUnit, Void>.Point<2> = .init(x: 10, y: 20)
         let b: Geometry<TestUnit, Void>.Point<2> = .init(x: 5, y: 15)
         let displacement: Geometry<TestUnit, Void>.Vector<2> = a - b
@@ -155,8 +144,6 @@ struct `Point Tests` {
     }
 }
 
-// MARK: - Vector<2> Tests
-
 @Suite
 struct `Vector Tests` {
     @Test
@@ -184,14 +171,14 @@ struct `Vector Tests` {
     func `Vector dot product`() {
         let a: Geo.Vector<2> = .init(dx: 1, dy: 0)
         let b: Geo.Vector<2> = .init(dx: 0, dy: 1)
-        #expect(a.dot(b) == 0)  // perpendicular
+        #expect(a.dot(b) == 0)
     }
 
     @Test
     func `Vector cross product`() {
         let a: Geo.Vector<2> = .init(dx: 1, dy: 0)
         let b: Geo.Vector<2> = .init(dx: 0, dy: 1)
-        #expect(a.cross(b) == 1)  // counter-clockwise
+        #expect(a.cross(b) == 1)
     }
 
     @Test
@@ -205,8 +192,6 @@ struct `Vector Tests` {
         #expect((a / Scale(2.0)).dx == 5)
     }
 }
-
-// MARK: - Size Tests
 
 @Suite
 struct `Size Tests` {
@@ -224,8 +209,6 @@ struct `Size Tests` {
         #expect(zero.height == 0)
     }
 }
-
-// MARK: - Rectangle Tests
 
 @Suite
 struct `Rectangle Tests` {
@@ -317,8 +300,6 @@ struct `Rectangle Tests` {
     }
 }
 
-// MARK: - Radian Tests
-
 @Suite
 struct `Radian Tests` {
     @Test
@@ -342,8 +323,6 @@ struct `Radian Tests` {
         #expect(a < b)
     }
 }
-
-// MARK: - Degree Tests
 
 @Suite
 struct `Degree Tests` {
@@ -374,8 +353,6 @@ struct `Degree Tests` {
         #expect(deg == 90)
     }
 }
-
-// MARK: - Transform Tests
 
 @Suite
 struct `Transform Tests` {
@@ -411,7 +388,7 @@ struct `Transform Tests` {
 
     @Test
     func `Rotation transform`() {
-        // 90 degree rotation
+
         let transform: Geometry<Double, Void>.Transform = .rotation(.pi.half)
         let point: Geometry<Double, Void>.Point<2> = .init(x: 1, y: 0)
         let result = transform.apply(to: point)
@@ -425,13 +402,11 @@ struct `Transform Tests` {
         let translate: Geometry<Double, Void>.Transform = .translation(dx: 10, dy: 0)
         let scale: Geometry<Double, Void>.Transform = .scale(2)
 
-        // Scale first, then translate
         let combined = translate.concatenating(scale)
 
         let point: Geometry<Double, Void>.Point<2> = .init(x: 5, y: 5)
         let result = combined.apply(to: point)
 
-        // 5 * 2 = 10, then + 10 = 20
         #expect(result.x == 20)
         #expect(result.y == 10)
     }
@@ -448,8 +423,6 @@ struct `Transform Tests` {
         #expect(isApprox(result.y, Y(20)))
     }
 }
-
-// MARK: - LineSegment Tests
 
 @Suite
 struct `Line Segment Tests` {
@@ -495,8 +468,6 @@ struct `Line Segment Tests` {
     }
 }
 
-// MARK: - Line Tests
-
 @Suite
 struct `Line Tests` {
     @Test
@@ -536,16 +507,15 @@ struct `Line Tests` {
 
     @Test
     func `Line distance to point`() {
-        // Horizontal line y = 0
+
         let line: Geometry<Double, Void>.Line = .init(
             point: .init(x: 0, y: 0),
             direction: .init(dx: 1, dy: 0)
         )
-        // Point at (5, 3) should be distance 3 from line
+
         let point: Geometry<Double, Void>.Point<2> = .init(x: 5, y: 3)
         #expect(line.distance(to: point) == 3)
 
-        // Zero direction vector returns nil
         let degenerateLine: Geometry<Double, Void>.Line = .init(
             point: .init(x: 0, y: 0),
             direction: .init(dx: 0, dy: 0)
@@ -555,7 +525,7 @@ struct `Line Tests` {
 
     @Test
     func `Line Segment via nested type`() {
-        // Test that Line.Segment works the same as LineSegment
+
         let segment: Geometry<Double, Void>.Line.Segment = .init(
             start: .init(x: 0, y: 0),
             end: .init(x: 3, y: 4)
@@ -576,8 +546,6 @@ struct `Line Tests` {
         #expect(line.direction.dy == 30)
     }
 }
-
-// MARK: - Insets Tests
 
 @Suite
 struct `Insets Tests` {
@@ -613,8 +581,6 @@ struct `Insets Tests` {
         #expect(zero.trailing == 0)
     }
 }
-
-// MARK: - Dimension Tests
 
 @Suite
 struct `Dimension Tests` {
@@ -658,7 +624,7 @@ struct `Dimension Tests` {
     @Test
     func `Length multiplication and division`() {
         let len: Geometry<Double, Void>.Length = .init(10)
-        let scaled: Geometry<Double, Void>.Length = len * 2.0  // Explicit type
+        let scaled: Geometry<Double, Void>.Length = len * 2.0
         #expect(isApprox(scaled, Length(20)))
         let scaled2: Geometry<Double, Void>.Length = 2.0 * len
         #expect(isApprox(scaled2, Length(20)))
@@ -666,26 +632,20 @@ struct `Dimension Tests` {
         #expect(isApprox(divided, Length(5)))
     }
 
-    // Note: Geometry.Dimension was removed; use Width/Height (displacements) instead
-
     @Test
     func `X negation`() {
         let x: Geometry<Double, Void>.X = .init(10)
         #expect((-x) == -10)
-        // Note: Coordinate types don't support scalar multiplication/division
-        // as this would change the geometric meaning of coordinates
+
     }
 
     @Test
     func `Y negation`() {
         let y: Geometry<Double, Void>.Y = .init(10)
         #expect((-y) == -10)
-        // Note: Coordinate types don't support scalar multiplication/division
-        // as this would change the geometric meaning of coordinates
+
     }
 }
-
-// MARK: - Transform Generic Tests
 
 @Suite
 struct `Transform Generic Tests` {
@@ -710,8 +670,6 @@ struct `Transform Generic Tests` {
     }
 }
 
-// MARK: - Linear Transform Tests
-
 @Suite
 struct `Linear Transform Tests` {
     typealias Matrix2x2 = Linear<Double, Void>.Matrix<2, 2>
@@ -725,33 +683,12 @@ struct `Linear Transform Tests` {
         #expect(identity.d == 1)
     }
 
-    // TODO: Re-enable when swift-symmetry-primitives compiles
-    // @Test
-    // func `Linear from Scale`() {
-    //     let scale = Scale<2, Double>(x: 2, y: 3)
-    //     let linear: Matrix2x2 = scale.linear()
-    //     #expect(linear.a == 2)
-    //     #expect(linear.b == 0)
-    //     #expect(linear.c == 0)
-    //     #expect(linear.d == 3)
-    // }
-
-    // @Test
-    // func `Linear from Rotation`() {
-    //     let rotation = Rotation<2, Double>(angle: .pi.half)
-    //     let linear: Matrix2x2 = rotation.linear()
-    //     #expect(abs(linear.a) < 1e-10)
-    //     #expect(abs(linear.b + 1) < 1e-10)
-    //     #expect(abs(linear.c - 1) < 1e-10)
-    //     #expect(abs(linear.d) < 1e-10)
-    // }
-
     @Test
     func `Linear concatenation`() {
         let scale = Matrix2x2.scale(2)
         let rotation = Matrix2x2.rotation(.pi.half)
         let combined = rotation * scale
-        // Scale first, then rotate
+
         #expect(abs(combined.a) < 1e-10)
         #expect(abs(combined.b + 2) < 1e-10)
         #expect(abs(combined.c - 2) < 1e-10)
@@ -778,8 +715,6 @@ struct `Linear Transform Tests` {
         #expect(singular.inverse == nil)
     }
 }
-
-// MARK: - Scale Tests
 
 @Suite
 struct `Scale Transform Tests` {
@@ -814,62 +749,3 @@ struct `Scale Transform Tests` {
         #expect(inverted.y == 0.25)
     }
 }
-
-// MARK: - Rotation Tests
-// TODO: Re-enable when swift-symmetry-primitives compiles
-
-// @Suite
-// struct RotationTransformTests {
-//     @Test
-//     func `Rotation identity`() {
-//         let identity = Rotation<2, Double>.identity
-//         #expect(identity.angle == 0)
-//     }
-//
-//     @Test
-//     func `Rotation from angle`() {
-//         let rotation = Rotation<2, Double>(angle: .pi)
-//         #expect(abs(rotation.angle - .pi) < 1e-10)
-//     }
-// }
-
-// MARK: - Shear Tests
-// TODO: Re-enable when swift-symmetry-primitives compiles
-
-// @Suite
-// struct ShearTransformTests {
-//     typealias Matrix2x2 = Linear<Double, Void>.Matrix<2, 2>
-//
-//     @Test
-//     func `Shear identity`() {
-//         let identity = Shear<2, Double>.identity
-//         #expect(identity.x == 0)
-//         #expect(identity.y == 0)
-//     }
-//
-//     @Test
-//     func `Shear horizontal`() {
-//         let shear = Shear<2, Double>.horizontal(0.5)
-//         #expect(shear.x == 0.5)
-//         #expect(shear.y == 0)
-//     }
-//
-//     @Test
-//     func `Shear vertical`() {
-//         let shear = Shear<2, Double>.vertical(0.5)
-//         #expect(shear.x == 0)
-//         #expect(shear.y == 0.5)
-//     }
-//
-//     @Test
-//     func `Shear to Linear`() {
-//         let shear = Shear<2, Double>(x: 0.5, y: 0.25)
-//         let linear: Matrix2x2 = shear.linear()
-//         #expect(linear.a == 1)
-//         #expect(linear.b == 0.5)
-//         #expect(linear.c == 0.25)
-//         #expect(linear.d == 1)
-//     }
-// }
-
-// Quantized Geometry tests are in Geometry+Quantized.swift

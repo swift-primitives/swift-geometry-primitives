@@ -1,17 +1,7 @@
-//
-//  Geometry+Arithmetic.swift
-//  swift-geometry-primitives
-//
-//  Created by Coen ten Thije Boonkkamp on 14/12/2025.
-//
-
 public import Dimension_Primitives
 import Linear_Primitives
 import Real_Primitives
 
-// MARK: - Size × Scale
-
-/// Scales a size uniformly by a dimensionless scale factor.
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Geometry<Scalar, Space>.Size<N>,
@@ -24,7 +14,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     return Geometry<Scalar, Space>.Size<N>(result)
 }
 
-/// Scales a size uniformly by a dimensionless scale factor (commutative).
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Scale<1, Scalar>,
@@ -33,7 +22,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs * lhs
 }
 
-/// Divides a size uniformly by a dimensionless scale factor.
 @inlinable
 public func / <Scalar: FloatingPoint, Space, let N: Int>(
     lhs: Geometry<Scalar, Space>.Size<N>,
@@ -46,7 +34,6 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     return Geometry<Scalar, Space>.Size<N>(result)
 }
 
-/// Scales a size per-dimension by a matching scale factor.
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
@@ -60,7 +47,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     return Geometry<Scalar, Space>.Size<N>(result)
 }
 
-/// Scales a size per-dimension by a matching scale factor (commutative).
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space, let N: Int>(
@@ -70,7 +56,6 @@ public func * <Scalar: FloatingPoint, Space, let N: Int>(
     rhs * lhs
 }
 
-/// Divides a size per-dimension by a matching scale factor.
 @_disfavoredOverload
 @inlinable
 public func / <Scalar: FloatingPoint, Space, let N: Int>(
@@ -83,10 +68,9 @@ public func / <Scalar: FloatingPoint, Space, let N: Int>(
     }
     return Geometry<Scalar, Space>.Size<N>(result)
 }
-// MARK: - Negation
 
 extension Geometry.Depth where Scalar: SignedNumeric {
-    /// Negate.
+
     @inlinable
     public static prefix func - (value: borrowing Self) -> Self {
         Self(-value.value)
@@ -94,14 +78,13 @@ extension Geometry.Depth where Scalar: SignedNumeric {
 }
 
 extension Geometry.Depth where Scalar: AdditiveArithmetic {
-    /// Returns the sum of two depths.
+
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
         Self(lhs.value + rhs.value)
     }
 
-    /// Returns the difference of two depths.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -109,10 +92,8 @@ extension Geometry.Depth where Scalar: AdditiveArithmetic {
     }
 }
 
-// MARK: - Comparable
-
 extension Geometry.Depth: Comparable where Scalar: Comparable {
-    /// Returns whether the left depth is less than the right.
+
     @inlinable
     @_disfavoredOverload
     public static func < (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
@@ -121,7 +102,7 @@ extension Geometry.Depth: Comparable where Scalar: Comparable {
 }
 
 extension Geometry.Insets where Scalar: AdditiveArithmetic {
-    /// Adds two edge insets component-wise.
+
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -133,7 +114,6 @@ extension Geometry.Insets where Scalar: AdditiveArithmetic {
         )
     }
 
-    /// Subtracts two edge insets component-wise.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -146,10 +126,8 @@ extension Geometry.Insets where Scalar: AdditiveArithmetic {
     }
 }
 
-// MARK: - Negation
-
 extension Geometry.Insets where Scalar: SignedNumeric {
-    /// Negates all insets.
+
     @inlinable
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {
@@ -163,7 +141,7 @@ extension Geometry.Insets where Scalar: SignedNumeric {
 }
 
 extension Geometry.Size where Scalar: AdditiveArithmetic {
-    /// Add two sizes component-wise.
+
     @inlinable
     @_disfavoredOverload
     public static func + (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -174,7 +152,6 @@ extension Geometry.Size where Scalar: AdditiveArithmetic {
         return Self(result)
     }
 
-    /// Subtract two sizes component-wise.
     @inlinable
     @_disfavoredOverload
     public static func - (lhs: borrowing Self, rhs: borrowing Self) -> Self {
@@ -186,10 +163,8 @@ extension Geometry.Size where Scalar: AdditiveArithmetic {
     }
 }
 
-// MARK: - Negation
-
 extension Geometry.Size where Scalar: SignedNumeric {
-    /// Negate all dimensions.
+
     @inlinable
     @_disfavoredOverload
     public static prefix func - (value: borrowing Self) -> Self {
@@ -201,12 +176,6 @@ extension Geometry.Size where Scalar: SignedNumeric {
     }
 }
 
-// MARK: - Ratio Operators (Height / Height, Length / Length)
-
-/// Ratio of two heights (dimensionless).
-///
-/// Returns a Scale<1> representing the ratio between two heights.
-/// Disfavored to allow `Height / scalar` to use the scalar division operator.
 @_disfavoredOverload
 @inlinable
 public func / <Scalar: FloatingPoint, Space>(
@@ -216,10 +185,6 @@ public func / <Scalar: FloatingPoint, Space>(
     Scale(lhs.underlying / rhs.underlying)
 }
 
-/// Ratio of two widths (dimensionless).
-///
-/// Returns a Scale<1> representing the ratio between two widths.
-/// Disfavored to allow `Width / scalar` to use the scalar division operator.
 @_disfavoredOverload
 @inlinable
 public func / <Scalar: FloatingPoint, Space>(
@@ -229,10 +194,6 @@ public func / <Scalar: FloatingPoint, Space>(
     Scale(lhs.underlying / rhs.underlying)
 }
 
-/// Ratio of two lengths/magnitudes (dimensionless).
-///
-/// Returns a Scale<1> representing the ratio between two lengths.
-/// Disfavored to allow `Length / scalar` to use the scalar division operator.
 @_disfavoredOverload
 @inlinable
 public func / <Scalar: FloatingPoint, Space>(
@@ -242,9 +203,6 @@ public func / <Scalar: FloatingPoint, Space>(
     Scale(lhs.underlying / rhs.underlying)
 }
 
-// MARK: - Height + Height, Width + Width
-
-/// Adds two heights (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func + <Scalar: AdditiveArithmetic, Space>(
@@ -254,7 +212,6 @@ public func + <Scalar: AdditiveArithmetic, Space>(
     Geometry<Scalar, Space>.Height(lhs.underlying + rhs.underlying)
 }
 
-/// Subtracts two heights (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func - <Scalar: AdditiveArithmetic, Space>(
@@ -264,7 +221,6 @@ public func - <Scalar: AdditiveArithmetic, Space>(
     Geometry<Scalar, Space>.Height(lhs.underlying - rhs.underlying)
 }
 
-/// Adds two widths (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func + <Scalar: AdditiveArithmetic, Space>(
@@ -274,7 +230,6 @@ public func + <Scalar: AdditiveArithmetic, Space>(
     Geometry<Scalar, Space>.Width(lhs.underlying + rhs.underlying)
 }
 
-/// Subtracts two widths (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func - <Scalar: AdditiveArithmetic, Space>(
@@ -284,9 +239,6 @@ public func - <Scalar: AdditiveArithmetic, Space>(
     Geometry<Scalar, Space>.Width(lhs.underlying - rhs.underlying)
 }
 
-// MARK: - Quantized Height + Height, Width + Width
-
-/// Adds two heights with quantization.
 @inlinable
 public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
@@ -295,7 +247,6 @@ public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying + rhs.underlying, in: Space.self)
 }
 
-/// Subtracts two heights with quantization.
 @inlinable
 public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
@@ -304,7 +255,6 @@ public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying - rhs.underlying, in: Space.self)
 }
 
-/// Adds two widths with quantization.
 @inlinable
 public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
@@ -313,7 +263,6 @@ public func + <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying + rhs.underlying, in: Space.self)
 }
 
-/// Subtracts two widths with quantization.
 @inlinable
 public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
@@ -322,9 +271,6 @@ public func - <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying - rhs.underlying, in: Space.self)
 }
 
-// MARK: - Height * Scale, Width * Scale
-
-/// Scales a height by a dimensionless factor (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space>(
@@ -334,7 +280,6 @@ public func * <Scalar: FloatingPoint, Space>(
     Geometry<Scalar, Space>.Height(lhs.underlying * rhs.value)
 }
 
-/// Scales a height by a dimensionless factor (commutative, non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space>(
@@ -344,7 +289,6 @@ public func * <Scalar: FloatingPoint, Space>(
     rhs * lhs
 }
 
-/// Scales a width by a dimensionless factor (non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space>(
@@ -354,7 +298,6 @@ public func * <Scalar: FloatingPoint, Space>(
     Geometry<Scalar, Space>.Width(lhs.underlying * rhs.value)
 }
 
-/// Scales a width by a dimensionless factor (commutative, non-quantized fallback).
 @_disfavoredOverload
 @inlinable
 public func * <Scalar: FloatingPoint, Space>(
@@ -364,9 +307,6 @@ public func * <Scalar: FloatingPoint, Space>(
     rhs * lhs
 }
 
-// MARK: - Quantized Height * Scale, Width * Scale
-
-/// Scales a height by a dimensionless factor with quantization.
 @inlinable
 public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Height,
@@ -375,7 +315,6 @@ public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying * rhs.value, in: Space.self)
 }
 
-/// Scales a height by a dimensionless factor (commutative) with quantization.
 @inlinable
 public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Scale<1, Scalar>,
@@ -384,7 +323,6 @@ public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     rhs * lhs
 }
 
-/// Scales a width by a dimensionless factor with quantization.
 @inlinable
 public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Geometry<Scalar, Space>.Width,
@@ -393,7 +331,6 @@ public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     ._quantize(lhs.underlying * rhs.value, in: Space.self)
 }
 
-/// Scales a width by a dimensionless factor (commutative) with quantization.
 @inlinable
 public func * <Scalar: BinaryFloatingPoint, Space: Numeric.Quantized>(
     lhs: Scale<1, Scalar>,

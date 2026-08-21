@@ -1,14 +1,9 @@
-// Geometry.Polygon Tests.swift
-// Tests for Geometry.Polygon type (dynamic-size polygon).
-
 import Geometry_Primitives_Test_Support
 import Testing
 
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -40,8 +35,6 @@ private func isApprox(_ a: Area, _ b: Area, tol: Double = 1e-10) -> Bool {
     return abs(a.underlying - b.underlying) < tol
 }
 
-// MARK: - Initialization Tests
-
 @Suite
 struct `Geometry.Polygon - Initialization` {
     @Test
@@ -56,8 +49,6 @@ struct `Geometry.Polygon - Initialization` {
         #expect(polygon.vertexCount == 4)
     }
 }
-
-// MARK: - Validity Tests
 
 @Suite
 struct `Geometry.Polygon - Validity` {
@@ -80,8 +71,6 @@ struct `Geometry.Polygon - Validity` {
         #expect(!polygon.isValid)
     }
 }
-
-// MARK: - Edges Tests
 
 @Suite
 struct `Geometry.Polygon - Edges` {
@@ -112,8 +101,6 @@ struct `Geometry.Polygon - Edges` {
         #expect(edges.count == 4)
     }
 }
-
-// MARK: - Static Functions Tests
 
 @Suite
 struct `Geometry.Polygon - Static Functions` {
@@ -226,8 +213,6 @@ struct `Geometry.Polygon - Static Functions` {
     }
 }
 
-// MARK: - Area and Perimeter Properties Tests
-
 @Suite
 struct `Geometry.Polygon - Area and Perimeter Properties` {
     @Test
@@ -253,8 +238,6 @@ struct `Geometry.Polygon - Area and Perimeter Properties` {
     }
 }
 
-// MARK: - Centroid Tests
-
 @Suite
 struct `Geometry.Polygon - Centroid` {
     @Test
@@ -271,8 +254,6 @@ struct `Geometry.Polygon - Centroid` {
         #expect(isApprox(centroid!.y, Y(1)))
     }
 }
-
-// MARK: - Bounding Box Tests
 
 @Suite
 struct `Geometry.Polygon - Bounding Box` {
@@ -291,8 +272,6 @@ struct `Geometry.Polygon - Bounding Box` {
         #expect(bbox.ury == 7)
     }
 }
-
-// MARK: - Convexity Tests
 
 @Suite
 struct `Geometry.Polygon - Convexity` {
@@ -330,8 +309,6 @@ struct `Geometry.Polygon - Convexity` {
         #expect(polygon.isConvex)
     }
 }
-
-// MARK: - Winding Tests
 
 @Suite
 struct `Geometry.Polygon - Winding` {
@@ -371,8 +348,6 @@ struct `Geometry.Polygon - Winding` {
         #expect(polygon.isCounterClockwise != reversed.isCounterClockwise)
     }
 }
-
-// MARK: - Containment Tests
 
 @Suite
 struct `Geometry.Polygon - Containment` {
@@ -433,8 +408,6 @@ struct `Geometry.Polygon - Containment` {
     }
 }
 
-// MARK: - Transformation Tests
-
 @Suite
 struct `Geometry.Polygon - Transformations` {
     @Test
@@ -481,8 +454,6 @@ struct `Geometry.Polygon - Transformations` {
     }
 }
 
-// MARK: - Triangulation Tests
-
 @Suite
 struct `Geometry.Polygon - Triangulation` {
     @Test
@@ -527,8 +498,6 @@ struct `Geometry.Polygon - Triangulation` {
         #expect(abs(totalArea - polygon.area) < 1e-10)
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Polygon - Functorial Map` {

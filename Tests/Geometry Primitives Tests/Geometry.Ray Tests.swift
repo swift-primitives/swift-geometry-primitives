@@ -1,14 +1,9 @@
-// Geometry.Ray Tests.swift
-// Tests for Geometry.Ray type.
-
 import Geometry_Primitives_Test_Support
 import Testing
 
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -34,8 +29,6 @@ private func isApprox(_ a: Distance, _ b: Distance, tol: Double = 1e-10) -> Bool
     let tolerance = Distance(tol)
     return diff > -tolerance && diff < tolerance
 }
-
-// MARK: - Initialization Tests
 
 @Suite
 struct `Geometry.Ray - Initialization` {
@@ -73,8 +66,6 @@ struct `Geometry.Ray - Initialization` {
     }
 }
 
-// MARK: - Properties Tests
-
 @Suite
 struct `Geometry.Ray - Properties` {
     @Test
@@ -111,8 +102,6 @@ struct `Geometry.Ray - Properties` {
     }
 }
 
-// MARK: - Parametric Point Tests
-
 @Suite
 struct `Geometry.Ray - Parametric Points` {
     @Test
@@ -148,8 +137,6 @@ struct `Geometry.Ray - Parametric Points` {
         #expect(point.y == 0)
     }
 }
-
-// MARK: - Containment Tests
 
 @Suite
 struct `Geometry.Ray - Containment` {
@@ -192,8 +179,6 @@ struct `Geometry.Ray - Containment` {
         #expect(!ray.contains(point))
     }
 }
-
-// MARK: - Line Intersection Tests
 
 @Suite
 struct `Geometry.Ray - Line Intersection` {
@@ -245,8 +230,6 @@ struct `Geometry.Ray - Line Intersection` {
     }
 }
 
-// MARK: - Segment Intersection Tests
-
 @Suite
 struct `Geometry.Ray - Segment Intersection` {
     @Test
@@ -281,8 +264,6 @@ struct `Geometry.Ray - Segment Intersection` {
         #expect(intersection == nil)
     }
 }
-
-// MARK: - Circle Intersection Tests
 
 @Suite
 struct `Geometry.Ray - Circle Intersection` {
@@ -344,8 +325,6 @@ struct `Geometry.Ray - Circle Intersection` {
         #expect(isApprox(intersections[0].x, X(5)))
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Ray - Functorial Map` {

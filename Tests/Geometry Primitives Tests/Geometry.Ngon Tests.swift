@@ -1,6 +1,3 @@
-// Geometry.Ngon Tests.swift
-// Tests for Geometry.Ngon type (N-sided polygon with compile-time vertex count).
-
 import Dimension_Primitives
 import Geometry_Primitives_Test_Support
 import Testing
@@ -8,8 +5,6 @@ import Testing
 @testable import Affine_Primitives
 @testable import Geometry_Primitives
 @testable import Linear_Primitives
-
-// MARK: - Test Helpers
 
 private typealias Geo = Geometry<Double, Void>
 private typealias X = Geo.X
@@ -49,8 +44,6 @@ private func isApprox(_ a: Radian<Double>, _ b: Radian<Double>, tol: Double = 1e
     let diff = a - b
     return diff > Radian(_unchecked: -tol) && diff < Radian(_unchecked: tol)
 }
-
-// MARK: - Triangle (Ngon<3>) Initialization Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Initialization` {
@@ -93,8 +86,6 @@ struct `Geometry.Ngon<3> - Initialization` {
         #expect(triangle == nil)
     }
 }
-
-// MARK: - Triangle Factory Methods Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Factory Methods` {
@@ -155,8 +146,6 @@ struct `Geometry.Ngon<3> - Factory Methods` {
     }
 }
 
-// MARK: - Triangle Properties Tests
-
 @Suite
 struct `Geometry.Ngon<3> - Properties` {
     @Test
@@ -202,8 +191,6 @@ struct `Geometry.Ngon<3> - Properties` {
         #expect(abs(sides.bc - 5) < 1e-10)
     }
 }
-
-// MARK: - Triangle Static Functions Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Static Functions` {
@@ -266,8 +253,6 @@ struct `Geometry.Ngon<3> - Static Functions` {
     }
 }
 
-// MARK: - Triangle Area and Perimeter Tests
-
 @Suite
 struct `Geometry.Ngon<3> - Area and Perimeter` {
     @Test
@@ -312,8 +297,6 @@ struct `Geometry.Ngon<3> - Area and Perimeter` {
     }
 }
 
-// MARK: - Triangle Centroid Tests
-
 @Suite
 struct `Geometry.Ngon<3> - Centroid` {
     @Test
@@ -328,8 +311,6 @@ struct `Geometry.Ngon<3> - Centroid` {
         #expect(isApprox(centroid.y, Y(2)))
     }
 }
-
-// MARK: - Triangle Circles Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Circles` {
@@ -390,8 +371,6 @@ struct `Geometry.Ngon<3> - Circles` {
     }
 }
 
-// MARK: - Triangle Angles Tests
-
 @Suite
 struct `Geometry.Ngon<3> - Angles` {
     @Test
@@ -406,8 +385,6 @@ struct `Geometry.Ngon<3> - Angles` {
         #expect(isApprox(sum, .pi))
     }
 }
-
-// MARK: - Triangle Containment Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Containment` {
@@ -452,8 +429,6 @@ struct `Geometry.Ngon<3> - Containment` {
         #expect(triangle.containsBarycentric(triangle.centroid))
     }
 }
-
-// MARK: - Triangle Barycentric Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Barycentric Coordinates` {
@@ -522,8 +497,6 @@ struct `Geometry.Ngon<3> - Barycentric Coordinates` {
     }
 }
 
-// MARK: - Triangle Bounding Box Tests
-
 @Suite
 struct `Geometry.Ngon<3> - Bounding Box` {
     @Test
@@ -540,8 +513,6 @@ struct `Geometry.Ngon<3> - Bounding Box` {
         #expect(bbox.ury == 7)
     }
 }
-
-// MARK: - Triangle Transformation Tests
 
 @Suite
 struct `Geometry.Ngon<3> - Transformations` {
@@ -584,8 +555,6 @@ struct `Geometry.Ngon<3> - Transformations` {
         #expect(abs(scaled.area - 4 * triangle.area) < 1e-10)
     }
 }
-
-// MARK: - Quadrilateral (Ngon<4>) Tests
 
 @Suite
 struct `Geometry.Ngon<4> - Quadrilateral` {
@@ -647,8 +616,6 @@ struct `Geometry.Ngon<4> - Quadrilateral` {
     }
 }
 
-// MARK: - Regular Polygon Tests
-
 @Suite
 struct `Geometry.Ngon - Regular Polygons` {
     @Test
@@ -678,8 +645,6 @@ struct `Geometry.Ngon - Regular Polygons` {
     }
 }
 
-// MARK: - Ngon Convexity Tests
-
 @Suite
 struct `Geometry.Ngon - Convexity` {
     @Test
@@ -703,8 +668,6 @@ struct `Geometry.Ngon - Convexity` {
         #expect(triangle.isConvex)
     }
 }
-
-// MARK: - Ngon Winding Tests
 
 @Suite
 struct `Geometry.Ngon - Winding` {
@@ -741,8 +704,6 @@ struct `Geometry.Ngon - Winding` {
         #expect(triangle.isCounterClockwise != reversed.isCounterClockwise)
     }
 }
-
-// MARK: - Functorial Map Tests
 
 @Suite
 struct `Geometry.Ngon - Functorial Map` {

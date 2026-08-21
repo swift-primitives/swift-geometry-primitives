@@ -1,30 +1,12 @@
-// Size.swift
-// A fixed-size dimensions with compile-time known number of dimensions.
-
 public import Dimension_Primitives
 import Linear_Primitives
 
 extension Geometry {
-    /// A fixed-size dimensions with compile-time known number of dimensions.
-    ///
-    /// This generic structure represents N-dimensional sizes (width, height, depth, etc.)
-    /// and can be specialized for different coordinate systems.
-    ///
-    /// Uses Swift 6.2 integer generic parameters (SE-0452) for type-safe
-    /// dimension checking at compile time.
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let pageSize: Geometry<Double, Void>.Size<2, Void> = .init(
-    ///     width: .init(612), height: .init(792)
-    /// )
-    /// ```
+
     public struct Size<let N: Int> {
-        /// The size dimensions stored inline.
+
         public var dimensions: InlineArray<N, Scalar>
 
-        /// Create a size from an inline array of dimensions.
         @inlinable
         public init(_ dimensions: consuming InlineArray<N, Scalar>) {
             self.dimensions = dimensions
@@ -34,10 +16,8 @@ extension Geometry {
 
 extension Geometry.Size: Sendable where Scalar: Sendable {}
 
-// MARK: - Equatable
-
 extension Geometry.Size: Equatable where Scalar: Equatable {
-    /// Returns whether two sizes are equal.
+
     @inlinable
     public static func == (lhs: borrowing Self, rhs: borrowing Self) -> Bool {
         for i in 0..<N {
@@ -49,10 +29,8 @@ extension Geometry.Size: Equatable where Scalar: Equatable {
     }
 }
 
-// MARK: - Hashable
-
 extension Geometry.Size: Hashable where Scalar: Hashable {
-    /// Hashes the essential components of this size into the given hasher.
+
     @inlinable
     public func hash(into hasher: inout Hasher) {
         for i in 0..<N {
@@ -61,11 +39,9 @@ extension Geometry.Size: Hashable where Scalar: Hashable {
     }
 }
 
-// MARK: - Codable
-
 #if !hasFeature(Embedded)
     extension Geometry.Size: Codable where Scalar: Codable {
-        /// Creates a size by decoding from the given decoder.
+
         public init(from decoder: any Decoder) throws {
             var container = try decoder.unkeyedContainer()
             var dimensions = InlineArray<N, Scalar>(repeating: try container.decode(Scalar.self))
@@ -75,7 +51,6 @@ extension Geometry.Size: Hashable where Scalar: Hashable {
             self.dimensions = dimensions
         }
 
-        /// Encodes this size into the given encoder.
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.unkeyedContainer()
             for i in 0..<N {
@@ -85,10 +60,8 @@ extension Geometry.Size: Hashable where Scalar: Hashable {
     }
 #endif
 
-// MARK: - Subscript
-
 extension Geometry.Size {
-    /// Access dimension by index.
+
     @inlinable
     public subscript(index: Int) -> Scalar {
         get { dimensions[index] }
@@ -96,10 +69,8 @@ extension Geometry.Size {
     }
 }
 
-// MARK: - Functorial Map
-
 extension Geometry.Size {
-    /// Create a size by transforming each dimension of another size.
+
     @inlinable
     public init<U, E: Swift.Error>(
         _ other: borrowing Geometry<U, Space>.Size<N>,
@@ -112,7 +83,6 @@ extension Geometry.Size {
         self.init(dims)
     }
 
-    /// Transform each dimension using the given closure.
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -125,10 +95,8 @@ extension Geometry.Size {
     }
 }
 
-// MARK: - AdditiveArithmetic
-
 extension Geometry.Size where Scalar: AdditiveArithmetic {
-    /// Zero size (all dimensions zero).
+
     @inlinable
     public static var zero: Self {
         Self(InlineArray(repeating: .zero))
@@ -136,28 +104,25 @@ extension Geometry.Size where Scalar: AdditiveArithmetic {
 }
 
 extension Geometry.Size where N == 1 {
-    /// The single dimension as a Length (magnitude).
+
     @inlinable
     public var length: Geometry.Length {
         get { Geometry.Length(dimensions[0]) }
         set { dimensions[0] = newValue.underlying }
     }
 
-    /// Project as width (horizontal extent).
     @inlinable
     public var width: Geometry.Width {
         get { Geometry.Width(dimensions[0]) }
         set { dimensions[0] = newValue.underlying }
     }
 
-    /// Project as height (vertical extent).
     @inlinable
     public var height: Geometry.Height {
         get { Geometry.Height(dimensions[0]) }
         set { dimensions[0] = newValue.underlying }
     }
 
-    /// Create from a scalar value.
     @inlinable
     public init(_ value: Scalar) {
         self.init([value])
@@ -165,88 +130,71 @@ extension Geometry.Size where N == 1 {
 }
 
 extension Geometry.Size where N == 1, Scalar: AdditiveArithmetic {
-    /// Sum of both horizontal sides (for padding/margins applied to left and right).
-    ///
-    /// Equivalent to `width * 2`, useful for calculating total horizontal padding.
+
     @inlinable
     public var horizontal: Geometry.Width {
         Geometry.Width(dimensions[0] + dimensions[0])
     }
 
-    /// Sum of both vertical sides (for padding/margins applied to top and bottom).
-    ///
-    /// Equivalent to `height * 2`, useful for calculating total vertical padding.
     @inlinable
     public var vertical: Geometry.Height {
         Geometry.Height(dimensions[0] + dimensions[0])
     }
 }
 
-// MARK: - 2D Convenience
-
 extension Geometry.Size where N == 2 {
-    /// Width (first dimension, type-safe).
+
     @inlinable
     public var width: Geometry.Width {
         get { Geometry.Width(dimensions[0]) }
         set { dimensions[0] = newValue.underlying }
     }
 
-    /// Height (second dimension, type-safe).
     @inlinable
     public var height: Geometry.Height {
         get { Geometry.Height(dimensions[1]) }
         set { dimensions[1] = newValue.underlying }
     }
 
-    /// Create a 2D size from typed Width and Height values.
     @inlinable
     public init(width: Geometry.Width, height: Geometry.Height) {
         self.init([width.underlying, height.underlying])
     }
 }
 
-// MARK: - 3D Convenience
-
 extension Geometry.Size where N == 3 {
-    /// Width (first dimension).
+
     @inlinable
     public var width: Geometry.Width {
         get { .init(dimensions[0]) }
         set { dimensions[0] = newValue.underlying }
     }
 
-    /// Height (second dimension).
     @inlinable
     public var height: Geometry.Height {
         get { .init(dimensions[1]) }
         set { dimensions[1] = newValue.underlying }
     }
 
-    /// Depth (third dimension) - raw scalar as we don't have typed Dz.
     @inlinable
     public var depth: Scalar {
         get { dimensions[2] }
         set { dimensions[2] = newValue }
     }
 
-    /// Create a 3D size from typed values with raw depth.
     @inlinable
     public init(width: Geometry.Width, height: Geometry.Height, depth: Scalar) {
         self.init([width.underlying, height.underlying, depth])
     }
 
-    /// Create a 3D size from a 2D size with depth.
     @inlinable
     public init(_ size2: Geometry.Size<2>, depth: Scalar) {
         self.init(width: size2.width, height: size2.height, depth: depth)
     }
 }
 
-// MARK: - Zip
-
 extension Geometry.Size {
-    /// Combine two sizes component-wise.
+
     @inlinable
     public static func zip(_ a: Self, _ b: Self, _ combine: (Scalar, Scalar) -> Scalar) -> Self {
         var result = a.dimensions
@@ -257,11 +205,9 @@ extension Geometry.Size {
     }
 }
 
-// MARK: - ExpressibleByLiteral for 1D Size
-
 extension Geometry.Size: ExpressibleByIntegerLiteral
 where N == 1, Scalar: ExpressibleByIntegerLiteral {
-    /// Creates a one-dimensional size from an integer literal.
+
     @inlinable
     public init(integerLiteral value: Scalar.IntegerLiteralType) {
         self.init([Scalar(integerLiteral: value)])
@@ -269,7 +215,7 @@ where N == 1, Scalar: ExpressibleByIntegerLiteral {
 }
 
 extension Geometry.Size: ExpressibleByFloatLiteral where N == 1, Scalar: ExpressibleByFloatLiteral {
-    /// Creates a one-dimensional size from a floating-point literal.
+
     @inlinable
     public init(floatLiteral value: Scalar.FloatLiteralType) {
         self.init([Scalar(floatLiteral: value)])

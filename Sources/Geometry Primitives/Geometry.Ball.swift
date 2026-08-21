@@ -1,6 +1,3 @@
-// Geometry.Ball.swift
-// N-dimensional ball (hypersphere) defined by center and radius.
-
 public import Affine_Geometry_Primitives
 import Affine_Primitives
 public import Dimension_Primitives
@@ -8,32 +5,13 @@ public import Linear_Primitives
 import Real_Primitives
 
 extension Geometry {
-    /// N-dimensional ball (hypersphere) — all points within radius of center.
-    ///
-    /// A ball is the set of points whose distance from a center point is at most
-    /// the radius. In 2D this is a disk (circle), in 3D a sphere.
-    ///
-    /// - `Ball<2>` = Circle (disk)
-    /// - `Ball<3>` = Sphere (3-ball)
-    ///
-    /// ## Example
-    ///
-    /// ```swift
-    /// let circle = Geometry<Double, Void>.Ball<2>(
-    ///     center: .init(x: .init(100), y: .init(100)),
-    ///     radius: .init(50)
-    /// )
-    /// print(circle.area)           // Area measure
-    /// print(circle.circumference)  // Perimeter
-    /// ```
+
     public struct Ball<let N: Int> {
-        /// Center point.
+
         public var center: Point<N>
 
-        /// Radius (distance from center to boundary).
         public var radius: Radius
 
-        /// Creates a ball with the given center and radius.
         @inlinable
         public init(center: consuming Point<N>, radius: consuming Radius) {
             self.center = center
@@ -42,17 +20,12 @@ extension Geometry {
     }
 }
 
-// MARK: - Typealiases
-
 extension Geometry {
-    /// 2-dimensional ball (disk/circle).
+
     public typealias Circle = Ball<2>
 
-    /// 3-dimensional ball (sphere).
     public typealias Sphere = Ball<3>
 }
-
-// MARK: - Conformances
 
 extension Geometry.Ball: Sendable where Scalar: Sendable {}
 extension Geometry.Ball: Equatable where Scalar: Equatable {}
@@ -62,83 +35,64 @@ extension Geometry.Ball: Hashable where Scalar: Hashable {}
     extension Geometry.Ball: Codable where Scalar: Codable {}
 #endif
 
-// MARK: - Convenience Initializers
-
 extension Geometry.Ball where Scalar: AdditiveArithmetic {
-    /// Creates a ball centered at origin with given radius.
+
     @inlinable
     public init(radius: Geometry.Radius) {
         self.init(center: .zero, radius: radius)
     }
 }
 
-// MARK: - Static Properties
-
 extension Geometry.Ball where Scalar: ExpressibleByIntegerLiteral & AdditiveArithmetic {
-    /// Unit ball centered at origin with radius 1.
+
     @inlinable
     public static var unit: Self {
         Self(center: .zero, radius: .init(1))
     }
 }
 
-// MARK: - Common Properties (All Dimensions)
-
 extension Geometry.Ball where Scalar: FloatingPoint {
-    /// Diameter (2 × radius) with projections to Width/Height.
+
     @inlinable
     public var diameter: Geometry.Magnitude {
         Geometry.Magnitude(radius * 2)
     }
 }
 
-// MARK: - 2D Properties (Circle)
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// Circumference (2π × radius).
+
     @inlinable
     public var circumference: Geometry.Circumference {
         Geometry.Circumference(2 * Scalar.pi * radius.underlying)
     }
 
-    /// Area (π × radius²).
     @inlinable
     public var area: Geometry.Area { Geometry.area(of: self) }
 
-    /// Axis-aligned bounding rectangle.
     @inlinable
     public var boundingBox: Geometry.Rectangle { Geometry.boundingBox(of: self) }
 }
 
-// MARK: - 3D Properties (Sphere)
-
 extension Geometry.Ball where N == 3, Scalar: FloatingPoint {
-    /// Surface area (4π × radius²).
+
     @inlinable
     public var surfaceArea: Scalar {
-        // radius * radius = Area, multiply by scalar, extract raw value
+
         let radiusSq = radius * radius
         return 4 * Scalar.pi * radiusSq.underlying
     }
 
-    /// Volume (4/3 × π × radius³).
     @inlinable
     public var volume: Scalar {
-        // radius² × radius = Volume (via Area × Length = Volume)
+
         let radiusSq = radius * radius
         let radiusCubed = radiusSq * radius
         return (4 / 3) * Scalar.pi * radiusCubed.underlying
     }
 }
 
-// MARK: - 2D Circle from Ellipse
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// Creates a circle from an ellipse if the ellipse is circular.
-    ///
-    /// Fails unless the ellipse has equal semi-major and semi-minor axes.
-    ///
-    /// - Parameter ellipse: The ellipse to convert.
+
     @inlinable
     public init?(_ ellipse: Geometry.Ellipse) {
         let diff: Scalar = ellipse.semiMajor.underlying - ellipse.semiMinor.underlying
@@ -147,42 +101,35 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     }
 }
 
-// MARK: - 2D Containment
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// Checks if point is inside or on the circle boundary.
+
     @inlinable
     public func contains(_ point: Geometry.Point<2>) -> Bool {
         Geometry.contains(self, point: point)
     }
 
-    /// Checks if point is strictly inside (not on boundary).
     @inlinable
     public func containsInterior(_ point: Geometry.Point<2>) -> Bool {
         center.distance.squared(to: point) < radius * radius
     }
 
-    /// Checks if another circle is entirely contained within this circle.
     @inlinable
     public func contains(_ other: Self) -> Bool {
         Geometry.contains(self, other)
     }
 }
 
-// MARK: - 2D Point on Circle
-
 extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint & Numeric.Transcendental {
-    /// Returns point on circle at given angle from positive x-axis.
+
     @inlinable
     public func point(at angle: Radian<Scalar>) -> Geometry.Point<2> {
-        // Coordinate + Magnitude × Scale = Coordinate (typed)
+
         Geometry.Point(
             x: center.x + radius * angle.cos,
             y: center.y + radius * angle.sin
         )
     }
 
-    /// Returns unit tangent vector at given angle (perpendicular to radius, counter-clockwise).
     @inlinable
     public func tangent(at angle: Radian<Scalar>) -> Geometry.Vector<2> {
         let c = angle.cos.value
@@ -193,7 +140,6 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint & Numeric.Tran
         )
     }
 
-    /// Returns closest point on circle boundary to given point.
     @inlinable
     public func closestPoint(to point: Geometry.Point<2>) -> Geometry.Point<2> {
         let vx = point.x.underlying - center.x.underlying
@@ -214,43 +160,32 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint & Numeric.Tran
     }
 }
 
-// MARK: - 2D Intersection
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// Checks if circles intersect or touch.
+
     @inlinable
     public func intersects(_ other: Self) -> Bool {
         Geometry.intersects(self, other)
     }
 
-    /// Finds intersection points with a line.
-    ///
-    /// - Returns: Array of 0, 1, or 2 points where line crosses circle.
     @inlinable
     public func intersection(with line: Geometry.Line) -> [Geometry.Point<2>] {
         Geometry.intersection(self, line)
     }
 
-    /// Finds intersection points with another circle.
-    ///
-    /// - Returns: Array of 0, 1, or 2 points where circles intersect.
     @inlinable
     public func intersection(with other: Self) -> [Geometry.Point<2>] {
         Geometry.intersection(self, other)
     }
 }
 
-// MARK: - Static Implementations
-
 extension Geometry where Scalar: FloatingPoint {
-    /// Calculate the area of a circle.
+
     @inlinable
     public static func area(of circle: Ball<2>) -> Area {
-        let radiusSq = circle.radius * circle.radius  // Linear.Area
+        let radiusSq = circle.radius * circle.radius
         return Area(Scalar.pi * radiusSq.underlying)
     }
 
-    /// Calculate the axis-aligned bounding rectangle of a circle.
     @inlinable
     public static func boundingBox(of circle: Ball<2>) -> Rectangle {
         Rectangle(
@@ -261,19 +196,16 @@ extension Geometry where Scalar: FloatingPoint {
         )
     }
 
-    /// Check if a circle contains a point.
     @inlinable
     public static func contains(_ circle: Ball<2>, point: Point<2>) -> Bool {
         circle.center.distance.squared(to: point) <= circle.radius * circle.radius
     }
 
-    /// Check if a circle contains another circle.
     @inlinable
     public static func contains(_ circle: Ball<2>, _ other: Ball<2>) -> Bool {
         circle.center.distance(to: other.center) + other.radius <= circle.radius
     }
 
-    /// Check if two circles intersect or touch.
     @inlinable
     public static func intersects(_ circle1: Ball<2>, _ circle2: Ball<2>) -> Bool {
         let dist = circle1.center.distance(to: circle2.center)
@@ -284,7 +216,6 @@ extension Geometry where Scalar: FloatingPoint {
         return dist <= sumRadii && dist >= diffRadii
     }
 
-    /// Find intersection points between a circle and a line.
     @inlinable
     public static func intersection(_ circle: Ball<2>, _ line: Line) -> [Point<2>] {
         let fx = line.point.x.underlying - circle.center.x.underlying
@@ -312,7 +243,6 @@ extension Geometry where Scalar: FloatingPoint {
         return [line.point(at: Scale<1, Scalar>(t1)), line.point(at: Scale<1, Scalar>(t2))]
     }
 
-    /// Find intersection points between two circles.
     @inlinable
     public static func intersection(_ circle1: Ball<2>, _ circle2: Ball<2>) -> [Point<2>] {
         let dist = circle1.center.distance(to: circle2.center)
@@ -366,22 +296,18 @@ extension Geometry where Scalar: FloatingPoint {
     }
 }
 
-// MARK: - 2D Transformation
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// Returns circle translated by vector.
+
     @inlinable
     public func translated(by vector: Geometry.Vector<2>) -> Self {
         Self(center: center + vector, radius: radius)
     }
 
-    /// Returns circle scaled uniformly about its center.
     @inlinable
     public func scaled(by factor: Scale<1, Scalar>) -> Self {
         Self(center: center, radius: factor * radius)
     }
 
-    /// Returns circle scaled uniformly about given point.
     @inlinable
     public func scaled(by factor: Scale<1, Scalar>, about point: Geometry.Point<2>) -> Self {
         let f = factor.value
@@ -397,10 +323,8 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
     }
 }
 
-// MARK: - Functorial Map
-
 extension Geometry.Ball {
-    /// Transforms coordinates using the given closure.
+
     @inlinable
     public func map<Result, E: Swift.Error>(
         _ transform: (Scalar) throws(E) -> Result
@@ -412,19 +336,13 @@ extension Geometry.Ball {
     }
 }
 
-// MARK: - 2D Bézier Approximation
-
 extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint {
-    /// Four cubic Bézier curves approximating this circle.
-    ///
-    /// Uses standard constant k = 0.5522847498 for excellent circle approximation.
-    /// Curves start at 3 o'clock and proceed counter-clockwise through quadrants.
+
     @inlinable
     public var bezierCurves: [Geometry.Bezier.Segment] {
-        // k is scaled radius for Bézier control point distance
+
         let k: Geometry.Radius = radius * Scale(0.5522847498)
 
-        // Cardinal points using typed Coordinate ± Magnitude
         let right = Geometry.Point<2>(x: center.x + radius, y: center.y)
         let bottom = Geometry.Point<2>(x: center.x, y: center.y - radius)
         let left = Geometry.Point<2>(x: center.x - radius, y: center.y)
@@ -458,21 +376,15 @@ extension Geometry.Ball where N == 2, Scalar: BinaryFloatingPoint {
         ]
     }
 
-    /// Starting point for Bézier curve rendering (3 o'clock position).
     @inlinable
     public var bezierStartPoint: Geometry.Point<2> {
-        // Coordinate + Magnitude = Coordinate (typed)
+
         Geometry.Point<2>(x: center.x + radius, y: center.y)
     }
 }
 
-// MARK: - Circle from Triangle
-
 extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
-    /// The incircle (largest inscribed circle) of a triangle.
-    ///
-    /// The incircle's center is equidistant from all three sides.
-    /// Returns `nil` if the triangle is degenerate.
+
     @inlinable
     public static func incircle(of triangle: Geometry.Triangle) -> Geometry.Circle? {
         let sides = triangle.sideLengths
@@ -483,8 +395,6 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         let perimeter = ab + bc + ca
         guard perimeter > 0 else { return nil }
 
-        // Incenter is weighted centroid: I = (a*A + b*B + c*C) / (a+b+c)
-        // where a,b,c are opposite side lengths
         let v = triangle.vertices
         let ax = v[0].x.underlying
         let ay = v[0].y.underlying
@@ -503,7 +413,6 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         let weightedY3 = ab * cy
         let centerY = (weightedY1 + weightedY2 + weightedY3) / perimeter
 
-        // Inradius = Area / semi-perimeter
         let semiPerimeter = perimeter / 2
         let inradius = triangle.area.underlying / semiPerimeter
 
@@ -513,9 +422,6 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         )
     }
 
-    /// The circumcircle (smallest enclosing circle passing through all vertices) of a triangle.
-    ///
-    /// Returns `nil` if the triangle is degenerate (collinear vertices).
     @inlinable
     public static func circumcircle(of triangle: Geometry.Triangle) -> Geometry.Circle? {
         let v = triangle.vertices
@@ -526,7 +432,6 @@ extension Geometry.Ball where N == 2, Scalar: FloatingPoint {
         let cx = v[2].x.underlying
         let cy = v[2].y.underlying
 
-        // Break up complex expressions for type checker
         let dTerm1 = ax * (by - cy)
         let dTerm2 = bx * (cy - ay)
         let dTerm3 = cx * (ay - by)
